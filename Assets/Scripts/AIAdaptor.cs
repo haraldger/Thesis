@@ -1,7 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using Generated.Semantic.Traits;
-using Generated.Semantic.Traits.Enums;
 using UnityEngine;
 
 public class AIAdaptor : MonoBehaviour

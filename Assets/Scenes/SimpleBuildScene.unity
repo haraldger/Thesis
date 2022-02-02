@@ -841,6 +841,7 @@ GameObject:
   - component: {fileID: 1546208072}
   - component: {fileID: 1546208073}
   - component: {fileID: 1546208074}
+  - component: {fileID: 1546208075}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -892,7 +893,7 @@ MonoBehaviour:
   m_PlannerSettings:
     PlanningIterationsPerUpdate: 1
     StateExpansionBudgetPerIteration: 1
-    UseCustomPlanningFrequency: 0
+    UseCustomPlanningFrequency: 1
     MinFramesPerPlanningUpdate: 0
     CapPlanSize: 0
     MaxStatesInPlan: 0
@@ -907,10 +908,10 @@ MonoBehaviour:
     MaximumDecisionTolerance: 3.4028235e+38
     MinimumPlanSize: 0
     MinimumPlanningTime: 0
-  m_WorldObjectQuery: {fileID: 0}
+  m_WorldObjectQuery: {fileID: 1546208075}
   m_ActionExecuteInfos:
   - m_ActionName: BuildBarracks
-    m_PlanExecutorStateUpdateMode: 0
+    m_PlanExecutorStateUpdateMode: 1
     m_Method: BuildBarracks
     m_SourceGameObject: {fileID: 1457262116}
     m_Source: {fileID: 1457262118}
@@ -921,6 +922,33 @@ MonoBehaviour:
       m_Enum: {fileID: 0}
       m_Value: 
   m_AutoUpdate: 1
+--- !u!114 &1546208075
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1546208071}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f222baf27330f49959caf266f2f6b851, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Query:
+    m_QueryGroups:
+    - m_Filters: []
+      m_Quantifier: 0
+      m_QuantifierLimit: 1
+      m_QuantifierScorer:
+        id: 0
+      m_RequiredTraits:
+        m_Traits: []
+      m_ProhibitedTraits:
+        m_Traits: []
+  references:
+    version: 1
+    00000000:
+      type: {class: , ns: , asm: }
 --- !u!1 &1684528956
 GameObject:
   m_ObjectHideFlags: 0
