@@ -108,7 +108,6 @@ GameObject:
   - component: {fileID: 4465966349628457126}
   - component: {fileID: -1420369523144970681}
   - component: {fileID: 6087921888804087138}
-  - component: {fileID: 7993827172444169122}
   - component: {fileID: -4080738545771249529}
   m_Layer: 0
   m_Name: Citadel
@@ -186,19 +185,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e52a27e7e82aaf840bc19d82abd63620, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &7993827172444169122
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7595734644407776103}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b54f24b819757498db0612bea45254d6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_p4: 0
 --- !u!114 &-4080738545771249529
 MonoBehaviour:
   m_ObjectHideFlags: 0
