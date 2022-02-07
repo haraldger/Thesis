@@ -131,3 +131,6 @@ crashlytics-build.properties
 
 # Files for AI Planner
 generated**
+
+# iCloud
+*.icloud
