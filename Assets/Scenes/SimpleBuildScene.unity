@@ -597,6 +597,25 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1013812086 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7595734644407776103, guid: baf42c6c9f49b4692998324cb47dc066,
+    type: 3}
+  m_PrefabInstance: {fileID: 1152873006}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1013812087
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1013812086}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6aa09a25375bb465ba505614b6b1f913, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_p0: 1
 --- !u!1001 &1152873006
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -888,7 +907,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fd8ac131c09d04008af565adfda708ed, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_ProblemDefinition: {fileID: 11400000, guid: 54a12faf882ba4ee7a2f6f81ac826826,
+  m_ProblemDefinition: {fileID: 11400000, guid: ddc4fe85ce603454585c5728de450eef,
     type: 2}
   m_InitializeOnStart: 1
   m_PlannerSettings:
@@ -912,12 +931,12 @@ MonoBehaviour:
   m_WorldObjectQuery: {fileID: 1546208075}
   m_ActionExecuteInfos:
   - m_ActionName: BuildBarracks
-    m_PlanExecutorStateUpdateMode: 1
+    m_PlanExecutorStateUpdateMode: 0
     m_Method: BuildBarracks
     m_SourceGameObject: {fileID: 1457262116}
     m_Source: {fileID: 1457262118}
     m_Arguments:
-    - m_Parameter: Location
+    - m_Parameter: BuildingLocation
       m_Trait: {fileID: 11400000, guid: 6b7c2cd8001b84552891cf17ebf8b587, type: 2}
       m_TraitPropertyId: 0
       m_Enum: {fileID: 0}

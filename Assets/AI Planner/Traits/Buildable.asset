@@ -21,7 +21,7 @@ MonoBehaviour:
     00000000:
       type: {class: EnumReferenceProperty, ns: Unity.Semantic.Traits, asm: Unity.Semantic.Traits}
       data:
-        m_Name: NewProperty
+        m_Name: BuildingType
         m_Id: 0
         m_EnumReference: {fileID: 11400000, guid: 67d6adfafaa844764a7d4b27f030675c,
           type: 2}
