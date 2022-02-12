@@ -131,3 +131,8 @@ crashlytics-build.properties
 
 # Files for AI Planner
 generated**
+
+
+# MAC
+.DS_Store
+*icloud*
