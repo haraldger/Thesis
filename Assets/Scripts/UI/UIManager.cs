@@ -1,21 +1,26 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
 {
-    public static UIManager Instance { get; private set; }
+    public static UIManager Instance { get; private set; } // this
 
+    // UI elements
     public Transform buildingMenuPanel;
     public GameObject buildingButtonPrefab;
-
-    private IDictionary<string, BuildingData> _buildingData = Globals.BUILDING_DATA;
+    public Transform resourcePanel;
+    public GameObject resourceLabelPrefab;
 
     // Start is called before the first frame update
     void Start()
     {
         Instance = this;
+        _buildingData = Globals.BUILDING_DATA;
+        _buildingManager = BuildingManager.Instance;
+        _resources = ResourceManager.Instance;
+
+        // Buildings
         foreach (BuildingData entry in _buildingData.Values)
         {
             GameObject buildingButton = Instantiate(buildingButtonPrefab, buildingMenuPanel, false);
@@ -23,6 +28,10 @@ public class UIManager : MonoBehaviour
             AddBuildingButtonListener(buildingButton.GetComponent<Button>(), entry);
 
         }
+
+        // Resources
+        GameObject foodLabel = Instantiate(resourceLabelPrefab, resourcePanel, false);
+        foodLabel.GetComponentInChildren<Text>().text = "Food: " + _resources.Food + $"/{_resources.ResourceCap}";
     }
 
     // Update is called once per frame
@@ -34,6 +43,13 @@ public class UIManager : MonoBehaviour
     // When a button is clicked
     void AddBuildingButtonListener(Button b, BuildingData buildingData)
     {
-        b.onClick.AddListener( () => BuildingManager.Instance.StartPreviewBuilding(buildingData));
+        b.onClick.AddListener( () => _buildingManager.StartPreviewBuilding(buildingData));
     }
+
+
+
+    // Managers and Data
+    private IDictionary<string, BuildingData> _buildingData;
+    private BuildingManager _buildingManager;
+    private ResourceManager _resources;
 }

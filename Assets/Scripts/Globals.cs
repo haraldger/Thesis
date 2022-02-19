@@ -9,11 +9,5 @@ public class Globals
         {"Citadel", new BuildingData("Citadel", 1000)}
     };
 
-    //public static BuildingData[] BUILDING_DATA = new BuildingData[]
-    //{
-    //    new BuildingData("Barracks", 100),
-    //    new BuildingData("Citadel", 1000)
-    //};
-
 
 }
