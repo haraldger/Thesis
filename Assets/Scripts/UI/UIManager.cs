@@ -10,17 +10,17 @@ public class UIManager : MonoBehaviour
     public Transform buildingMenuPanel;
     public GameObject buildingButtonPrefab;
 
-    private BuildingData[] _buildingData = Globals.BUILDING_DATA;
+    private IDictionary<string, BuildingData> _buildingData = Globals.BUILDING_DATA;
 
     // Start is called before the first frame update
     void Start()
     {
         Instance = this;
-        for (int i = 0; i < _buildingData.Length; i++)
+        foreach (BuildingData entry in _buildingData.Values)
         {
             GameObject buildingButton = Instantiate(buildingButtonPrefab, buildingMenuPanel, false);
-            buildingButton.GetComponentInChildren<Text>().text = _buildingData[i].Code;
-            AddBuildingButtonListener(buildingButton.GetComponent<Button>(), _buildingData[i]);
+            buildingButton.GetComponentInChildren<Text>().text = entry.Code;
+            AddBuildingButtonListener(buildingButton.GetComponent<Button>(), entry);
 
         }
     }
