@@ -8,6 +8,6 @@ public class BuildingData
     public BuildingData(string code, int hp)
     {
         Code = code;
-        HP = hp;
+        HP = hp; 
     }
 }

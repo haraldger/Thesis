@@ -16,10 +16,7 @@ public class UIManager : MonoBehaviour
     void Start()
     {
         Instance = this;
-        _buildingData = Globals.BUILDING_DATA;
-        _buildingManager = BuildingManager.Instance;
-        _resources = ResourceManager.Instance;
-
+         
         // Buildings
         foreach (BuildingData entry in _buildingData.Values)
         {
@@ -31,7 +28,7 @@ public class UIManager : MonoBehaviour
 
         // Resources
         GameObject foodLabel = Instantiate(resourceLabelPrefab, resourcePanel, false);
-        foodLabel.GetComponentInChildren<Text>().text = "Food: " + _resources.Food + $"/{_resources.ResourceCap}";
+        foodLabel.GetComponent<Text>().text = "Food: " + ResourceManager.Instance.Food + $"/{ResourceManager.Instance.ResourceCap}";
     }
 
     // Update is called once per frame
@@ -43,13 +40,10 @@ public class UIManager : MonoBehaviour
     // When a button is clicked
     void AddBuildingButtonListener(Button b, BuildingData buildingData)
     {
-        b.onClick.AddListener( () => _buildingManager.StartPreviewBuilding(buildingData));
+        b.onClick.AddListener( () => BuildingManager.Instance.StartPreviewBuilding(buildingData));
     }
 
 
-
-    // Managers and Data
-    private IDictionary<string, BuildingData> _buildingData;
-    private BuildingManager _buildingManager;
-    private ResourceManager _resources;
+    // Data
+    private IDictionary<string, BuildingData> _buildingData = Globals.BUILDING_DATA;
 }
