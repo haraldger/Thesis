@@ -9,5 +9,10 @@ public class Globals
         {"Citadel", new BuildingData("Citadel", 1000)}
     };
 
-
+    public static IDictionary<string, GameResourceData> RESOURCE_DATA = new Dictionary<string, GameResourceData>()
+    {
+        {"Wood", new GameResourceData("Wood", 2000, 100)},
+        {"Gold", new GameResourceData("Gold", 2000, 0)},
+        {"Food", new GameResourceData("Food", 2000, 250)}
+    };
 }
