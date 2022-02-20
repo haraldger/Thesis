@@ -48,8 +48,28 @@ public class BuildingManager : MonoBehaviour
 
     public void BuildBuilding(BuildingData buildingData, Vector3 position)
     {
-        Building newBuilding = new Building(buildingData);
-        newBuilding.InstantiatePrefab(position);
+        bool canBuild = true;
+        foreach (KeyValuePair<GameResourceData, int> resourceCost in buildingData.Cost)
+        {
+            if (resourceCost.Key.CanConsumeResource(resourceCost.Value))
+            {
+                canBuild = false;
+                break;
+            }
+        }
+
+        if (canBuild)
+        {
+            Building newBuilding = new Building(buildingData);
+            newBuilding.InstantiatePrefab(position);
+            foreach (KeyValuePair<GameResourceData, int> resourceCost in buildingData.Cost)
+                resourceCost.Key.ConsumeResource(resourceCost.Value);
+        }
+        else
+        {
+            EndPreview();
+        }
+            
     }
 
     void EndPreview()

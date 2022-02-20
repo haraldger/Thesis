@@ -6,7 +6,7 @@ public class GameResourceData
     public int CurrentAmount
     {
         get => _currentAmount;
-        set
+        private set
         {
             if (value > Cap)
             {
@@ -30,6 +30,23 @@ public class GameResourceData
         Code = code;
         Cap = cap;
         CurrentAmount = initialAmount;
+    }
+
+    public bool CanConsumeResource( int amount)
+    {
+        if (CurrentAmount - amount >= 0)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    public void ConsumeResource(int amount)
+    {
+        CurrentAmount -= amount;
     }
 
 }
