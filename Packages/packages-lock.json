@@ -91,6 +91,12 @@
         "com.unity.modules.imgui": "1.0.0"
       }
     },
+    "fluid.htn": {
+      "version": "file:/Users/harald/Desktop/Programming/Unity Packages/fluid-hierarchical-task-network-master/Fluid-HTN",
+      "depth": 0,
+      "source": "local",
+      "dependencies": {}
+    },
     "com.unity.modules.ai": {
       "version": "1.0.0",
       "depth": 0,
