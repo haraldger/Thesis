@@ -9,9 +9,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1216056985319396325}
-  - component: {fileID: 1216056985319396328}
-  - component: {fileID: 1216056985319396331}
-  - component: {fileID: 1216056985319396330}
   m_Layer: 0
   m_Name: BuildingSpot
   m_TagString: Untagged
@@ -33,43 +30,3 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1216056985319396328
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1216056985319396324}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4ca305a07e837a645a0fc69a59f3ea0c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_EnableTraitInspectors: 1
---- !u!114 &1216056985319396331
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1216056985319396324}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e52a27e7e82aaf840bc19d82abd63620, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &1216056985319396330
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1216056985319396324}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2fffd197a23152f48958a84d47c07f5c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_p338023941: {fileID: 1216056985319396325}
-  m_p2084774077: {x: 3, y: 0, z: -3}
-  m_p2006904664: {x: 0, y: 0, z: 1}

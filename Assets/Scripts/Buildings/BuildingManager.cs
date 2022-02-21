@@ -23,7 +23,7 @@ public class BuildingManager : MonoBehaviour
         {
             if (Input.GetMouseButtonDown(0))
             {
-                _previewingBuilding.InstantiatePrefab(GetMousePosition());
+                BuildBuilding(_previewingBuilding.Data, GetMousePosition());
                 EndPreview();
             }
             else if (Input.GetMouseButtonDown(1))
@@ -48,12 +48,33 @@ public class BuildingManager : MonoBehaviour
 
     public void BuildBuilding(BuildingData buildingData, Vector3 position)
     {
-        Building newBuilding = new Building(buildingData);
-        newBuilding.InstantiatePrefab(position);
+        bool canBuild = true;
+        foreach (KeyValuePair<GameResourceData, int> resourceCost in buildingData.Cost)
+        {
+            if (!resourceCost.Key.CanConsumeResource(resourceCost.Value))
+            {
+                canBuild = false;
+                break;
+            }
+        }
+
+        if (canBuild)
+        {
+            Building newBuilding = new Building(buildingData);
+            newBuilding.InstantiatePrefab(position);
+            foreach (KeyValuePair<GameResourceData, int> resourceCost in buildingData.Cost)
+                resourceCost.Key.ConsumeResource(resourceCost.Value);
+        }
+        else
+        {
+            EndPreview();
+        }
+            
     }
 
     void EndPreview()
     {
+        _previewingBuilding.Destroy();
         _previewing = false;
         _previewingBuilding = null;
     }
