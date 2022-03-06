@@ -74,7 +74,7 @@ public class BuildingManager : MonoBehaviour
 
     void EndPreview()
     {
-        _previewingBuilding.Destroy();
+        if (_previewingBuilding != null) _previewingBuilding.Destroy();
         _previewing = false;
         _previewingBuilding = null;
     }
