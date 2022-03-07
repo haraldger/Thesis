@@ -24,6 +24,10 @@ public class Building
 
 	public void InstantiatePrefab(Vector3 worldPosition)
     {
+        if (Instance != null)
+        {
+			Destroy();
+        }
 		Instance = GameObject.Instantiate(Resources.Load($"Prefabs/Buildings/{Data.Code}"), worldPosition, Quaternion.identity) as GameObject;
 	}
 

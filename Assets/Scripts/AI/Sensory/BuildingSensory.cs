@@ -18,6 +18,13 @@ public class BuildingSensory : ISensory
 
     private void SetCanBuildBarracks()
     {
+        // Check free building spot
+        if (!FreeBuildingSpot())
+        {
+            _context.SetState(AIWorldState.CanBuildBarracks, false);
+            return;
+        }
+
         // Check resource constraints
         var barracksData = _buildingData["Barracks"];
         var barracksCost = barracksData.Cost;
@@ -35,6 +42,13 @@ public class BuildingSensory : ISensory
 
     private void SetCanBuildFarm()
     {
+        // Check free building spot
+        if (!FreeBuildingSpot())
+        {
+            _context.SetState(AIWorldState.CanBuildFarm, false);
+            return;
+        }
+
         // Check resource constraints
         var farmData = _buildingData["Farm"];
         var farmCost = farmData.Cost;
@@ -48,6 +62,11 @@ public class BuildingSensory : ISensory
         }
 
         _context.SetState(AIWorldState.CanBuildFarm, true);
+    }
+
+    private bool FreeBuildingSpot()
+    {
+        return AIManager.Instance.GetFreeBuildingSpot() != null;
     }
 
     private readonly AIContext _context;

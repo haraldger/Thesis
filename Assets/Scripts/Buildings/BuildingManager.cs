@@ -11,7 +11,7 @@ public class BuildingManager : MonoBehaviour
     private Building _previewingBuilding;
 
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         Instance = this;
     }
@@ -48,8 +48,16 @@ public class BuildingManager : MonoBehaviour
 
     public void BuildBuilding(BuildingData buildingData, Vector3 position)
     {
+        Building building = new Building(buildingData);
+        BuildBuilding(building, position);
+    }
+
+    public void BuildBuilding(Building building, Vector3 position)
+    {
         bool canBuild = true;
-        foreach (KeyValuePair<GameResourceData, int> resourceCost in buildingData.Cost)
+
+        // Check resource constraints
+        foreach (KeyValuePair<GameResourceData, int> resourceCost in building.Data.Cost)
         {
             if (!resourceCost.Key.CanConsumeResource(resourceCost.Value))
             {
@@ -60,16 +68,14 @@ public class BuildingManager : MonoBehaviour
 
         if (canBuild)
         {
-            Building newBuilding = new Building(buildingData);
-            newBuilding.InstantiatePrefab(position);
-            foreach (KeyValuePair<GameResourceData, int> resourceCost in buildingData.Cost)
+            building.InstantiatePrefab(position);
+            foreach (KeyValuePair<GameResourceData, int> resourceCost in building.Data.Cost)
                 resourceCost.Key.ConsumeResource(resourceCost.Value);
         }
         else
         {
             EndPreview();
         }
-            
     }
 
     void EndPreview()
@@ -85,4 +91,11 @@ public class BuildingManager : MonoBehaviour
         Vector3 modifiedPosition = new Vector3(totalMousePosition.x, 0, totalMousePosition.z);
         return modifiedPosition;
     }
+
+    //bool CanBuildAtPosition(Vector3 position)
+    //{
+
+    //}
+
+    
 }

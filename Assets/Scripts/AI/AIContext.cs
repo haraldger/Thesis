@@ -64,6 +64,11 @@ public class AIContext : BaseContext
         return HasState((int)state, 1);
     }
 
+    public void SetState(AIWorldState state)
+    {
+        SetState(state, true);
+    }
+
     public void SetState(AIWorldState state, bool value, EffectType type = EffectType.PlanAndExecute)
     {
         SetState((int)state, (byte)(value ? 1 : 0), true, type);

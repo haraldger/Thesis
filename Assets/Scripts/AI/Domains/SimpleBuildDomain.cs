@@ -1,11 +1,16 @@
 ﻿using System;
 using FluidHTN;
 
-public static class SimpleBuildDomain
+public class SimpleBuildDomain : AbstractDomain
 {
-    public static Domain<AIContext> Domain { get; private set; } = DefineDomain();
+    public override Domain<AIContext> Domain { get; set; } 
 
-    private static Domain<AIContext> DefineDomain()
+    void Awake()
+    {
+        Domain = DefineDomain();
+    }
+
+    private Domain<AIContext> DefineDomain()
     {
         return new DomainBuilder<AIContext>("Simple Build Domain")
             .Select("Build Barracks")

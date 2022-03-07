@@ -6,13 +6,11 @@ public static class AIActions
 {
     public static TaskStatus BuildBarracks(AIContext context)
     {
-        AIManager.Instance.BuildBuilding("Barracks");
-        return TaskStatus.Success;
+        return AIManager.Instance.BuildBuilding("Barracks");
     }
 
     public static TaskStatus BuildFarm(AIContext context)
     {
-        AIManager.Instance.BuildBuilding("Farm");
-        return TaskStatus.Success; 
+        return AIManager.Instance.BuildBuilding("Farm");
     }
 }
