@@ -49,4 +49,9 @@ public class GameResourceData
         CurrentAmount -= amount;
     }
 
+    public void AddResource(int amount)
+    {
+        CurrentAmount += amount;
+    }
+
 }

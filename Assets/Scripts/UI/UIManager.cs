@@ -12,8 +12,8 @@ public class UIManager : MonoBehaviour
     public Transform resourcePanel;
     public GameObject resourceLabelPrefab;
 
-    // Start is called before the first frame update
-    void Start()
+
+    void Awake()
     {
         Instance = this;
 
@@ -38,7 +38,7 @@ public class UIManager : MonoBehaviour
             /////////////TEST///////////
             GameObject buildingButton = Instantiate(buildingButtonPrefab, resourcePanel, false);
             buildingButton.GetComponentInChildren<Text>().text = "+";
-            buildingButton.GetComponent<Button>().onClick.AddListener(() => entry.ConsumeResource(-100));
+            buildingButton.GetComponent<Button>().onClick.AddListener(() => entry.ConsumeResource(-300));
             /////////////DELETE/////////
         }
 

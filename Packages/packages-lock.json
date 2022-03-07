@@ -1,7 +1,7 @@
 {
   "dependencies": {
     "com.unity.collab-proxy": {
-      "version": "1.15.12",
+      "version": "1.15.13",
       "depth": 0,
       "source": "registry",
       "dependencies": {
@@ -35,7 +35,7 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.ide.vscode": {
-      "version": "1.2.4",
+      "version": "1.2.5",
       "depth": 0,
       "source": "registry",
       "dependencies": {},
@@ -51,7 +51,7 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.test-framework": {
-      "version": "1.1.29",
+      "version": "1.1.31",
       "depth": 0,
       "source": "registry",
       "dependencies": {
@@ -92,7 +92,7 @@
       }
     },
     "fluid.htn": {
-      "version": "file:/Users/harald/Desktop/Programming/Unity Packages/fluid-hierarchical-task-network-master/Fluid-HTN",
+      "version": "file:/Users/harald/Desktop/Programming/Packages/Unity/fluid-hierarchical-task-network-master/Fluid-HTN",
       "depth": 0,
       "source": "local",
       "dependencies": {}
