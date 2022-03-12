@@ -1,13 +1,32 @@
-using System.Collections;
-using System.Collections.Generic;
+﻿using System;
 using UnityEngine;
 
-public class Building
+public class GameUnit
 {
-    public BuildingData Data { get; private set; }
 
+	// ================================= DATA FIELDS
+	public GameUnitData Data { get; private set; }
+
+	private int _currentHP;
+	public int CurrentHP
+	{
+		get => _currentHP;
+		private set
+        {
+			if(value < 0)
+            {
+				_currentHP = 0;
+            }
+			else if(value > Data.HP)
+            {
+				_currentHP = Data.HP;
+            }
+        }
+	}
+
+    // ================================= UNITY
     private GameObject _instance;
-    public GameObject Instance
+	public GameObject Instance
 	{
 		get => _instance;
 		private set
@@ -17,10 +36,13 @@ public class Building
 		}
 	}
 
-    public Building(BuildingData data)
-	{
+
+	// ================================= METHODS
+	public GameUnit(GameUnitData data)
+    {
 		Data = data;
-	}
+		CurrentHP = Data.HP;
+    }
 
 	public void InstantiatePrefab(Vector3 worldPosition)
     {
@@ -61,5 +83,14 @@ public class Building
 		InstantiatePrefab(GetWorldPosition());
     }
 
+	public void Damage(int hitpoints)
+    {
+		CurrentHP -= hitpoints;
+    }
+
+	public void Heal(int hitpoints)
+    {
+		CurrentHP += hitpoints;
+    }
 }
 

@@ -9,19 +9,19 @@ public class Globals
         {"Food", new GameResourceData("Food", 2000, 250)}
     };
 
-    public static IDictionary<string, BuildingData> BUILDING_DATA = new Dictionary<string, BuildingData>()
+    public static IDictionary<string, GameUnitData> BUILDING_DATA = new Dictionary<string, GameUnitData>()
     {
-        {"Barracks", new BuildingData("Barracks", 100, new Dictionary<GameResourceData, int>(){
+        {"Barracks", new GameUnitData("Barracks", 100, new Dictionary<GameResourceData, int>(){
             {RESOURCE_DATA["Wood"], 200},
             {RESOURCE_DATA["Gold"], 50}
         })},
 
-        {"Citadel", new BuildingData("Citadel", 1000, new Dictionary<GameResourceData, int>(){
+        {"Citadel", new GameUnitData("Citadel", 1000, new Dictionary<GameResourceData, int>(){
             {RESOURCE_DATA["Wood"], 1000},
             {RESOURCE_DATA["Gold"], 500}
         })},
 
-        {"Farm", new BuildingData("Farm", 75, new Dictionary<GameResourceData, int>(){
+        {"Farm", new GameUnitData("Farm", 75, new Dictionary<GameResourceData, int>(){
             {RESOURCE_DATA["Wood"], 100}
         })}
     };

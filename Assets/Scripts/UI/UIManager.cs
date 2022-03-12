@@ -18,8 +18,8 @@ public class UIManager : MonoBehaviour
         Instance = this;
 
         // Buildings
-        _buildingButtons = new Dictionary<Button, BuildingData>();
-        foreach (BuildingData entry in _buildingData.Values)
+        _buildingButtons = new Dictionary<Button, GameUnitData>();
+        foreach (GameUnitData entry in _buildingData.Values)
         {
             GameObject buildingButton = Instantiate(buildingButtonPrefab, buildingMenuPanel, false);
             buildingButton.GetComponentInChildren<Text>().text = entry.Code;
@@ -49,7 +49,7 @@ public class UIManager : MonoBehaviour
     void Update()
     {
         // Update building buttons
-        foreach (KeyValuePair<Button, BuildingData> button in _buildingButtons)
+        foreach (KeyValuePair<Button, GameUnitData> button in _buildingButtons)
         {
             IDictionary<GameResourceData, int> buildingCost = button.Value.Cost;
             foreach (KeyValuePair<GameResourceData, int> resourceCost in buildingCost)
@@ -74,15 +74,15 @@ public class UIManager : MonoBehaviour
     }
 
     // When a button is clicked
-    void AddBuildingButtonListener(Button b, BuildingData buildingData)
+    void AddBuildingButtonListener(Button b, GameUnitData buildingData)
     {
         b.onClick.AddListener( () => BuildingManager.Instance.StartPreviewBuilding(buildingData));
     }
 
 
     // Data & Fields
-    private IDictionary<string, BuildingData> _buildingData = Globals.BUILDING_DATA;
+    private IDictionary<string, GameUnitData> _buildingData = Globals.BUILDING_DATA;
     private IDictionary<string, GameResourceData> _resourceData = Globals.RESOURCE_DATA;
     private IDictionary<Text, GameResourceData> _resourceLabels;
-    private IDictionary<Button, BuildingData> _buildingButtons;
+    private IDictionary<Button, GameUnitData> _buildingButtons;
 }
