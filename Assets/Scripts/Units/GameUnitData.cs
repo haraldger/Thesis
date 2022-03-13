@@ -7,13 +7,18 @@ public class GameUnitData
 
     public int HP { get; private set; }
 
-    public IDictionary<GameResourceData, int> Cost { get; private set; }
+    public IList<CostValue> Costs { get; private set; }
 
-    public GameUnitData(string code, int hp, IDictionary<GameResourceData, int> cost)
+    public GameUnitData(string code, int hp, params CostValue[] costs)
     {
         Code = code;
         HP = hp;
-        Cost = cost;
+
+        Costs = new List<CostValue>();
+        for(int i = 0; i < costs.Length; i++)
+        {
+            Costs.Add(costs[i]);
+        }
     }
 }
 

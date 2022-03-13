@@ -57,9 +57,9 @@ public class BuildingManager : MonoBehaviour
         bool canBuild = true;
 
         // Check resource constraints
-        foreach (KeyValuePair<GameResourceData, int> resourceCost in building.Data.Cost)
+        foreach (CostValue cost in building.Data.Costs)
         {
-            if (!resourceCost.Key.CanConsumeResource(resourceCost.Value))
+            if (!Globals.RESOURCE_DATA[cost.Code].CanConsumeResource(cost.Value))
             {
                 canBuild = false;
                 break;
@@ -69,8 +69,8 @@ public class BuildingManager : MonoBehaviour
         if (canBuild)
         {
             building.InstantiatePrefab(position);
-            foreach (KeyValuePair<GameResourceData, int> resourceCost in building.Data.Cost)
-                resourceCost.Key.ConsumeResource(resourceCost.Value);
+            foreach (CostValue cost in building.Data.Costs)
+                Globals.RESOURCE_DATA[cost.Code].ConsumeResource(cost.Value);
         }
         else
         {

@@ -11,23 +11,30 @@ public class Globals
 
     public static IDictionary<string, GameUnitData> BUILDING_DATA = new Dictionary<string, GameUnitData>()
     {
-        {"Barracks", new GameUnitData("Barracks", 100, new Dictionary<GameResourceData, int>(){
-            {RESOURCE_DATA["Wood"], 200},
-            {RESOURCE_DATA["Gold"], 50}
-        })},
+        {"Barracks", new BuildingData(
+            "Barracks",
+            100,
+            new CostValue("Wood", 200),
+            new CostValue("Gold", 50))},
 
-        {"Citadel", new GameUnitData("Citadel", 1000, new Dictionary<GameResourceData, int>(){
-            {RESOURCE_DATA["Wood"], 1000},
-            {RESOURCE_DATA["Gold"], 500}
-        })},
+        {"Citadel", new BuildingData(
+            "Citadel",
+            1000,
+            new CostValue("Wood", 500),
+            new CostValue("Gold", 250))},
 
-        {"Farm", new GameUnitData("Farm", 75, new Dictionary<GameResourceData, int>(){
-            {RESOURCE_DATA["Wood"], 100}
-        })}
+        {"Farm", new BuildingData(
+            "Farm",
+            75,
+            new CostValue("Wood", 50))}
     };
 
-    //public static IDictionary<BuildingData, IDictionary<GameResourceData, int>> BUILDING_COSTS = new Dictionary<BuildingData, IDictionary<GameResourceData, int>>()
-    //{
-
-    //};
+    public static IDictionary<string, GameUnitData> TROOP_DATA = new Dictionary<string, GameUnitData>()
+    {
+        {"Swordsman", new TroopData(
+            "Swordsman",
+            100,
+            new CostValue("Food", 150),
+            new CostValue("Gold", 20))}
+    };
 }

@@ -12,6 +12,9 @@ public class UIManager : MonoBehaviour
     public Transform resourcePanel;
     public GameObject resourceLabelPrefab;
 
+    // For development and test purposes
+    public bool testMode;
+
 
     void Awake()
     {
@@ -34,15 +37,24 @@ public class UIManager : MonoBehaviour
             GameObject resourceLabel = Instantiate(resourceLabelPrefab, resourcePanel, false);
             resourceLabel.GetComponent<Text>().text = $"{entry.Code}: {entry.CurrentAmount}/{entry.Cap}";
             _resourceLabels.Add(resourceLabel.GetComponent<Text>(), entry);
-
-            /////////////TEST///////////
-            GameObject buildingButton = Instantiate(buildingButtonPrefab, resourcePanel, false);
-            buildingButton.GetComponentInChildren<Text>().text = "+";
-            buildingButton.GetComponent<Button>().onClick.AddListener(() => entry.ConsumeResource(-300));
-            /////////////DELETE/////////
         }
 
-        
+        if (testMode) UITestTools();
+    }
+
+    /// TEST METHOD.
+    /// EXECUTE IF BOOLEAN FIELD testMode IS TRUE.
+    /// FOR DEVELOPMENT ONLY.
+    private void UITestTools()
+    {
+        foreach (var label in _resourceLabels)
+        {
+            // Custom buttons for adding resources
+            GameObject buildingButton = Instantiate(buildingButtonPrefab, resourcePanel, false);
+            buildingButton.GetComponentInChildren<Text>().text = "+";
+            buildingButton.GetComponent<Button>().onClick.AddListener(() => label.Value.ConsumeResource(-300));
+            buildingButton.transform.SetSiblingIndex(label.Key.transform.GetSiblingIndex()+1);
+        }
     }
 
     // Update is called once per frame
@@ -51,10 +63,10 @@ public class UIManager : MonoBehaviour
         // Update building buttons
         foreach (KeyValuePair<Button, GameUnitData> button in _buildingButtons)
         {
-            IDictionary<GameResourceData, int> buildingCost = button.Value.Cost;
-            foreach (KeyValuePair<GameResourceData, int> resourceCost in buildingCost)
+            IList<CostValue> buildingCosts = button.Value.Costs;
+            foreach (CostValue cost in buildingCosts)
             {
-                if (resourceCost.Key.CanConsumeResource(resourceCost.Value))
+                if (Globals.RESOURCE_DATA[cost.Code].CanConsumeResource(cost.Value))
                 {
                     button.Key.interactable = true;
                 }
