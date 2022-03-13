@@ -35,6 +35,13 @@ public class Globals
             "Swordsman",
             100,
             new CostValue("Food", 150),
-            new CostValue("Gold", 20))}
+            new CostValue("Gold", 20))},
+
+        {"Catapult", new TroopData(
+            "Catapult",
+            250,
+            new CostValue("Food", 100),
+            new CostValue("Wood", 200),
+            new CostValue("Gold", 100))}
     };
 }
