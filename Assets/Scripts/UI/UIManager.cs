@@ -26,13 +26,13 @@ public class UIManager : MonoBehaviour
 
     void Start()
     {
+        // Data
         _buildingData = Globals.BUILDING_DATA;
         _resourceData = Globals.RESOURCE_DATA;
         _troopData = Globals.TROOP_DATA;
 
         // Buildings
         _buildingButtons = new Dictionary<Button, GameUnitData>();
-        Debug.Log(_buildingData);
         foreach (BuildingData entry in _buildingData)
         {
             GameObject buildingButton = Instantiate(buildingButtonPrefab, buildingMenuPanel, false);
@@ -93,6 +93,21 @@ public class UIManager : MonoBehaviour
         foreach (KeyValuePair<Text, GameResourceData> entry in _resourceLabels)
         {
             entry.Key.text = $"{entry.Value.Code}: {entry.Value.CurrentAmount}/{entry.Value.Cap}";
+        }
+
+        // Input
+        if (Input.GetMouseButtonDown(0))
+        {
+            RaycastHit raycastHit;
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            if (Physics.Raycast(ray, out raycastHit, 100f))
+            {
+                if(raycastHit.transform != null)
+                {
+                    GameObject gameObject = raycastHit.transform.gameObject;
+                    GameManager.Instance.Select(gameObject);
+                }
+            }
         }
 
     }
