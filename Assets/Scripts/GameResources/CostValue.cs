@@ -1,14 +1,16 @@
 ﻿using System;
+
+[System.Serializable]
 public struct CostValue
 {
-    public string Code { get; private set; }
+    public string code;
 
-    public int Value { get; private set; }
+    public int value;
 
     public CostValue(string code, int value)
     {
-        Code = code;
-        Value = value;
+        this.code = code;
+        this.value = value;
     }
 }
 

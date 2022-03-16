@@ -29,9 +29,9 @@ public class TroopManager : MonoBehaviour
         bool canRecruit = false;
 
         // Check resource constraints
-        foreach (CostValue cost in troop.Data.Costs)
+        foreach (CostValue cost in troop.Data.costs)
         {
-            if (Globals.RESOURCE_DATA[cost.Code].CanConsumeResource(cost.Value))
+            if (Globals.RESOURCE_DATA[cost.code].CanConsumeResource(cost.value))
             {
                 canRecruit = false;
                 break;
@@ -41,8 +41,8 @@ public class TroopManager : MonoBehaviour
         if (canRecruit)
         {
             troop.InstantiatePrefab(position);
-            foreach (CostValue cost in troop.Data.Costs)
-                Globals.RESOURCE_DATA[cost.Code].ConsumeResource(cost.Value);
+            foreach (CostValue cost in troop.Data.costs)
+                Globals.RESOURCE_DATA[cost.code].ConsumeResource(cost.value);
         }
     }
 }

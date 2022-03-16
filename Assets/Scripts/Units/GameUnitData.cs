@@ -1,24 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using UnityEngine;
 
-public class GameUnitData
+public class GameUnitData : ScriptableObject
 {
-    public string Code { get; private set; }
+    public string code;
 
-    public int HP { get; private set; }
+    public int hp;
 
-    public IList<CostValue> Costs { get; private set; }
-
-    public GameUnitData(string code, int hp, params CostValue[] costs)
-    {
-        Code = code;
-        HP = hp;
-
-        Costs = new List<CostValue>();
-        for(int i = 0; i < costs.Length; i++)
-        {
-            Costs.Add(costs[i]);
-        }
-    }
+    public List<CostValue> costs;
 }
 

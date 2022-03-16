@@ -22,13 +22,21 @@ public class UIManager : MonoBehaviour
     void Awake()
     {
         Instance = this;
+    }
+
+    void Start()
+    {
+        _buildingData = Globals.BUILDING_DATA;
+        _resourceData = Globals.RESOURCE_DATA;
+        _troopData = Globals.TROOP_DATA;
 
         // Buildings
         _buildingButtons = new Dictionary<Button, GameUnitData>();
-        foreach (GameUnitData entry in _buildingData.Values)
+        Debug.Log(_buildingData);
+        foreach (BuildingData entry in _buildingData)
         {
             GameObject buildingButton = Instantiate(buildingButtonPrefab, buildingMenuPanel, false);
-            buildingButton.GetComponentInChildren<Text>().text = entry.Code;
+            buildingButton.GetComponentInChildren<Text>().text = entry.code;
             AddBuildingButtonListener(buildingButton.GetComponent<Button>(), entry);
             _buildingButtons.Add(buildingButton.GetComponent<Button>(), entry);
         }
@@ -44,10 +52,10 @@ public class UIManager : MonoBehaviour
 
         // Troops
         _recruitingButtons = new Dictionary<Button, GameUnitData>();
-        foreach (GameUnitData entry in _troopData.Values)
+        foreach (GameUnitData entry in _troopData)
         {
             GameObject recruitingButton = Instantiate(recruitingButtonPrefab, unitPanel, false);
-            recruitingButton.GetComponentInChildren<Text>().text = entry.Code;
+            recruitingButton.GetComponentInChildren<Text>().text = entry.code;
             AddRecruitingButtonListener(recruitingButton.GetComponent<Button>(), entry);
             _recruitingButtons.Add(recruitingButton.GetComponent<Button>(), entry);
             recruitingButton.SetActive(false);
@@ -66,10 +74,10 @@ public class UIManager : MonoBehaviour
         // Update building buttons
         foreach (KeyValuePair<Button, GameUnitData> button in _buildingButtons)
         {
-            IList<CostValue> buildingCosts = button.Value.Costs;
+            IList<CostValue> buildingCosts = button.Value.costs;
             foreach (CostValue cost in buildingCosts)
             {
-                if (Globals.RESOURCE_DATA[cost.Code].CanConsumeResource(cost.Value))
+                if (Globals.RESOURCE_DATA[cost.code].CanConsumeResource(cost.value))
                 {
                     button.Key.interactable = true;
                 }
@@ -112,14 +120,14 @@ public class UIManager : MonoBehaviour
     // Utility method to activate a recruiting button
     private void ActivateRecruitingButton(string unitCode)
     {
-        _recruitingButtons.DefaultIfEmpty(new KeyValuePair<Button, GameUnitData>(null, null)).FirstOrDefault(x => x.Value.Code == unitCode).Key?.gameObject.SetActive(true);
+        _recruitingButtons.DefaultIfEmpty(new KeyValuePair<Button, GameUnitData>(null, null)).FirstOrDefault(x => x.Value.code == unitCode).Key?.gameObject.SetActive(true);
     }
 
 
     // Data & Fields
-    private IDictionary<string, GameUnitData> _buildingData = Globals.BUILDING_DATA;
-    private IDictionary<string, GameResourceData> _resourceData = Globals.RESOURCE_DATA;
-    private IDictionary<string, GameUnitData> _troopData = Globals.TROOP_DATA;
+    private BuildingData[] _buildingData;
+    private IDictionary<string, GameResourceData> _resourceData;
+    private TroopData[] _troopData;
     private IDictionary<Text, GameResourceData> _resourceLabels;
     private IDictionary<Button, GameUnitData> _buildingButtons;
     private IDictionary<Button, GameUnitData> _recruitingButtons;

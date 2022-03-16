@@ -21,7 +21,7 @@ public class BuildingManager : MonoBehaviour
     {
         if (_previewing)
         {
-            if (Input.GetMouseButtonDown(0))
+            if (Input.GetMouseButtonUp(0))
             {
                 BuildBuilding(_previewingBuilding.Data, GetMousePosition());
                 EndPreview();
@@ -57,9 +57,9 @@ public class BuildingManager : MonoBehaviour
         bool canBuild = true;
 
         // Check resource constraints
-        foreach (CostValue cost in building.Data.Costs)
+        foreach (CostValue cost in building.Data.costs)
         {
-            if (!Globals.RESOURCE_DATA[cost.Code].CanConsumeResource(cost.Value))
+            if (!Globals.RESOURCE_DATA[cost.code].CanConsumeResource(cost.value))
             {
                 canBuild = false;
                 break;
@@ -69,8 +69,8 @@ public class BuildingManager : MonoBehaviour
         if (canBuild)
         {
             building.InstantiatePrefab(position);
-            foreach (CostValue cost in building.Data.Costs)
-                Globals.RESOURCE_DATA[cost.Code].ConsumeResource(cost.Value);
+            foreach (CostValue cost in building.Data.costs)
+                Globals.RESOURCE_DATA[cost.code].ConsumeResource(cost.value);
         }
         else
         {

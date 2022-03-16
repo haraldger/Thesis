@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using UnityEngine;
 
+[CreateAssetMenu(fileName = "Troop", menuName = "Scriptable Objects/Troop", order = 2)]
 public class TroopData : GameUnitData
 {
-    public TroopData(string code, int hp, params CostValue[] costs) : base(code, hp, costs)
-    {
-    }
+    public int attackPower;
 }
 

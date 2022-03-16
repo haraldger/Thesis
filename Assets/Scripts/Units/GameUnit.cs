@@ -17,14 +17,14 @@ public class GameUnit
             {
 				_currentHP = 0;
             }
-			else if(value > Data.HP)
+			else if(value > Data.hp)
             {
-				_currentHP = Data.HP;
+				_currentHP = Data.hp;
             }
         }
 	}
 
-    // ================================= UNITY
+    // ================================= UNITY FIELDS
     private GameObject _instance;
 	public GameObject Instance
 	{
@@ -41,7 +41,7 @@ public class GameUnit
 	public GameUnit(GameUnitData data)
     {
 		Data = data;
-		CurrentHP = Data.HP;
+		CurrentHP = Data.hp;
     }
 
 	public void InstantiatePrefab(Vector3 worldPosition)
@@ -50,7 +50,8 @@ public class GameUnit
         {
 			Destroy();
         }
-		Instance = GameObject.Instantiate(Resources.Load($"Prefabs/Buildings/{Data.Code}"), worldPosition, Quaternion.identity) as GameObject;
+
+		Instance = GameObject.Instantiate(Resources.Load($"Prefabs/Buildings/{Data.code}"), worldPosition, Quaternion.identity) as GameObject;
 	}
 
     public void Destroy()
