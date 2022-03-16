@@ -104,10 +104,23 @@ public class UIManager : MonoBehaviour
             {
                 if(raycastHit.transform != null)
                 {
-                    GameObject gameObject = raycastHit.transform.gameObject;
-                    GameManager.Instance.Select(gameObject);
+                    GameObject clickedObject = raycastHit.transform.gameObject;
+
+                    if(clickedObject.tag == "Environment")
+                    {
+                        GameManager.Instance.Deselect();
+                    }
+                    else if (clickedObject.tag == "Unit" || clickedObject.tag == "Building" || clickedObject.tag == "Troop")
+                    {
+                        GameManager.Instance.Select(clickedObject);
+                    }
                 }
             }
+        }
+
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            GameManager.Instance.Deselect();
         }
 
     }

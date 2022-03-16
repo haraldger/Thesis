@@ -7,12 +7,11 @@ public class GameManager : MonoBehaviour
 
     public static GameManager Instance { get; private set; }
 
-    private IList<GameObject> _selectedUnits;
+    private UnitController _selectedUnit;
  
     void Awake()
     {
         Instance = this;
-        _selectedUnits = new List<GameObject>();
         DataHandler.LoadGameData();
     }
 
@@ -25,33 +24,23 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Escape)) DeselectAll();
     }
 
     public void Select(GameObject unit)
     {
-        if (_selectedUnits.Contains(unit)) return;
         UnitController controller = unit.GetComponentInChildren<UnitController>();
         if (controller == null) return;
+        if (_selectedUnit == controller) return;
+        
 
-        _selectedUnits.Add(unit);
+        _selectedUnit = controller;
         controller.Select();
     }
 
-    public void Deselect(GameObject unit)
+    public void Deselect()
     {
-        if (!_selectedUnits.Contains(unit)) return;
-        _selectedUnits.Remove(unit);
-        unit.GetComponentInChildren<UnitController>().Deselect();
-    }
-
-    public void DeselectAll()
-    {
-        for (int i = _selectedUnits.Count - 1; i >= 0; i--)
-        {
-            var unit = _selectedUnits[i];
-            if (unit != null) Deselect(unit);
-            else _selectedUnits.RemoveAt(i);
-        }
+        if (_selectedUnit == null) return;
+        _selectedUnit.Deselect();
+        _selectedUnit = null;
     }
 }
