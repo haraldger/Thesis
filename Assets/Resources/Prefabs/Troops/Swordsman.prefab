@@ -242,7 +242,7 @@ GameObject:
   - component: {fileID: 1656036942151216844}
   - component: {fileID: 7645103207224238659}
   - component: {fileID: 4907967418759029404}
-  - component: {fileID: 4079037833849899851}
+  - component: {fileID: -2136411077336720378}
   m_Layer: 0
   m_Name: Swordsman
   m_TagString: Unit
@@ -295,7 +295,7 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &4079037833849899851
+--- !u!114 &-2136411077336720378
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -304,6 +304,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 5824205248588534856}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4e47b9b2b49a8416eba2581a78af056e, type: 3}
+  m_Script: {fileID: 11500000, guid: 03f45c3cb2487426d8c1abcfbbe4abb4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  data: {fileID: 11400000, guid: 9fe7a7823291749b08d645c113eb3b26, type: 2}

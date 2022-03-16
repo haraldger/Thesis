@@ -28,10 +28,11 @@ public class GameManager : MonoBehaviour
 
     public void Select(GameObject unit)
     {
+        Deselect();
+
         UnitController controller = unit.GetComponentInChildren<UnitController>();
         if (controller == null) return;
         if (_selectedUnit == controller) return;
-        
 
         _selectedUnit = controller;
         controller.Select();

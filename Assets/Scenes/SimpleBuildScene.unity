@@ -866,6 +866,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Citadel
       objectReference: {fileID: 0}
+    - target: {fileID: 7595734644407776103, guid: baf42c6c9f49b4692998324cb47dc066, type: 3}
+      propertyPath: m_TagString
+      value: Building
+      objectReference: {fileID: 0}
     - target: {fileID: 7993827172444169122, guid: baf42c6c9f49b4692998324cb47dc066, type: 3}
       propertyPath: m_p4
       value: 3
@@ -995,7 +999,7 @@ GameObject:
   - component: {fileID: 1684528957}
   m_Layer: 0
   m_Name: Ground
-  m_TagString: Untagged
+  m_TagString: Environment
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

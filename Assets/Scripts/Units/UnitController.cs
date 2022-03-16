@@ -18,8 +18,6 @@ public class UnitController: MonoBehaviour
         
     }
 
-
-
     public void Select()
     {
         Selected = true;
@@ -32,5 +30,4 @@ public class UnitController: MonoBehaviour
         gameObject.GetComponentInChildren<LineRenderer>().enabled = false;
     }
 
-   
 }

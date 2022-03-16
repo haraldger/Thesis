@@ -106,7 +106,7 @@ GameObject:
   - component: {fileID: 2885538613215717077}
   - component: {fileID: 7067819525182461361}
   - component: {fileID: 4465966349628457126}
-  - component: {fileID: 7715376838843157626}
+  - component: {fileID: 7622439886563791765}
   m_Layer: 0
   m_Name: Citadel
   m_TagString: Building
@@ -159,7 +159,7 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &7715376838843157626
+--- !u!114 &7622439886563791765
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -168,9 +168,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 7595734644407776103}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4e47b9b2b49a8416eba2581a78af056e, type: 3}
+  m_Script: {fileID: 11500000, guid: ab60fb83e805c4637bac074a8489f08d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  data: {fileID: 11400000, guid: ce78ec8ffcf5946c2ac3d298975bd749, type: 2}
 --- !u!1 &7890641325518308574
 GameObject:
   m_ObjectHideFlags: 0
