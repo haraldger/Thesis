@@ -13,6 +13,8 @@ public class Globals
 
     public static TroopData[] TROOP_DATA;
 
+    public static IList<Building> CURRENT_BUILDINGS = new List<Building>();
+
     //public static IDictionary<string, GameUnitData> BUILDING_DATA = new Dictionary<string, GameUnitData>()
     //{
     //    {"Barracks", new BuildingData(

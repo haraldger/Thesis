@@ -7,7 +7,7 @@ public class GameManager : MonoBehaviour
 
     public static GameManager Instance { get; private set; }
 
-    private UnitController _selectedUnit;
+    public UnitController SelectedUnit { get; private set; }
  
     void Awake()
     {
@@ -32,16 +32,16 @@ public class GameManager : MonoBehaviour
 
         UnitController controller = unit.GetComponentInChildren<UnitController>();
         if (controller == null) return;
-        if (_selectedUnit == controller) return;
+        if (SelectedUnit == controller) return;
 
-        _selectedUnit = controller;
+        SelectedUnit = controller;
         controller.Select();
     }
 
     public void Deselect()
     {
-        if (_selectedUnit == null) return;
-        _selectedUnit.Deselect();
-        _selectedUnit = null;
+        if (SelectedUnit == null) return;
+        SelectedUnit.Deselect();
+        SelectedUnit = null;
     }
 }

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class TroopManager : MonoBehaviour
 {
-    public TroopManager Instance { get; private set; }
+    public static TroopManager Instance { get; private set; }
 
     // Start is called before the first frame update
     void Awake()
@@ -25,20 +25,30 @@ public class TroopManager : MonoBehaviour
     }
 
     public void RecruitTroop(Troop troop, Vector3 position)
-    {
-        bool canRecruit = false;
-
+    { 
         // Check resource constraints
+        bool hasResources = true;
         foreach (CostValue cost in troop.Data.costs)
         {
-            if (Globals.RESOURCE_DATA[cost.code].CanConsumeResource(cost.value))
+            if (!Globals.RESOURCE_DATA[cost.code].CanConsumeResource(cost.value))
             {
-                canRecruit = false;
+                hasResources = false;
                 break;
             }
         }
 
-        if (canRecruit)
+        // Check building constraints
+        bool hasRequiredBuildings = false;
+        foreach (Building building in Globals.CURRENT_BUILDINGS)
+        {
+            if (building.Data.recruitingOptions.Contains(troop.Data))
+            {
+                hasRequiredBuildings = true;
+                break;
+            }
+        }
+
+        if (hasResources && hasRequiredBuildings)
         {
             troop.InstantiatePrefab(position);
             foreach (CostValue cost in troop.Data.costs)

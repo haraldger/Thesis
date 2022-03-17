@@ -19,3 +19,5 @@ MonoBehaviour:
     value: 200
   - code: Gold
     value: 100
+  recruitingOptions:
+  - {fileID: 11400000, guid: 9fe7a7823291749b08d645c113eb3b26, type: 2}

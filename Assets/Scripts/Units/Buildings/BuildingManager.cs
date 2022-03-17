@@ -8,7 +8,7 @@ public class BuildingManager : MonoBehaviour
     public static BuildingManager Instance { get; private set; }
 
     private bool _previewing;
-    private GameUnit _previewingBuilding;
+    private Building _previewingBuilding;
 
     // Start is called before the first frame update
     void Awake()
@@ -37,22 +37,23 @@ public class BuildingManager : MonoBehaviour
         }
     }
 
-    public void StartPreviewBuilding(GameUnitData data)
+    public void StartPreviewBuilding(BuildingData data)
     {
         _previewing = true;
-        _previewingBuilding = new GameUnit(data);
+        _previewingBuilding = new Building(data);
         _previewingBuilding.InstantiatePrefab(GetMousePosition());
+        _previewingBuilding.Instance.tag = "Preview";
         Material previewMaterial =  Resources.Load($"Materials/BuildingPreview") as Material;
         _previewingBuilding.SetMaterial(previewMaterial);
     }
 
-    public void BuildBuilding(GameUnitData data, Vector3 position)
+    public void BuildBuilding(BuildingData data, Vector3 position)
     {
-        GameUnit building = new GameUnit(data);
+        Building building = new Building(data);
         BuildBuilding(building, position);
     }
 
-    public void BuildBuilding(GameUnit building, Vector3 position)
+    public void BuildBuilding(Building building, Vector3 position)
     {
         bool canBuild = true;
 
@@ -71,6 +72,7 @@ public class BuildingManager : MonoBehaviour
             building.InstantiatePrefab(position);
             foreach (CostValue cost in building.Data.costs)
                 Globals.RESOURCE_DATA[cost.code].ConsumeResource(cost.value);
+            Globals.CURRENT_BUILDINGS.Add(building);
         }
         else
         {

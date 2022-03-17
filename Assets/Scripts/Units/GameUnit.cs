@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using UnityEngine;
 
 public class GameUnit
@@ -51,7 +52,7 @@ public class GameUnit
 			Destroy();
         }
 
-		Instance = GameObject.Instantiate(Resources.Load($"Prefabs/Buildings/{Data.code}"), worldPosition, Quaternion.identity) as GameObject;
+		Instance = GameObject.Instantiate(LoadPrefab($"{Data.code}"), worldPosition, Quaternion.identity) as GameObject;
 	}
 
     public void Destroy()
@@ -84,14 +85,31 @@ public class GameUnit
 		InstantiatePrefab(GetWorldPosition());
     }
 
-	public void Damage(int hitpoints)
-    {
-		CurrentHP -= hitpoints;
-    }
+	/// <summary>
+	/// Utility method to dynamically load resource by searching all subfolders.
+    /// 
+	/// Credit: 'Emad'
+	/// Source: https://stackoverflow.com/a/57094972/7302006
+	/// License: https://creativecommons.org/licenses/by-sa/4.0/
+    ///
+    /// Method has been modified.
+	/// </summary>
+	public  static UnityEngine.Object LoadPrefab(string resourceName)
+	{
+		string prefabsPath = Application.dataPath + "/Resources/Prefabs";
+		string[] directories = Directory.GetDirectories(prefabsPath, "*", SearchOption.AllDirectories);
+		foreach (var item in directories)
+		{
+			string itemPath = item.Substring(prefabsPath.Length + 1);
+			string resourcePath = itemPath + "/" + resourceName;
+			UnityEngine.Object result = Resources.Load($"Prefabs/{resourcePath}");
+			if (result != null)
+            {
+				return result;
+			}
+		}
+		return null;
+	}
 
-	public void Heal(int hitpoints)
-    {
-		CurrentHP += hitpoints;
-    }
 }
 

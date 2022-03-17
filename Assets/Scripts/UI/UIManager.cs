@@ -18,6 +18,8 @@ public class UIManager : MonoBehaviour
     // For development and test purposes
     public bool testMode;
 
+    // Internal variables for logic and performance
+    private UnitController _previouslySelected;
 
     void Awake()
     {
@@ -32,7 +34,7 @@ public class UIManager : MonoBehaviour
         _troopData = Globals.TROOP_DATA;
 
         // Buildings
-        _buildingButtons = new Dictionary<Button, GameUnitData>();
+        _buildingButtons = new Dictionary<Button, BuildingData>();
         foreach (BuildingData entry in _buildingData)
         {
             GameObject buildingButton = Instantiate(buildingButtonPrefab, buildingMenuPanel, false);
@@ -51,8 +53,8 @@ public class UIManager : MonoBehaviour
         }
 
         // Troops
-        _recruitingButtons = new Dictionary<Button, GameUnitData>();
-        foreach (GameUnitData entry in _troopData)
+        _recruitingButtons = new Dictionary<Button, TroopData>();
+        foreach (TroopData entry in _troopData)
         {
             GameObject recruitingButton = Instantiate(recruitingButtonPrefab, unitPanel, false);
             recruitingButton.GetComponentInChildren<Text>().text = entry.code;
@@ -71,8 +73,10 @@ public class UIManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+
+
         // Update building buttons
-        foreach (KeyValuePair<Button, GameUnitData> button in _buildingButtons)
+        foreach (KeyValuePair<Button, BuildingData> button in _buildingButtons)
         {
             IList<CostValue> buildingCosts = button.Value.costs;
             foreach (CostValue cost in buildingCosts)
@@ -89,13 +93,38 @@ public class UIManager : MonoBehaviour
             }
         }
 
+
+
         // Update resource labels
         foreach (KeyValuePair<Text, GameResourceData> entry in _resourceLabels)
         {
             entry.Key.text = $"{entry.Value.Code}: {entry.Value.CurrentAmount}/{entry.Value.Cap}";
         }
 
+
+
+        // Update unit panel
+        UnitController selectedUnit = GameManager.Instance.SelectedUnit;
+        if (_previouslySelected != selectedUnit)
+        {
+            DeactivateUnitButtons();
+            _previouslySelected = selectedUnit;
+        }
+
+        if (selectedUnit is BuildingController)
+        {
+            List<TroopData> recruitableTroops = ((BuildingController)selectedUnit).data.recruitingOptions;
+            foreach (TroopData troop in recruitableTroops)
+            {
+                ActivateRecruitingButton(troop.code);
+            }
+        }
+
+
+
         // Input
+
+        // Left mouse selects units
         if (Input.GetMouseButtonDown(0))
         {
             RaycastHit raycastHit;
@@ -118,6 +147,10 @@ public class UIManager : MonoBehaviour
             }
         }
 
+        // Right mouse button
+
+
+        // Escape deselects units
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             GameManager.Instance.Deselect();
@@ -126,14 +159,18 @@ public class UIManager : MonoBehaviour
     }
 
     // When a building button is clicked
-    void AddBuildingButtonListener(Button b, GameUnitData buildingData)
+    void AddBuildingButtonListener(Button b, BuildingData buildingData)
     {
         b.onClick.AddListener( () => BuildingManager.Instance.StartPreviewBuilding(buildingData));
     }
 
-    void AddRecruitingButtonListener(Button b, GameUnitData troopData)
+    void AddRecruitingButtonListener(Button b, TroopData troopData)
     {
-        return;
+        b.onClick.AddListener( () =>
+        {
+            BuildingController selectedUnit = (BuildingController)GameManager.Instance.SelectedUnit;
+            selectedUnit.RecruitTroop(troopData);
+        });
     }
 
     // Unitility method to deactivate all buttons in the unit panel
@@ -148,7 +185,7 @@ public class UIManager : MonoBehaviour
     // Utility method to activate a recruiting button
     private void ActivateRecruitingButton(string unitCode)
     {
-        _recruitingButtons.DefaultIfEmpty(new KeyValuePair<Button, GameUnitData>(null, null)).FirstOrDefault(x => x.Value.code == unitCode).Key?.gameObject.SetActive(true);
+        _recruitingButtons.DefaultIfEmpty(new KeyValuePair<Button, TroopData>(null, null)).FirstOrDefault(x => x.Value.code == unitCode).Key?.gameObject.SetActive(true);
     }
 
 
@@ -157,8 +194,8 @@ public class UIManager : MonoBehaviour
     private IDictionary<string, GameResourceData> _resourceData;
     private TroopData[] _troopData;
     private IDictionary<Text, GameResourceData> _resourceLabels;
-    private IDictionary<Button, GameUnitData> _buildingButtons;
-    private IDictionary<Button, GameUnitData> _recruitingButtons;
+    private IDictionary<Button, BuildingData> _buildingButtons;
+    private IDictionary<Button, TroopData> _recruitingButtons;
 
 
 
