@@ -9,25 +9,45 @@ public class Globals
         {"Food", new GameResourceData("Food", 2000, 250)}
     };
 
-    public static IDictionary<string, BuildingData> BUILDING_DATA = new Dictionary<string, BuildingData>()
-    {
-        {"Barracks", new BuildingData("Barracks", 100, new Dictionary<GameResourceData, int>(){
-            {RESOURCE_DATA["Wood"], 200},
-            {RESOURCE_DATA["Gold"], 50}
-        })},
+    public static BuildingData[] BUILDING_DATA;
 
-        {"Citadel", new BuildingData("Citadel", 1000, new Dictionary<GameResourceData, int>(){
-            {RESOURCE_DATA["Wood"], 1000},
-            {RESOURCE_DATA["Gold"], 500}
-        })},
+    public static TroopData[] TROOP_DATA;
 
-        {"Farm", new BuildingData("Farm", 75, new Dictionary<GameResourceData, int>(){
-            {RESOURCE_DATA["Wood"], 100}
-        })}
-    };
+    public static IList<Building> CURRENT_BUILDINGS = new List<Building>();
 
-    //public static IDictionary<BuildingData, IDictionary<GameResourceData, int>> BUILDING_COSTS = new Dictionary<BuildingData, IDictionary<GameResourceData, int>>()
+    //public static IDictionary<string, GameUnitData> BUILDING_DATA = new Dictionary<string, GameUnitData>()
     //{
+    //    {"Barracks", new BuildingData(
+    //        "Barracks",
+    //        100,
+    //        new CostValue("Wood", 200),
+    //        new CostValue("Gold", 50))},
 
+    //    {"Citadel", new BuildingData(
+    //        "Citadel",
+    //        1000,
+    //        new CostValue("Wood", 500),
+    //        new CostValue("Gold", 250))},
+
+    //    {"Farm", new BuildingData(
+    //        "Farm",
+    //        75,
+    //        new CostValue("Wood", 50))}
+    //};
+
+    //public static IDictionary<string, GameUnitData> TROOP_DATA = new Dictionary<string, GameUnitData>()
+    //{
+    //    {"Swordsman", new TroopData(
+    //        "Swordsman",
+    //        100,
+    //        new CostValue("Food", 150),
+    //        new CostValue("Gold", 20))},
+
+    //    {"Catapult", new TroopData(
+    //        "Catapult",
+    //        250,
+    //        new CostValue("Food", 100),
+    //        new CostValue("Wood", 200),
+    //        new CostValue("Gold", 100))}
     //};
 }

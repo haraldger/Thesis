@@ -21,7 +21,7 @@ public class BuildingManager : MonoBehaviour
     {
         if (_previewing)
         {
-            if (Input.GetMouseButtonDown(0))
+            if (Input.GetMouseButtonUp(0))
             {
                 BuildBuilding(_previewingBuilding.Data, GetMousePosition());
                 EndPreview();
@@ -37,18 +37,19 @@ public class BuildingManager : MonoBehaviour
         }
     }
 
-    public void StartPreviewBuilding(BuildingData buildingData)
+    public void StartPreviewBuilding(BuildingData data)
     {
         _previewing = true;
-        _previewingBuilding = new Building(buildingData);
+        _previewingBuilding = new Building(data);
         _previewingBuilding.InstantiatePrefab(GetMousePosition());
+        _previewingBuilding.Instance.tag = "Preview";
         Material previewMaterial =  Resources.Load($"Materials/BuildingPreview") as Material;
         _previewingBuilding.SetMaterial(previewMaterial);
     }
 
-    public void BuildBuilding(BuildingData buildingData, Vector3 position)
+    public void BuildBuilding(BuildingData data, Vector3 position)
     {
-        Building building = new Building(buildingData);
+        Building building = new Building(data);
         BuildBuilding(building, position);
     }
 
@@ -57,9 +58,9 @@ public class BuildingManager : MonoBehaviour
         bool canBuild = true;
 
         // Check resource constraints
-        foreach (KeyValuePair<GameResourceData, int> resourceCost in building.Data.Cost)
+        foreach (CostValue cost in building.Data.costs)
         {
-            if (!resourceCost.Key.CanConsumeResource(resourceCost.Value))
+            if (!Globals.RESOURCE_DATA[cost.code].CanConsumeResource(cost.value))
             {
                 canBuild = false;
                 break;
@@ -69,8 +70,9 @@ public class BuildingManager : MonoBehaviour
         if (canBuild)
         {
             building.InstantiatePrefab(position);
-            foreach (KeyValuePair<GameResourceData, int> resourceCost in building.Data.Cost)
-                resourceCost.Key.ConsumeResource(resourceCost.Value);
+            foreach (CostValue cost in building.Data.costs)
+                Globals.RESOURCE_DATA[cost.code].ConsumeResource(cost.value);
+            Globals.CURRENT_BUILDINGS.Add(building);
         }
         else
         {
