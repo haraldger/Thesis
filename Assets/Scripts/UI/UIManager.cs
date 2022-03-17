@@ -117,6 +117,15 @@ public class UIManager : MonoBehaviour
             foreach (TroopData troop in recruitableTroops)
             {
                 ActivateRecruitingButton(troop.code);
+                SetRecruitingButtonInteractable(troop.code, true);
+
+                foreach (CostValue cost in troop.costs)
+                {
+                    if (!Globals.RESOURCE_DATA[cost.code].CanConsumeResource(cost.value))
+                    {
+                        SetRecruitingButtonInteractable(troop.code, false);
+                    }
+                }
             }
         }
 
@@ -186,6 +195,15 @@ public class UIManager : MonoBehaviour
     private void ActivateRecruitingButton(string unitCode)
     {
         _recruitingButtons.DefaultIfEmpty(new KeyValuePair<Button, TroopData>(null, null)).FirstOrDefault(x => x.Value.code == unitCode).Key?.gameObject.SetActive(true);
+    }
+
+    private void SetRecruitingButtonInteractable(string unitCode, bool value)
+    {
+        var button = _recruitingButtons.DefaultIfEmpty(new KeyValuePair<Button, TroopData>(null, null)).FirstOrDefault(x => x.Value.code == unitCode).Key;
+        if(button != null)
+        {
+            button.interactable = value;
+        }
     }
 
 
