@@ -2,20 +2,19 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class UnitController: MonoBehaviour
 {
     public bool Selected { get; set; }
 
-    void Awake()
+    public virtual void Awake()
     {
-
     }
 
     // Update is called once per frame
-    void Update()
+    public virtual void Update()
     {
-        
     }
 
     public void Select()

@@ -13,7 +13,7 @@ public class BuildingController : UnitController
         }
         set
         {
-            RallyPoint = value;
+            gameObject.transform.Find("RallyPoint").transform.position = value;
         }
     }
 

@@ -136,27 +136,24 @@ public class UIManager : MonoBehaviour
         // Left mouse selects units
         if (Input.GetMouseButtonDown(0))
         {
-            RaycastHit raycastHit;
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            if (Physics.Raycast(ray, out raycastHit, 100f))
-            {
-                if(raycastHit.transform != null)
-                {
-                    GameObject clickedObject = raycastHit.transform.gameObject;
+            GameObject clickedObject = GetRaycastObject();
 
-                    if(clickedObject.tag == "Environment")
-                    {
-                        GameManager.Instance.Deselect();
-                    }
-                    else if (clickedObject.tag == "Unit" || clickedObject.tag == "Building" || clickedObject.tag == "Troop")
-                    {
-                        GameManager.Instance.Select(clickedObject);
-                    }
-                }
+            if (clickedObject != null)
+            {
+                IssueSelection(clickedObject);    
             }
         }
 
-        // Right mouse button
+        // Right mouse issues commands (move, attack, etc.)
+        if (Input.GetMouseButtonDown(1))
+        {
+            GameObject targetObject = GetRaycastObject();
+
+            if (targetObject != null)
+            {
+                IssueCommand(GameManager.Instance.SelectedUnit, targetObject);
+            }
+        }
 
 
         // Escape deselects units
@@ -167,12 +164,15 @@ public class UIManager : MonoBehaviour
 
     }
 
+    // ------------------------------------------------- Utility methods
+
     // When a building button is clicked
     void AddBuildingButtonListener(Button b, BuildingData buildingData)
     {
         b.onClick.AddListener( () => BuildingManager.Instance.StartPreviewBuilding(buildingData));
     }
 
+    // When a recruiting button is clicked
     void AddRecruitingButtonListener(Button b, TroopData troopData)
     {
         b.onClick.AddListener( () =>
@@ -182,7 +182,7 @@ public class UIManager : MonoBehaviour
         });
     }
 
-    // Unitility method to deactivate all buttons in the unit panel
+    // Utility method to deactivate all buttons in the unit panel
     private void DeactivateUnitButtons()
     {
         foreach (var entry in _recruitingButtons)
@@ -197,12 +197,59 @@ public class UIManager : MonoBehaviour
         _recruitingButtons.DefaultIfEmpty(new KeyValuePair<Button, TroopData>(null, null)).FirstOrDefault(x => x.Value.code == unitCode).Key?.gameObject.SetActive(true);
     }
 
+    // Sets interactable on recruiting buttons whose preconditions are met
     private void SetRecruitingButtonInteractable(string unitCode, bool value)
     {
         var button = _recruitingButtons.DefaultIfEmpty(new KeyValuePair<Button, TroopData>(null, null)).FirstOrDefault(x => x.Value.code == unitCode).Key;
         if(button != null)
         {
             button.interactable = value;
+        }
+    }
+
+    private GameObject GetRaycastObject()
+    {
+        RaycastHit raycastHit;
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        if (Physics.Raycast(ray, out raycastHit, 100f))
+        {
+            if (raycastHit.transform != null)
+            {
+                GameObject clickedObject = raycastHit.transform.gameObject;
+                return clickedObject;
+            }
+        }
+        return null;
+    }
+
+    // Action logic for left click
+    private void IssueSelection(GameObject clickedObject)
+    {
+        if (clickedObject.tag == "Environment")
+        {
+            GameManager.Instance.Deselect();
+        }
+        else if (clickedObject.tag == "Unit" || clickedObject.tag == "Building" || clickedObject.tag == "Troop")
+        {
+            GameManager.Instance.Select(clickedObject);
+        }
+    }
+
+    // Action logic for right click
+    private void IssueCommand(UnitController unit, GameObject target)
+    {
+        if (target == null)
+        {
+            return;
+        }
+
+        if (unit is BuildingController building)
+        {
+            building.RallyPoint = target.transform.position;
+        }
+        else if (unit is TroopController troop)
+        {
+            troop.MoveTo(target.transform);
         }
     }
 
