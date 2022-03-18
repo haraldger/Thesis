@@ -10,6 +10,26 @@ public class TroopController : UnitController
 
     private NavMeshAgent _navMesh;
 
+
+    private int _currentHP;
+    public int CurrentHP
+    {
+        get => _currentHP;
+        private set
+        {
+            if (value < 0)
+            {
+                _currentHP = 0;
+            }
+            else if (value > data.hp)
+            {
+                _currentHP = data.hp;
+            }
+        }
+    }
+
+
+
     public override void Awake()
     {
         base.Awake();
@@ -35,6 +55,16 @@ public class TroopController : UnitController
     public void MoveTo(Vector3 destination)
     {
         Goal = destination;
+    }
+
+    public void Damage(int amount)
+    {
+        CurrentHP -= amount;
+    }
+
+    public void Heal(int amount)
+    {
+        CurrentHP += amount;
     }
 
 }

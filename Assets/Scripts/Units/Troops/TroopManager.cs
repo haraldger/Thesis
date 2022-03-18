@@ -24,7 +24,18 @@ public class TroopManager : MonoBehaviour
         RecruitTroop(troop, position);
     }
 
+    public void RecruitTroop(TroopData data, Vector3 position, Vector3 rallyPoint)
+    {
+        Troop troop = new Troop(data);
+        RecruitTroop(troop, position, rallyPoint);
+    }
+
     public void RecruitTroop(Troop troop, Vector3 position)
+    {
+        RecruitTroop(troop, position, position);
+    }
+
+    public void RecruitTroop(Troop troop, Vector3 position, Vector3 rallyPoint)
     { 
         // Check resource constraints
         bool hasResources = true;
@@ -53,6 +64,8 @@ public class TroopManager : MonoBehaviour
             troop.InstantiatePrefab(position);
             foreach (CostValue cost in troop.Data.costs)
                 Globals.RESOURCE_DATA[cost.code].ConsumeResource(cost.value);
+
+            ((TroopController)troop.GetUnitController())?.MoveTo(rallyPoint); // After spawning, move troop to rally point
         }
     }
 }

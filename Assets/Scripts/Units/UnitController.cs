@@ -6,16 +6,28 @@ using UnityEngine.AI;
 
 public class UnitController: MonoBehaviour
 {
+
     public bool Selected { get; set; }
+
+
+
 
     public virtual void Awake()
     {
+
     }
 
-    // Update is called once per frame
+    public virtual void Start()
+    {
+
+    }
+
     public virtual void Update()
     {
+
     }
+
+
 
     public void Select()
     {
