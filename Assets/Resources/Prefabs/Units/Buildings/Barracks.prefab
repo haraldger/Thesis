@@ -272,6 +272,7 @@ GameObject:
   - component: {fileID: 7067819525182461361}
   - component: {fileID: 4465966349628457126}
   - component: {fileID: 4566794885566834975}
+  - component: {fileID: -8382120769273944353}
   m_Layer: 0
   m_Name: Barracks
   m_TagString: Building
@@ -338,3 +339,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   data: {fileID: 11400000, guid: d8b54bc2bd2d24137b2b7ab41b3c0157, type: 2}
+--- !u!208 &-8382120769273944353
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7595734644407776103}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 1
+  m_Extents: {x: 0.375, y: 0.375, z: 0.375}
+  m_MoveThreshold: 0.1
+  m_Carve: 1
+  m_CarveOnlyStationary: 1
+  m_Center: {x: 0, y: 0, z: 0}
+  m_TimeToStationary: 0.5
