@@ -24,6 +24,11 @@ public class TroopController : UnitController
         Goal = gameObject.transform.position;
     }
 
+    public override void Start()
+    {
+        base.Start();
+    }
+
     public override void Update()
     {
         base.Update();

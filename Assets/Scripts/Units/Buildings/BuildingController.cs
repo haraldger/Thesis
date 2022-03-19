@@ -38,6 +38,9 @@ public class BuildingController : UnitController
     {
         base.Awake();
 
+        // Data init
+        MaxHP = data.hp;
+        CurrentHP = MaxHP;
         RallyPoint = SpawnPoint;
     }
 
