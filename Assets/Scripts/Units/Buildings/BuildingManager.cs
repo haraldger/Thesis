@@ -72,7 +72,7 @@ public class BuildingManager : MonoBehaviour
             building.InstantiatePrefab(position);
             foreach (CostValue cost in building.Data.costs)
                 Globals.RESOURCE_DATA[cost.code].ConsumeResource(cost.value);
-            Globals.CURRENT_BUILDINGS.Add(building);
+            Globals.CURRENT_BUILDINGS[building.Instance.GetComponentInChildren<BuildingController>()] = building;
         }
         else
         {

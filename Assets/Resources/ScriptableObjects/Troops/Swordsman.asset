@@ -20,3 +20,5 @@ MonoBehaviour:
   - code: Gold
     value: 25
   attackPower: 10
+  attackRange: 1.3
+  attackSpeed: 2

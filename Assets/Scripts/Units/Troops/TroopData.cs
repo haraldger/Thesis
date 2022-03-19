@@ -6,5 +6,9 @@ using UnityEngine;
 public class TroopData : GameUnitData
 {
     public int attackPower;
+
+    public float attackRange;
+
+    public float attackSpeed;
 }
 

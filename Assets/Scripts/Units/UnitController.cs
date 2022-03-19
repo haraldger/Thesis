@@ -25,6 +25,10 @@ public class UnitController: MonoBehaviour
             {
                 _currentHP = MaxHP;
             }
+            else
+            {
+                _currentHP = value;
+            }
         }
     }
 
