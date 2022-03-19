@@ -9,7 +9,24 @@ public class UnitController: MonoBehaviour
 
     public bool Selected { get; set; }
 
+    public int MaxHP { get; protected set; }
 
+    private int _currentHP;
+    public int CurrentHP
+    {
+        get => _currentHP;
+        protected set
+        {
+            if (value < 0)
+            {
+                _currentHP = 0;
+            }
+            else if (value > MaxHP)
+            {
+                _currentHP = MaxHP;
+            }
+        }
+    }
 
 
     public virtual void Awake()
@@ -28,7 +45,6 @@ public class UnitController: MonoBehaviour
     }
 
 
-
     public void Select()
     {
         Selected = true;
@@ -39,6 +55,16 @@ public class UnitController: MonoBehaviour
     {
         Selected = false;
         gameObject.GetComponentInChildren<LineRenderer>().enabled = false;
+    }
+
+    public void Damage(int amount)
+    {
+        CurrentHP -= amount;
+    }
+
+    public void Heal(int amount)
+    {
+        CurrentHP += amount;
     }
 
 }

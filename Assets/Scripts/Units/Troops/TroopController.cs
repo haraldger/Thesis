@@ -11,28 +11,13 @@ public class TroopController : UnitController
     private NavMeshAgent _navMesh;
 
 
-    private int _currentHP;
-    public int CurrentHP
-    {
-        get => _currentHP;
-        private set
-        {
-            if (value < 0)
-            {
-                _currentHP = 0;
-            }
-            else if (value > data.hp)
-            {
-                _currentHP = data.hp;
-            }
-        }
-    }
-
-
-
     public override void Awake()
     {
         base.Awake();
+
+        // Data init
+        MaxHP = data.hp;
+        CurrentHP = MaxHP;
 
         // AI NavMesh init
         _navMesh = gameObject.GetComponent<NavMeshAgent>();
@@ -68,16 +53,6 @@ public class TroopController : UnitController
 
         Debug.Log("Attacking!");
         MoveTo(target);
-    }
-
-    public void Damage(int amount)
-    {
-        CurrentHP -= amount;
-    }
-
-    public void Heal(int amount)
-    {
-        CurrentHP += amount;
     }
 
 }
