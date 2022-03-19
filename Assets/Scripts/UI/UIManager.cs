@@ -151,7 +151,27 @@ public class UIManager : MonoBehaviour
 
             if (targetObject != null)
             {
-                IssueCommand(GameManager.Instance.SelectedUnit, targetObject);
+                switch (targetObject.tag)
+                {
+                    // Issue command on unit targets
+                    case "Unit":
+                    case "Building":
+                    case "Troop":
+                        IssueCommand(GameManager.Instance.SelectedUnit, targetObject);
+                        break;
+
+                    // Issue command on world position
+                    case "Environment":
+                        Vector3 targetPosition = GetRaycastPosition();
+                        IssueCommand(GameManager.Instance.SelectedUnit, targetPosition);
+                        break;
+
+
+                    default:
+                        break;
+                    
+
+                }
             }
         }
 
@@ -207,6 +227,7 @@ public class UIManager : MonoBehaviour
         }
     }
 
+    // Raycasts mouse position to find a game object
     private GameObject GetRaycastObject()
     {
         RaycastHit raycastHit;
@@ -222,6 +243,22 @@ public class UIManager : MonoBehaviour
         return null;
     }
 
+    // Raycast mouse position to get a Vector3 position
+    // !Returns maxint if raycast is null!
+    private Vector3 GetRaycastPosition()
+    {
+        RaycastHit raycastHit;
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        if (Physics.Raycast(ray, out raycastHit, 100f))
+        {
+            if (raycastHit.point != null)
+            {
+                return raycastHit.point;
+            }
+        }
+        return new Vector3(int.MaxValue, int.MaxValue);
+    }
+
     // Action logic for left click
     private void IssueSelection(GameObject clickedObject)
     {
@@ -235,7 +272,7 @@ public class UIManager : MonoBehaviour
         }
     }
 
-    // Action logic for right click
+    // Action logic for right click on unit
     private void IssueCommand(UnitController unit, GameObject target)
     {
         if (target == null)
@@ -249,7 +286,25 @@ public class UIManager : MonoBehaviour
         }
         else if (unit is TroopController troop)
         {
-            troop.MoveTo(target.transform);
+            troop.Attack(target.transform);
+        }
+    }
+
+    // Action logic for right click in world
+    private void IssueCommand(UnitController unit, Vector3 position)
+    {
+        if (position == null)
+        {
+            return;
+        }
+
+        if (unit is BuildingController building)
+        {
+            building.RallyPoint = position;
+        }
+        else if (unit is TroopController troop)
+        {
+            troop.MoveTo(position);
         }
     }
 
