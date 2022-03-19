@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class BuildingManager : MonoBehaviour
 {
@@ -43,6 +44,7 @@ public class BuildingManager : MonoBehaviour
         _previewingBuilding = new Building(data);
         _previewingBuilding.InstantiatePrefab(GetMousePosition());
         _previewingBuilding.Instance.tag = "Preview";
+        GameObject.Destroy(_previewingBuilding.Instance.GetComponentInChildren<NavMeshObstacle>());
         Material previewMaterial =  Resources.Load($"Materials/BuildingPreview") as Material;
         _previewingBuilding.SetMaterial(previewMaterial);
     }
@@ -72,7 +74,7 @@ public class BuildingManager : MonoBehaviour
             building.InstantiatePrefab(position);
             foreach (CostValue cost in building.Data.costs)
                 Globals.RESOURCE_DATA[cost.code].ConsumeResource(cost.value);
-            Globals.CURRENT_BUILDINGS[building.Instance.GetComponentInChildren<BuildingController>()] = building;
+            Globals.EXISTING_UNITS[building.Instance.GetComponentInChildren<BuildingController>()] = building;
         }
         else
         {

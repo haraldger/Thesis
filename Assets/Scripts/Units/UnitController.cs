@@ -45,7 +45,10 @@ public class UnitController: MonoBehaviour
 
     public virtual void Update()
     {
-
+        if(CurrentHP <= 0)
+        {
+            GameManager.Instance.DestroyUnit(this);
+        }
     }
 
 

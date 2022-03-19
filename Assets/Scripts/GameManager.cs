@@ -44,4 +44,11 @@ public class GameManager : MonoBehaviour
         SelectedUnit.Deselect();
         SelectedUnit = null;
     }
+
+    public void DestroyUnit(UnitController unit)
+    {
+        GameUnit unitEntity = Globals.EXISTING_UNITS[unit];
+        Globals.EXISTING_UNITS.Remove(unit);
+        unitEntity.Destroy();
+    }
 }

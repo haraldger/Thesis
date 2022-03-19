@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class TroopManager : MonoBehaviour
@@ -50,7 +51,7 @@ public class TroopManager : MonoBehaviour
 
         // Check building constraints
         bool hasRequiredBuildings = false;
-        foreach (Building building in Globals.CURRENT_BUILDINGS)
+        foreach (Building building in Globals.EXISTING_UNITS.Values.Where(x => x is Building))
         {
             if (building.Data.recruitingOptions.Contains(troop.Data))
             {
@@ -64,6 +65,7 @@ public class TroopManager : MonoBehaviour
             troop.InstantiatePrefab(position);
             foreach (CostValue cost in troop.Data.costs)
                 Globals.RESOURCE_DATA[cost.code].ConsumeResource(cost.value);
+            Globals.EXISTING_UNITS[troop.Instance.GetComponentInChildren<TroopController>()] = troop;
 
             ((TroopController)troop.GetUnitController())?.MoveTo(rallyPoint); // After spawning, move troop to rally point
         }

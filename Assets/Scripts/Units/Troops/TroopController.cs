@@ -102,8 +102,6 @@ public class TroopController : UnitController
             _attackTarget.Damage(data.attackPower);
             yield return new WaitForSecondsRealtime(data.attackSpeed);
         }
-
-        Debug.Log("Enemy HP at 0!");
     }
 
 }

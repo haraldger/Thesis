@@ -11,7 +11,7 @@ public class Globals
 
     public static BuildingData[] BUILDING_DATA;
 
-    public static TroopData[] TROOP_DATA;
+    public static TroopData[] TROOP_DATA; 
 
-    public static IDictionary<BuildingController, Building> CURRENT_BUILDINGS = new Dictionary<BuildingController, Building>();
+    public static IDictionary<UnitController, GameUnit> EXISTING_UNITS = new Dictionary<UnitController, GameUnit>();
 }
