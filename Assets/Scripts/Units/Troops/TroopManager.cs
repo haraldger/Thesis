@@ -67,7 +67,7 @@ public class TroopManager : MonoBehaviour
                 Globals.RESOURCE_DATA[cost.code].ConsumeResource(cost.value);
             Globals.EXISTING_UNITS[troop.Instance.GetComponentInChildren<TroopController>()] = troop;
 
-            ((TroopController)troop.GetUnitController())?.MoveTo(rallyPoint); // After spawning, move troop to rally point
+            ((TroopController)troop.GetUnitController())?.MoveCommand(rallyPoint); // After spawning, move troop to rally point
         }
     }
 }

@@ -28,7 +28,7 @@ public class BuildingController : UnitController
             Transform spawnPointComponent = gameObject.transform.Find("SpawnPoint");
             if (spawnPointComponent == null) return gameObject.transform.position;
 
-            return spawnPointComponent.position;
+            return spawnPointComponent.position + new Vector3(0.01f, 0, 0);
         }
     }
 

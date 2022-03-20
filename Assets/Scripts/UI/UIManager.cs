@@ -286,7 +286,7 @@ public class UIManager : MonoBehaviour
         }
         else if (unit is TroopController troop)
         {
-            troop.Attack(target.transform);
+            troop.AttackCommand(target.transform);
         }
     }
 
@@ -304,7 +304,7 @@ public class UIManager : MonoBehaviour
         }
         else if (unit is TroopController troop)
         {
-            troop.MoveTo(position);
+            troop.MoveCommand(position);
         }
     }
 

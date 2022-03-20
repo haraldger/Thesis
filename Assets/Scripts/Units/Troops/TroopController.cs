@@ -7,15 +7,19 @@ public class TroopController : UnitController
 {
     public TroopData data;
 
-    public Vector3 Goal { get; set; }
+    private NavMeshAgent _agent;
 
-    private NavMeshAgent _navMesh;
+    private NavMeshObstacle _obstacle;
+
+    private Vector3 _goal;
+
+    private float _stoppingDistance;
 
     private UnitController _attackTarget;
 
-    private bool _attacking;
-
     private Coroutine _attackingCoroutine;
+
+
 
 
     public override void Awake()
@@ -27,8 +31,15 @@ public class TroopController : UnitController
         CurrentHP = MaxHP;
 
         // AI NavMesh init
-        _navMesh = gameObject.GetComponent<NavMeshAgent>();
-        Goal = gameObject.transform.position;
+        _obstacle = gameObject.GetComponent<NavMeshObstacle>();
+        _agent = gameObject.GetComponent<NavMeshAgent>();
+
+        MakeAgent();
+        _agent.enabled = true;
+        _stoppingDistance = _agent.stoppingDistance;
+        MakeObstacle();
+        
+
     }
 
     public override void Start()
@@ -40,11 +51,46 @@ public class TroopController : UnitController
     {
         base.Update();
 
-        // Update AI NavMesh movement
-        _navMesh.destination = Goal;
+        if (Vector3.Distance(transform.position, _goal) < _stoppingDistance)
+        {
+            if (_obstacle.enabled == false)
+            {
+                Debug.Log("Obstacle");
+                MakeObstacle();
+            }
+        }
+        else
+        {
+            if (_agent.enabled == false)
+            {
+                Debug.Log("Agent");
+                MakeAgent();
+            }
+        }
+
     }
 
-    public void MoveTo(Transform destination)
+
+
+
+    // Wrapper to cancel coroutines
+    public void MoveCommand(Transform destination)
+    {
+        // Don't interact with self
+        if (destination == gameObject.transform) return;
+
+        StopAllCoroutines();
+        Move(destination);
+    }
+
+    // Wrapper to cancel coroutines
+    public void MoveCommand(Vector3 destination)
+    {
+        StopAllCoroutines();
+        Move(destination);
+    }
+
+    private void Move(Transform destination)
     {
         // Don't interact with self
         if (destination == gameObject.transform) return;
@@ -58,20 +104,31 @@ public class TroopController : UnitController
         Vector3 adjustedDestination = destination.position + playerDirection.normalized;
         ///
 
-        MoveTo(adjustedDestination);
+        Move(adjustedDestination);
     }
 
-    public void MoveTo(Vector3 destination)
+    private void Move(Vector3 destination)
     {
-        Goal = destination;
+        MakeAgent();
+        _goal = destination;
+        _agent.destination = destination;
     }
 
-    public void Stop()
+    // Wrapper to cancel coroutines
+    public void StopCommand()
     {
-        Goal = gameObject.transform.position;
+        StopAllCoroutines();
+        Stop();
     }
 
-    public void Attack(Transform target)
+    private void Stop()
+    {
+        MakeAgent();
+        _agent.destination = gameObject.transform.position;
+        MakeObstacle();
+    }
+
+    public void AttackCommand(Transform target)
     {
         if (target == null) return; 
         if (target == gameObject.transform) return; // Don't interact with self
@@ -90,18 +147,32 @@ public class TroopController : UnitController
         {
 
             // Move withing range of target
-            MoveTo(_attackTarget.transform);
+            Move(_attackTarget.transform);
             yield return new WaitUntil(() =>
             {
                 float distance = Vector3.Distance(gameObject.transform.position, _attackTarget.transform.position);
                 return distance < data.attackRange;
             });
-            Stop();
+            StopCommand();
 
             // Damage target (with cooldown)
             _attackTarget.Damage(data.attackPower);
             yield return new WaitForSecondsRealtime(data.attackSpeed);
         }
+    }
+
+    // Enable NavMesh Agent
+    private void MakeAgent()
+    {
+        _obstacle.enabled = false;
+        _agent.enabled = true;
+    }
+
+    // Enable NavMesh Obstacle
+    private void MakeObstacle()
+    {
+        _agent.enabled = false;
+        _obstacle.enabled = true;
     }
 
 }
