@@ -273,6 +273,7 @@ GameObject:
   - component: {fileID: 4465966349628457126}
   - component: {fileID: 4566794885566834975}
   - component: {fileID: -8382120769273944353}
+  - component: {fileID: -5828174221848344839}
   m_Layer: 0
   m_Name: Barracks
   m_TagString: Building
@@ -339,6 +340,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ab60fb83e805c4637bac074a8489f08d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  animator: {fileID: -5828174221848344839}
   data: {fileID: 11400000, guid: d8b54bc2bd2d24137b2b7ab41b3c0157, type: 2}
 --- !u!208 &-8382120769273944353
 NavMeshObstacle:
@@ -356,6 +358,25 @@ NavMeshObstacle:
   m_CarveOnlyStationary: 1
   m_Center: {x: 0, y: 0, z: 0}
   m_TimeToStationary: 0.5
+--- !u!95 &-5828174221848344839
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7595734644407776103}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: b258ff30da75e4054b4d7792b793647e, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &7996564310352268242
 GameObject:
   m_ObjectHideFlags: 0

@@ -32,6 +32,8 @@ public class UnitController: MonoBehaviour
         }
     }
 
+    public Animator animator;
+
 
     public virtual void Awake()
     {
@@ -48,6 +50,7 @@ public class UnitController: MonoBehaviour
         if(CurrentHP <= 0)
         {
             GameManager.Instance.DestroyUnit(this);
+            enabled = false;
         }
     }
 
@@ -67,6 +70,7 @@ public class UnitController: MonoBehaviour
     public void Damage(int amount)
     {
         CurrentHP -= amount;
+        animator.SetTrigger("Hurt");
     }
 
     public void Heal(int amount)

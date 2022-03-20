@@ -273,6 +273,7 @@ GameObject:
   - component: {fileID: 1650072862060420362}
   - component: {fileID: 7417277035812779587}
   - component: {fileID: -9020200606134903928}
+  - component: {fileID: 1613257029437096068}
   m_Layer: 0
   m_Name: Farm
   m_TagString: Building
@@ -338,6 +339,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ab60fb83e805c4637bac074a8489f08d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  animator: {fileID: 1613257029437096068}
   data: {fileID: 11400000, guid: d8f95dad6f10943739329723e678d727, type: 2}
 --- !u!208 &-9020200606134903928
 NavMeshObstacle:
@@ -355,3 +357,22 @@ NavMeshObstacle:
   m_CarveOnlyStationary: 1
   m_Center: {x: 0, y: 0, z: 0}
   m_TimeToStationary: 0.5
+--- !u!95 &1613257029437096068
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6436516351776695820}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: b258ff30da75e4054b4d7792b793647e, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0

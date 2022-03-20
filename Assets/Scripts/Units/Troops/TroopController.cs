@@ -51,11 +51,11 @@ public class TroopController : UnitController
     {
         base.Update();
 
-        if (Vector3.Distance(transform.position, _goal) < _stoppingDistance)
+        if (_goal == Vector3.negativeInfinity || Vector3.Distance(transform.position, _goal) < _stoppingDistance)
         {
+            Stop();
             if (_obstacle.enabled == false)
             {
-                Debug.Log("Obstacle");
                 MakeObstacle();
             }
         }
@@ -63,7 +63,6 @@ public class TroopController : UnitController
         {
             if (_agent.enabled == false)
             {
-                Debug.Log("Agent");
                 MakeAgent();
             }
         }
@@ -124,7 +123,7 @@ public class TroopController : UnitController
     private void Stop()
     {
         MakeAgent();
-        _agent.destination = gameObject.transform.position;
+        _agent.destination = Vector3.negativeInfinity;
         MakeObstacle();
     }
 
@@ -143,9 +142,8 @@ public class TroopController : UnitController
 
     private IEnumerator AttackCoroutine()
     {
-        while (_attackTarget.CurrentHP > 0)
+        while (_attackTarget != null && _attackTarget.CurrentHP > 0)
         {
-
             // Move withing range of target
             Move(_attackTarget.transform);
             yield return new WaitUntil(() =>
@@ -153,7 +151,7 @@ public class TroopController : UnitController
                 float distance = Vector3.Distance(gameObject.transform.position, _attackTarget.transform.position);
                 return distance < data.attackRange;
             });
-            StopCommand();
+            Stop();
 
             // Damage target (with cooldown)
             _attackTarget.Damage(data.attackPower);
