@@ -35,6 +35,7 @@ public class GameUnit
 			Destroy();
         }
 
+		var prefab = LoadPrefab($"{Data.code}");
 		Instance = GameObject.Instantiate(LoadPrefab($"{Data.code}"), worldPosition, Quaternion.identity) as GameObject;
 	}
 

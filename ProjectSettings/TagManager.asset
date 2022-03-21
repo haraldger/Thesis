@@ -11,6 +11,7 @@ TagManager:
   - GameResource
   - AI
   - Preview
+  - Worker
   layers:
   - Default
   - TransparentFX

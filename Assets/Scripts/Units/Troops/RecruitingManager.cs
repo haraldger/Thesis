@@ -26,7 +26,7 @@ public class RecruitingManager : MonoBehaviour
     }
 
     public void RecruitTroop(TroopData troopData, Vector3 position, Vector3 rallyPoint)
-    { 
+    {
         // Check resource constraints
         bool hasResources = true;
         foreach (CostValue cost in troopData.costs)
@@ -55,9 +55,9 @@ public class RecruitingManager : MonoBehaviour
             troop.InstantiatePrefab(position);
             foreach (CostValue cost in troop.Data.costs)
                 Globals.RESOURCE_DATA[cost.code].ConsumeResource(cost.value);
-            Globals.EXISTING_UNITS[troop.Instance.GetComponentInChildren<SoldierController>()] = troop;
+            Globals.EXISTING_UNITS[troop.Instance.GetComponentInChildren<TroopController>()] = troop;
 
-            ((SoldierController)troop.GetUnitController())?.MoveCommand(rallyPoint); // After spawning, move troop to rally point
+            ((TroopController)troop.GetUnitController())?.MoveCommand(rallyPoint); // After spawning, move troop to rally point
         }
     }
 }

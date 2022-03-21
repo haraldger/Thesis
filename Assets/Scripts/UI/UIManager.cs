@@ -157,13 +157,13 @@ public class UIManager : MonoBehaviour
                     case "Unit":
                     case "Building":
                     case "Troop":
-                        IssueCommand(GameManager.Instance.SelectedUnit, targetObject);
+                        IssueCommandOnUnit(GameManager.Instance.SelectedUnit, targetObject);
                         break;
 
                     // Issue command on world position
                     case "Environment":
                         Vector3 targetPosition = GetRaycastPosition();
-                        IssueCommand(GameManager.Instance.SelectedUnit, targetPosition);
+                        IssueCommandOnEnvironment(GameManager.Instance.SelectedUnit, targetPosition);
                         break;
 
 
@@ -273,25 +273,38 @@ public class UIManager : MonoBehaviour
     }
 
     // Action logic for right click on unit
-    private void IssueCommand(UnitController unit, GameObject target)
+    private void IssueCommandOnUnit(UnitController unit, GameObject target)
     {
-        if (target == null)
-        {
-            return;
-        }
+        if (target == null) return;
 
+        
         if (unit is BuildingController building)
         {
             building.RallyPoint = target.transform.position;
         }
-        else if (unit is SoldierController troop)
+        else if (unit is SoldierController soldier)
         {
-            troop.AttackCommand(target.transform);
+            soldier.AttackCommand(target.transform);
+        }
+        else if (unit is TroopController troop)
+        {
+            troop.MoveCommand(target.transform);
+        }
+    }
+
+    // Action logic for right click on game resource
+    private void IssueCommandOnGameResource(UnitController unit, GameObject target)
+    {
+        if (target == null) return;
+
+        if (unit is WorkerController worker)
+        {
+            worker.CollectResourceCommand(target.transform);
         }
     }
 
     // Action logic for right click in world
-    private void IssueCommand(UnitController unit, Vector3 position)
+    private void IssueCommandOnEnvironment(UnitController unit, Vector3 position)
     {
         if (position == null)
         {
@@ -302,7 +315,7 @@ public class UIManager : MonoBehaviour
         {
             building.RallyPoint = position;
         }
-        else if (unit is SoldierController troop)
+        else if (unit is TroopController troop)
         {
             troop.MoveCommand(position);
         }
