@@ -24,7 +24,8 @@ public class GameResourceController : MonoBehaviour
     {
         if (this.amount <= 0)
         {
-            Destroy(this);
+            Destroy(gameObject);
+            enabled = false;
         }
     }
 

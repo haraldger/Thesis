@@ -19,6 +19,8 @@ MonoBehaviour:
     value: 100
   - code: Gold
     value: 25
+  movementSpeed: 3.5
+  stoppingDistance: 1.3
   attackPower: 10
   attackRange: 1.5
   attackSpeed: 2

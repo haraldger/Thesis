@@ -8,8 +8,6 @@ public class SoldierController : TroopController
 
     private UnitController _attackTarget;
 
-    private Coroutine _attackingCoroutine;
-
     public override void Awake()
     {
         base.Awake();
@@ -42,8 +40,8 @@ public class SoldierController : TroopController
         if (_attackTarget == targetController) return; // Already attacking
 
         _attackTarget = targetController;
-        if (_attackingCoroutine != null) StopCoroutine(_attackingCoroutine);  // Stop current coroutine
-        _attackingCoroutine = StartCoroutine(AttackCoroutine());
+        if (_currentCoroutine != null) StopCoroutine(_currentCoroutine);  // Stop current coroutine
+        _currentCoroutine = StartCoroutine(AttackCoroutine());
     }
 
     private IEnumerator AttackCoroutine()

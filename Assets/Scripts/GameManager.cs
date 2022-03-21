@@ -51,4 +51,5 @@ public class GameManager : MonoBehaviour
         Globals.EXISTING_UNITS.Remove(unit);
         unitEntity.Destroy();
     }
+
 }

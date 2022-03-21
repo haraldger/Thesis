@@ -168,7 +168,7 @@ public class UIManager : MonoBehaviour
 
                     // Issue command on game resource
                     case "GameResource":
-
+                        IssueCommandOnGameResource(GameManager.Instance.SelectedUnit, targetObject);
                         break;
 
                     default:

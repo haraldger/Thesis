@@ -4,13 +4,15 @@ using UnityEngine.AI;
 
 public class TroopController : UnitController
 {
-    private NavMeshAgent _agent;
+    protected NavMeshAgent _agent;
 
-    private NavMeshObstacle _obstacle;
+    protected NavMeshObstacle _obstacle;
 
-    private Vector3 _goal;
+    protected Vector3 _goal;
 
-    private float _stoppingDistance;
+    protected float _stoppingDistance;
+
+    protected Coroutine _currentCoroutine;
 
     public override void Awake()
     {
@@ -55,19 +57,19 @@ public class TroopController : UnitController
 
 
     // Wrapper to cancel coroutines
-    public void MoveCommand(Transform destination)
+    public virtual void MoveCommand(Transform destination)
     {
         // Don't interact with self
         if (destination == gameObject.transform) return;
 
-        StopAllCoroutines();
+        StopCommand();
         Move(destination);
     }
 
     // Wrapper to cancel coroutines
-    public void MoveCommand(Vector3 destination)
+    public virtual void MoveCommand(Vector3 destination)
     {
-        StopAllCoroutines();
+        StopCommand();
         Move(destination);
     }
 
@@ -96,9 +98,10 @@ public class TroopController : UnitController
     }
 
     // Wrapper to cancel coroutines
-    public void StopCommand()
+    public virtual void StopCommand()
     {
         StopAllCoroutines();
+        _currentCoroutine = null;
         Stop();
     }
 
@@ -122,6 +125,11 @@ public class TroopController : UnitController
     {
         _agent.enabled = false;
         _obstacle.enabled = true;
+    }
+
+    public bool IsMoving()
+    {
+        return _agent.enabled;
     }
 }
 

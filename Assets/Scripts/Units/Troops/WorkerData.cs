@@ -5,5 +5,7 @@ using UnityEngine;
 public class WorkerData : TroopData
 {
     public int collectionSpeed;
+
+    public int collectionAmount;
 }
 
