@@ -35,17 +35,9 @@ public class WorkerController : TroopController
         if (target.tag != "GameResource") return;
 
         GameResourceController targetController = target.gameObject.GetComponentInChildren<GameResourceController>();
-        if (targetController == null)
-        {
-            Debug.Log("Target Controller is null");
-            return;
-        }
+        if (targetController == null) return;
 
-        if (_collectingTarget == targetController)
-        {
-            Debug.Log("Target controller is same");
-            return; // Already collecting
-        }
+        if (_collectingTarget == targetController) return; // Already collecting
 
         _collectingTarget = targetController;
         if (_currentCoroutine != null)
