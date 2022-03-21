@@ -290,6 +290,10 @@ public class UIManager : MonoBehaviour
         {
             soldier.AttackCommand(target.transform);
         }
+        else if (unit is WorkerController worker && target.GetComponentInChildren<GameResourceController>() != null)
+        {
+            IssueCommandOnGameResource(worker, target);
+        }
         else if (unit is TroopController troop)
         {
             troop.MoveCommand(target.transform);
@@ -300,6 +304,8 @@ public class UIManager : MonoBehaviour
     private void IssueCommandOnGameResource(UnitController unit, GameObject target)
     {
         if (target == null) return;
+        GameResourceController gameResource = target.GetComponentInChildren<GameResourceController>();
+        if (gameResource == null) return;
 
         if (unit is WorkerController worker)
         {

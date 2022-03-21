@@ -32,18 +32,14 @@ public class WorkerController : TroopController
     public void CollectResourceCommand(Transform target)
     {
         if (target == null) return;
-        if (target.tag != "GameResource") return;
 
         GameResourceController targetController = target.gameObject.GetComponentInChildren<GameResourceController>();
         if (targetController == null) return;
 
         if (_collectingTarget == targetController) return; // Already collecting
 
+        StopCommand();
         _collectingTarget = targetController;
-        if (_currentCoroutine != null)
-        {
-            StopCoroutine(_currentCoroutine);
-        }
         _currentCoroutine = StartCoroutine(CollectResourceCoroutine());
     }
 
@@ -66,5 +62,6 @@ public class WorkerController : TroopController
             yield return new WaitForSecondsRealtime(data.collectionSpeed);
         }
     }
+
 }
 
