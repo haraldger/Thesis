@@ -284,7 +284,7 @@ public class UIManager : MonoBehaviour
         {
             building.RallyPoint = target.transform.position;
         }
-        else if (unit is TroopController troop)
+        else if (unit is SoldierController troop)
         {
             troop.AttackCommand(target.transform);
         }
@@ -302,7 +302,7 @@ public class UIManager : MonoBehaviour
         {
             building.RallyPoint = position;
         }
-        else if (unit is TroopController troop)
+        else if (unit is SoldierController troop)
         {
             troop.MoveCommand(position);
         }

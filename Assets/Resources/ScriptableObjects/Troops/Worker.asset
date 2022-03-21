@@ -9,15 +9,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8077dd3826dc44a5f96251165b1d0d7d, type: 3}
-  m_Name: Citadel
+  m_Script: {fileID: 11500000, guid: d6c8e413546c942b8b5ca64a237901ab, type: 3}
+  m_Name: Worker
   m_EditorClassIdentifier: 
-  code: Citadel
-  hp: 1000
+  code: Worker
+  hp: 50
   costs:
-  - code: Wood
-    value: 1000
-  - code: Gold
-    value: 500
-  recruitingOptions:
-  - {fileID: 11400000, guid: d666a980ee8de4cc7ad16096168b2cb9, type: 2}
+  - code: Food
+    value: 50
+  attackPower: 0
+  attackRange: 0
+  attackSpeed: 0
+  collectionSpeed: 5

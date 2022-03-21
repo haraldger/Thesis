@@ -62,7 +62,7 @@ public class BuildingController : UnitController
     {
         if (data.recruitingOptions.Contains(troopData))
         {
-            TroopManager.Instance.RecruitTroop(troopData, SpawnPoint, RallyPoint);
+            RecruitingManager.Instance.RecruitTroop(troopData, SpawnPoint, RallyPoint);
         }
     }
 }

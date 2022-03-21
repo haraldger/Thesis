@@ -1,12 +1,9 @@
 ﻿using System;
-using System.Collections;
 using UnityEngine;
 using UnityEngine.AI;
 
 public class TroopController : UnitController
 {
-    public TroopData data;
-
     private NavMeshAgent _agent;
 
     private NavMeshObstacle _obstacle;
@@ -15,20 +12,9 @@ public class TroopController : UnitController
 
     private float _stoppingDistance;
 
-    private UnitController _attackTarget;
-
-    private Coroutine _attackingCoroutine;
-
-
-
-
     public override void Awake()
     {
         base.Awake();
-
-        // Data init
-        MaxHP = data.hp;
-        CurrentHP = MaxHP;
 
         // AI NavMesh init
         _obstacle = gameObject.GetComponent<NavMeshObstacle>();
@@ -38,8 +24,6 @@ public class TroopController : UnitController
         _agent.enabled = true;
         _stoppingDistance = _agent.stoppingDistance;
         MakeObstacle();
-        
-
     }
 
     public override void Start()
@@ -66,9 +50,7 @@ public class TroopController : UnitController
                 MakeAgent();
             }
         }
-
     }
-
 
 
 
@@ -89,7 +71,7 @@ public class TroopController : UnitController
         Move(destination);
     }
 
-    private void Move(Transform destination)
+    protected void Move(Transform destination)
     {
         // Don't interact with self
         if (destination == gameObject.transform) return;
@@ -106,7 +88,7 @@ public class TroopController : UnitController
         Move(adjustedDestination);
     }
 
-    private void Move(Vector3 destination)
+    protected void Move(Vector3 destination)
     {
         MakeAgent();
         _goal = destination;
@@ -120,58 +102,26 @@ public class TroopController : UnitController
         Stop();
     }
 
-    private void Stop()
+    protected void Stop()
     {
         MakeAgent();
         _agent.destination = Vector3.negativeInfinity;
         MakeObstacle();
     }
 
-    public void AttackCommand(Transform target)
-    {
-        if (target == null) return; 
-        if (target == gameObject.transform) return; // Don't interact with self
-
-        UnitController targetController = target.gameObject.GetComponentInChildren<UnitController>();
-        if (_attackTarget == targetController) return; // Already attacking
-
-        _attackTarget = targetController;
-        if (_attackingCoroutine != null) StopCoroutine(_attackingCoroutine);  // Stop current coroutine
-        _attackingCoroutine = StartCoroutine(AttackCoroutine());
-    }
-
-    private IEnumerator AttackCoroutine()
-    {
-        while (_attackTarget != null && _attackTarget.CurrentHP > 0)
-        {
-            // Move withing range of target
-            Move(_attackTarget.transform);
-            yield return new WaitUntil(() =>
-            {
-                float distance = Vector3.Distance(gameObject.transform.position, _attackTarget.transform.position);
-                return distance < data.attackRange;
-            });
-            Stop();
-
-            // Damage target (with cooldown)
-            _attackTarget.Damage(data.attackPower);
-            yield return new WaitForSecondsRealtime(data.attackSpeed);
-        }
-    }
 
     // Enable NavMesh Agent
-    private void MakeAgent()
+    protected void MakeAgent()
     {
         _obstacle.enabled = false;
         _agent.enabled = true;
     }
 
     // Enable NavMesh Obstacle
-    private void MakeObstacle()
+    protected void MakeObstacle()
     {
         _agent.enabled = false;
         _obstacle.enabled = true;
     }
-
 }
 

@@ -9,7 +9,7 @@ public class BuildingManager : MonoBehaviour
     public static BuildingManager Instance { get; private set; }
 
     private bool _previewing;
-    private Building _previewingBuilding;
+    private GameUnit _previewingBuilding;
 
     // Start is called before the first frame update
     void Awake()
@@ -24,7 +24,7 @@ public class BuildingManager : MonoBehaviour
         {
             if (Input.GetMouseButtonUp(0))
             {
-                BuildBuilding(_previewingBuilding.Data, GetMousePosition());
+                BuildBuilding((BuildingData)_previewingBuilding.Data, GetMousePosition());
                 EndPreview();
             }
             else if (Input.GetMouseButtonDown(1))
@@ -41,7 +41,7 @@ public class BuildingManager : MonoBehaviour
     public void StartPreviewBuilding(BuildingData data)
     {
         _previewing = true;
-        _previewingBuilding = new Building(data);
+        _previewingBuilding = new GameUnit(data);
         _previewingBuilding.InstantiatePrefab(GetMousePosition());
         _previewingBuilding.Instance.tag = "Preview";
         GameObject.Destroy(_previewingBuilding.Instance.GetComponentInChildren<NavMeshObstacle>());
@@ -49,18 +49,12 @@ public class BuildingManager : MonoBehaviour
         _previewingBuilding.SetMaterial(previewMaterial);
     }
 
-    public void BuildBuilding(BuildingData data, Vector3 position)
-    {
-        Building building = new Building(data);
-        BuildBuilding(building, position);
-    }
-
-    public void BuildBuilding(Building building, Vector3 position)
+    public void BuildBuilding(BuildingData buildingData, Vector3 position)
     {
         bool canBuild = true;
 
         // Check resource constraints
-        foreach (CostValue cost in building.Data.costs)
+        foreach (CostValue cost in buildingData.costs)
         {
             if (!Globals.RESOURCE_DATA[cost.code].CanConsumeResource(cost.value))
             {
@@ -71,6 +65,7 @@ public class BuildingManager : MonoBehaviour
 
         if (canBuild)
         {
+            GameUnit building = new GameUnit(buildingData);
             building.InstantiatePrefab(position);
             foreach (CostValue cost in building.Data.costs)
                 Globals.RESOURCE_DATA[cost.code].ConsumeResource(cost.value);
