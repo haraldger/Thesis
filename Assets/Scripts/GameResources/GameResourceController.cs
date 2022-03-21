@@ -33,6 +33,5 @@ public class GameResourceController : MonoBehaviour
     {
         this.amount -= amount;
         animator.SetTrigger("Collect");
-        Debug.Log("Collected, trigger 'Collect' set");
     }
 }
