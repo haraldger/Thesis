@@ -25,7 +25,7 @@ public class WorkerController : TroopController
     public void CollectResourceCommand(Transform target)
     {
         if (target == null) return;
-        if (target.tag != "WorldResource") return;
+        if (target.tag != "GameResource") return;
 
     }
 }
