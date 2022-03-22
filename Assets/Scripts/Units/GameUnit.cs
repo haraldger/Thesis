@@ -8,25 +8,9 @@ public class GameUnit
 	// ================================= DATA FIELDS
 	public GameUnitData Data { get; private set; }
 
-	private int _currentHP;
-	public int CurrentHP
-	{
-		get => _currentHP;
-		private set
-        {
-			if(value < 0)
-            {
-				_currentHP = 0;
-            }
-			else if(value > Data.hp)
-            {
-				_currentHP = Data.hp;
-            }
-        }
-	}
 
     // ================================= UNITY FIELDS
-    private GameObject _instance;
+	private GameObject _instance;
 	public GameObject Instance
 	{
 		get => _instance;
@@ -42,7 +26,6 @@ public class GameUnit
 	public GameUnit(GameUnitData data)
     {
 		Data = data;
-		CurrentHP = Data.hp;
     }
 
 	public void InstantiatePrefab(Vector3 worldPosition)
@@ -52,6 +35,7 @@ public class GameUnit
 			Destroy();
         }
 
+		var prefab = LoadPrefab($"{Data.code}");
 		Instance = GameObject.Instantiate(LoadPrefab($"{Data.code}"), worldPosition, Quaternion.identity) as GameObject;
 	}
 
@@ -83,6 +67,13 @@ public class GameUnit
 	public void ResetMeshRenderer()
     {
 		InstantiatePrefab(GetWorldPosition());
+    }
+
+	public UnitController GetUnitController()
+    {
+		if (Instance == null) return null;
+
+		return Instance.GetComponentInChildren<UnitController>();
     }
 
 	/// <summary>

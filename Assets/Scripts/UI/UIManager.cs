@@ -136,27 +136,48 @@ public class UIManager : MonoBehaviour
         // Left mouse selects units
         if (Input.GetMouseButtonDown(0))
         {
-            RaycastHit raycastHit;
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            if (Physics.Raycast(ray, out raycastHit, 100f))
-            {
-                if(raycastHit.transform != null)
-                {
-                    GameObject clickedObject = raycastHit.transform.gameObject;
+            GameObject clickedObject = GetRaycastObject();
 
-                    if(clickedObject.tag == "Environment")
-                    {
-                        GameManager.Instance.Deselect();
-                    }
-                    else if (clickedObject.tag == "Unit" || clickedObject.tag == "Building" || clickedObject.tag == "Troop")
-                    {
-                        GameManager.Instance.Select(clickedObject);
-                    }
-                }
+            if (clickedObject != null)
+            {
+                IssueSelection(clickedObject);    
             }
         }
 
-        // Right mouse button
+        // Right mouse issues commands (move, attack, etc.)
+        if (Input.GetMouseButtonDown(1))
+        {
+            GameObject targetObject = GetRaycastObject();
+
+            if (targetObject != null)
+            {
+                switch (targetObject.tag)
+                {
+                    // Issue command on unit targets
+                    case "Unit":
+                    case "Building":
+                    case "Troop":
+                        IssueCommandOnUnit(GameManager.Instance.SelectedUnit, targetObject);
+                        break;
+
+                    // Issue command on world position
+                    case "Environment":
+                        Vector3 targetPosition = GetRaycastPosition();
+                        IssueCommandOnEnvironment(GameManager.Instance.SelectedUnit, targetPosition);
+                        break;
+
+                    // Issue command on game resource
+                    case "GameResource":
+                        IssueCommandOnGameResource(GameManager.Instance.SelectedUnit, targetObject);
+                        break;
+
+                    default:
+                        break;
+                    
+
+                }
+            }
+        }
 
 
         // Escape deselects units
@@ -167,12 +188,15 @@ public class UIManager : MonoBehaviour
 
     }
 
+    // ------------------------------------------------- Utility methods
+
     // When a building button is clicked
     void AddBuildingButtonListener(Button b, BuildingData buildingData)
     {
         b.onClick.AddListener( () => BuildingManager.Instance.StartPreviewBuilding(buildingData));
     }
 
+    // When a recruiting button is clicked
     void AddRecruitingButtonListener(Button b, TroopData troopData)
     {
         b.onClick.AddListener( () =>
@@ -182,7 +206,7 @@ public class UIManager : MonoBehaviour
         });
     }
 
-    // Unitility method to deactivate all buttons in the unit panel
+    // Utility method to deactivate all buttons in the unit panel
     private void DeactivateUnitButtons()
     {
         foreach (var entry in _recruitingButtons)
@@ -197,12 +221,113 @@ public class UIManager : MonoBehaviour
         _recruitingButtons.DefaultIfEmpty(new KeyValuePair<Button, TroopData>(null, null)).FirstOrDefault(x => x.Value.code == unitCode).Key?.gameObject.SetActive(true);
     }
 
+    // Sets interactable on recruiting buttons whose preconditions are met
     private void SetRecruitingButtonInteractable(string unitCode, bool value)
     {
         var button = _recruitingButtons.DefaultIfEmpty(new KeyValuePair<Button, TroopData>(null, null)).FirstOrDefault(x => x.Value.code == unitCode).Key;
         if(button != null)
         {
             button.interactable = value;
+        }
+    }
+
+    // Raycasts mouse position to find a game object
+    private GameObject GetRaycastObject()
+    {
+        RaycastHit raycastHit;
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        if (Physics.Raycast(ray, out raycastHit, 100f))
+        {
+            if (raycastHit.transform != null)
+            {
+                GameObject clickedObject = raycastHit.transform.gameObject;
+                return clickedObject;
+            }
+        }
+        return null;
+    }
+
+    // Raycast mouse position to get a Vector3 position
+    // !Returns maxint if raycast is null!
+    private Vector3 GetRaycastPosition()
+    {
+        RaycastHit raycastHit;
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        if (Physics.Raycast(ray, out raycastHit, 100f))
+        {
+            if (raycastHit.point != null)
+            {
+                return raycastHit.point;
+            }
+        }
+        return new Vector3(int.MaxValue, int.MaxValue);
+    }
+
+    // Action logic for left click
+    private void IssueSelection(GameObject clickedObject)
+    {
+        if (clickedObject.tag == "Environment")
+        {
+            GameManager.Instance.Deselect();
+        }
+        else if (clickedObject.tag == "Unit" || clickedObject.tag == "Building" || clickedObject.tag == "Troop")
+        {
+            GameManager.Instance.Select(clickedObject);
+        }
+    }
+
+    // Action logic for right click on unit
+    private void IssueCommandOnUnit(UnitController unit, GameObject target)
+    {
+        if (target == null) return;
+
+        
+        if (unit is BuildingController building)
+        {
+            building.RallyPoint = target.transform.position;
+        }
+        else if (unit is SoldierController soldier)
+        {
+            soldier.AttackCommand(target.transform);
+        }
+        else if (unit is WorkerController worker && target.GetComponentInChildren<GameResourceController>() != null)
+        {
+            IssueCommandOnGameResource(worker, target);
+        }
+        else if (unit is TroopController troop)
+        {
+            troop.MoveCommand(target.transform);
+        }
+    }
+
+    // Action logic for right click on game resource
+    private void IssueCommandOnGameResource(UnitController unit, GameObject target)
+    {
+        if (target == null) return;
+        GameResourceController gameResource = target.GetComponentInChildren<GameResourceController>();
+        if (gameResource == null) return;
+
+        if (unit is WorkerController worker)
+        {
+            worker.CollectResourceCommand(target.transform);
+        }
+    }
+
+    // Action logic for right click in world
+    private void IssueCommandOnEnvironment(UnitController unit, Vector3 position)
+    {
+        if (position == null)
+        {
+            return;
+        }
+
+        if (unit is BuildingController building)
+        {
+            building.RallyPoint = position;
+        }
+        else if (unit is TroopController troop)
+        {
+            troop.MoveCommand(position);
         }
     }
 

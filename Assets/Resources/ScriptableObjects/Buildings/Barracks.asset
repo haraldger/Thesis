@@ -21,3 +21,4 @@ MonoBehaviour:
     value: 100
   recruitingOptions:
   - {fileID: 11400000, guid: 9fe7a7823291749b08d645c113eb3b26, type: 2}
+  - {fileID: 11400000, guid: 26cd485a18a1648b38959ad991fff4c2, type: 2}

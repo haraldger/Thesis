@@ -1,10 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
-public class TroopManager : MonoBehaviour
+public class RecruitingManager : MonoBehaviour
 {
-    public static TroopManager Instance { get; private set; }
+    public static RecruitingManager Instance { get; private set; }
 
     // Start is called before the first frame update
     void Awake()
@@ -18,17 +19,17 @@ public class TroopManager : MonoBehaviour
         
     }
 
-    public void RecruitTroop(TroopData data, Vector3 position)
+
+    public void RecruitTroop(TroopData troopData, Vector3 position)
     {
-        Troop troop = new Troop(data);
-        RecruitTroop(troop, position);
+        RecruitTroop(troopData, position, position);
     }
 
-    public void RecruitTroop(Troop troop, Vector3 position)
-    { 
+    public void RecruitTroop(TroopData troopData, Vector3 position, Vector3 rallyPoint)
+    {
         // Check resource constraints
         bool hasResources = true;
-        foreach (CostValue cost in troop.Data.costs)
+        foreach (CostValue cost in troopData.costs)
         {
             if (!Globals.RESOURCE_DATA[cost.code].CanConsumeResource(cost.value))
             {
@@ -39,9 +40,9 @@ public class TroopManager : MonoBehaviour
 
         // Check building constraints
         bool hasRequiredBuildings = false;
-        foreach (Building building in Globals.CURRENT_BUILDINGS)
+        foreach (BuildingController building in Globals.EXISTING_UNITS.Keys.Where(x => x is BuildingController))
         {
-            if (building.Data.recruitingOptions.Contains(troop.Data))
+            if (building.data.recruitingOptions.Contains(troopData))
             {
                 hasRequiredBuildings = true;
                 break;
@@ -50,9 +51,13 @@ public class TroopManager : MonoBehaviour
 
         if (hasResources && hasRequiredBuildings)
         {
+            GameUnit troop = new GameUnit(troopData);
             troop.InstantiatePrefab(position);
             foreach (CostValue cost in troop.Data.costs)
                 Globals.RESOURCE_DATA[cost.code].ConsumeResource(cost.value);
+            Globals.EXISTING_UNITS[troop.Instance.GetComponentInChildren<TroopController>()] = troop;
+
+            ((TroopController)troop.GetUnitController())?.MoveCommand(rallyPoint); // After spawning, move troop to rally point
         }
     }
 }
