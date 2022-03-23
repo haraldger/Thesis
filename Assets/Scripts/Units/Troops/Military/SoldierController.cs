@@ -28,7 +28,11 @@ public class SoldierController : TroopController
         base.Update();
     }
 
-
+    public override void StopCommand()
+    {
+        base.StopCommand();
+        _attackTarget = null;
+    }
 
     public void AttackCommand(Transform target)
     {
