@@ -441,7 +441,7 @@ MonoBehaviour:
   resourceLabelPrefab: {fileID: 2660226742853579227, guid: 61ebc3ad4dd2a4559b2f7fc876dd6b9e, type: 3}
   unitPanel: {fileID: 1712339970}
   recruitingButtonPrefab: {fileID: 3468464454066710743, guid: 151d779b2dc624d37929a58129131083, type: 3}
-  testMode: 1
+  testMode: 0
 --- !u!1 &666085738
 GameObject:
   m_ObjectHideFlags: 0
