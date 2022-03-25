@@ -4,30 +4,16 @@ public class Globals
 {
     public static IDictionary<string, GameResourceData> RESOURCE_DATA = new Dictionary<string, GameResourceData>()
     {
-        {"Wood", new GameResourceData("Wood", 2000, 2000)},
-        {"Gold", new GameResourceData("Gold", 2000, 2000)},
-        {"Food", new GameResourceData("Food", 2000, 2000)}
+        {"Wood", new GameResourceData("Wood", 2000, 1000)},
+        {"Gold", new GameResourceData("Gold", 2000, 500)},
+        {"Food", new GameResourceData("Food", 2000, 100)}
     };
 
-    public static IDictionary<string, BuildingData> BUILDING_DATA = new Dictionary<string, BuildingData>()
-    {
-        {"Barracks", new BuildingData("Barracks", 100, new Dictionary<GameResourceData, int>(){
-            {RESOURCE_DATA["Wood"], 200},
-            {RESOURCE_DATA["Gold"], 50}
-        })},
+    public static BuildingData[] BUILDING_DATA;
 
-        {"Citadel", new BuildingData("Citadel", 1000, new Dictionary<GameResourceData, int>(){
-            {RESOURCE_DATA["Wood"], 1000},
-            {RESOURCE_DATA["Gold"], 500}
-        })},
+    public static TroopData[] TROOP_DATA;
 
-        {"Farm", new BuildingData("Farm", 75, new Dictionary<GameResourceData, int>(){
-            {RESOURCE_DATA["Wood"], 100}
-        })}
-    };
+    public static WorkerData[] WORKER_DATA;
 
-    //public static IDictionary<BuildingData, IDictionary<GameResourceData, int>> BUILDING_COSTS = new Dictionary<BuildingData, IDictionary<GameResourceData, int>>()
-    //{
-
-    //};
+    public static IDictionary<UnitController, GameUnit> EXISTING_UNITS = new Dictionary<UnitController, GameUnit>();
 }

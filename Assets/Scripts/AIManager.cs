@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System;
 using UnityEngine;
 using FluidHTN;
 using FluidHTN.Compounds;
@@ -20,24 +21,24 @@ public class AIManager : MonoBehaviour
     private IList<BuildingSpot> _buildingSpots;
 
 
-    // Start is called before the first frame update
     void Awake()
     {
         Instance = this;
+        _buildingSpots = new List<BuildingSpot>();
+    }
 
+    void Start()
+    {
         _domain = Domain.GetComponent<AbstractDomain>().Domain;
         _planner = new Planner<AIContext>();
         _context = new AIContext();
         _context.Init();
         _senses = new AISenses(_context);
-
-        _buildingSpots = new List<BuildingSpot>();
-
     }
 
-    // Update is called once per frame
     void Update()
     {
+
     }
 
     void FixedUpdate()
@@ -45,6 +46,8 @@ public class AIManager : MonoBehaviour
         _senses.Tick();
         _planner.Tick(_domain, _context, false);
     }
+
+
 
     public void RegisterBuildingSpot(BuildingSpot buildingSpot)
     {
@@ -63,19 +66,28 @@ public class AIManager : MonoBehaviour
     // Build in random free building spot
     public TaskStatus BuildBuilding(string buildingType)
     {
+        // Get available building spot
         BuildingSpot buildingSpot = GetFreeBuildingSpot();
         if (!buildingSpot)
         {
             return TaskStatus.Failure;
         }
 
+        
         Vector3 position = buildingSpot.Position;
-        BuildingData buildingData = Globals.BUILDING_DATA[buildingType];
-        Building building = new Building(buildingData);
-        buildingSpot.AddBuilding(building);
+        BuildingData buildingData = Array.Find(Globals.BUILDING_DATA, data => data.code == buildingType);
 
-        BuildingManager.Instance.BuildBuilding(building, position);
-        return TaskStatus.Success;
+        BuildingController newBuilding;
+        if(BuildingManager.Instance.BuildBuilding(buildingData, position, out newBuilding))
+        {
+            buildingSpot.AddBuilding(newBuilding);
+            return TaskStatus.Success;
+        }
+        else
+        {
+            return TaskStatus.Failure;
+        }
+            
     }
 
 }

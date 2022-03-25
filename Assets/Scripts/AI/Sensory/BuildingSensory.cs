@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Linq;
 using System.Collections.Generic;
+using UnityEngine;
 
 public class BuildingSensory : ISensory
 {
@@ -26,11 +28,11 @@ public class BuildingSensory : ISensory
         }
 
         // Check resource constraints
-        var barracksData = _buildingData["Barracks"];
-        var barracksCost = barracksData.Cost;
-        foreach (var cost in barracksCost)
+        var barracksData = _buildingData.First(data => data.code == "Barracks");
+        var barracksCosts = barracksData.costs;
+        foreach (var cost in barracksCosts)
         {
-            if (!cost.Key.CanConsumeResource(cost.Value))
+            if (!Globals.RESOURCE_DATA[cost.code].CanConsumeResource(cost.value))
             {
                 _context.SetState(AIWorldState.CanBuildBarracks, false);
                 return;
@@ -50,11 +52,11 @@ public class BuildingSensory : ISensory
         }
 
         // Check resource constraints
-        var farmData = _buildingData["Farm"];
-        var farmCost = farmData.Cost;
-        foreach (var cost in farmCost)
+        var farmData = _buildingData.First(data => data.code == "Farm");
+        var farmCosts = farmData.costs;
+        foreach (var cost in farmCosts)
         {
-            if (!cost.Key.CanConsumeResource(cost.Value))
+            if (!Globals.RESOURCE_DATA[cost.code].CanConsumeResource(cost.value))
             {
                 _context.SetState(AIWorldState.CanBuildFarm, false);
                 return;
@@ -70,6 +72,6 @@ public class BuildingSensory : ISensory
     }
 
     private readonly AIContext _context;
-    private readonly IDictionary<string, BuildingData> _buildingData;
+    private readonly BuildingData[] _buildingData;
 }
 
