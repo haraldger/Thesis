@@ -116,37 +116,49 @@ public class AIManager : MonoBehaviour
     }
 
     // Recruit troop from an available barracks
-    public TaskStatus RecruitTroop(string unitType)
+    public TaskStatus RecruitTroop(string troopType)
     {
         // Check recruiting constraints
-        if (!_senses.CanRecruitTroop(unitType)) return TaskStatus.Failure;
+        if (!_senses.CanRecruitTroop(troopType)) return TaskStatus.Failure;
 
-        // Get recruiting barracks
-        BuildingController barracks = _context.GetBuilding("Barracks");
-        if (barracks == null) return TaskStatus.Failure;
+        // Get recruiting building
+        BuildingController requiredBuilding;
+        try
+        {
+            var requiredType = _buildingData.First(building => building.recruitingOptions.Where(availableTroop => availableTroop.code == troopType).Any()).code;
+
+            requiredBuilding = _context.GetBuilding(requiredType);            
+        }
+        catch (Exception)
+        {
+            return TaskStatus.Failure;
+        }
 
 
         // Get Data
         TroopData troopData;
         try
         {
-            troopData = Array.Find(_troopData, data => data.code == unitType);
+            troopData = Array.Find(_troopData, data => data.code == troopType);
         }
         catch (ArgumentNullException)
         {
+            Debug.Log($"Get data failure, no type {troopType} in _troopData");
             return TaskStatus.Failure;
         }
 
 
         // Recruit
         TroopController newTroop;
-        if (barracks.RecruitTroop(troopData, out newTroop))
+        if (requiredBuilding.RecruitTroop(troopData, out newTroop))
         {
+            Debug.Log("Success on last check");
             _context.AddTroop(newTroop);
             return TaskStatus.Success;
         }
         else
         {
+            Debug.Log("Failure on last check");
             return TaskStatus.Failure;
         }
 
@@ -156,13 +168,13 @@ public class AIManager : MonoBehaviour
     public TaskStatus CollectResource(string resourceType)
     {
         // Get Data
-        Debug.Log("Collect resource called in AIManager");
 
         WorkerController worker = _context.GetIdleWorker();
         if (worker == null) return TaskStatus.Failure;
 
         ResourceSpot resourceSpot = GetResourceSpotType(resourceType);
         if (resourceSpot == null) return TaskStatus.Failure;
+
 
         // Issue collection command
 
