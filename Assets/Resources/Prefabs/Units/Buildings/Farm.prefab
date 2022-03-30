@@ -274,7 +274,7 @@ GameObject:
   - component: {fileID: 7417277035812779587}
   - component: {fileID: -9020200606134903928}
   - component: {fileID: 1613257029437096068}
-  - component: {fileID: 7703990944438190924}
+  - component: {fileID: -3230016360855933061}
   m_Layer: 0
   m_Name: Farm
   m_TagString: Building
@@ -377,7 +377,7 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!114 &7703990944438190924
+--- !u!114 &-3230016360855933061
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -386,7 +386,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 6436516351776695820}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e811ffd033a6d4d4fa45aa714fbfaa8a, type: 3}
+  m_Script: {fileID: 11500000, guid: 665d49207dd844b2d91c25ec83bb79fd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   code: Food

@@ -1,69 +1,37 @@
 ﻿using System;
-using System.Linq;
 using System.Collections.Generic;
-using UnityEngine;
 
 public class BuildingSensory : ISensory
 {
-
     public BuildingSensory(AIContext context)
     {
         this._context = context;
         _buildingData = Globals.BUILDING_DATA;
+        _resourceData = Globals.RESOURCE_DATA;
     }
 
     public void Tick()
     {
         SetCanBuildBarracks();
         SetCanBuildFarm();
+        SetCanBuildCitadel();
     }
+
+    //--------------------------------------- Internal routines
 
     private void SetCanBuildBarracks()
     {
-        // Check free building spot
-        if (!FreeBuildingSpot())
-        {
-            _context.SetState(AIWorldState.CanBuildBarracks, false);
-            return;
-        }
-
-        // Check resource constraints
-        var barracksData = _buildingData.First(data => data.code == "Barracks");
-        var barracksCosts = barracksData.costs;
-        foreach (var cost in barracksCosts)
-        {
-            if (!Globals.RESOURCE_DATA[cost.code].CanConsumeResource(cost.value))
-            {
-                _context.SetState(AIWorldState.CanBuildBarracks, false);
-                return;
-            } 
-        }
-
-        _context.SetState(AIWorldState.CanBuildBarracks, true);
+        _context.SetState(AIWorldState.CanBuildBarracks, CanBuildBuilding("Barracks"));
     }
 
     private void SetCanBuildFarm()
     {
-        // Check free building spot
-        if (!FreeBuildingSpot())
-        {
-            _context.SetState(AIWorldState.CanBuildFarm, false);
-            return;
-        }
+        _context.SetState(AIWorldState.CanBuildFarm, CanBuildBuilding("Farm"));
+    }
 
-        // Check resource constraints
-        var farmData = _buildingData.First(data => data.code == "Farm");
-        var farmCosts = farmData.costs;
-        foreach (var cost in farmCosts)
-        {
-            if (!Globals.RESOURCE_DATA[cost.code].CanConsumeResource(cost.value))
-            {
-                _context.SetState(AIWorldState.CanBuildFarm, false);
-                return;
-            }
-        }
-
-        _context.SetState(AIWorldState.CanBuildFarm, true);
+    private void SetCanBuildCitadel()
+    {
+        _context.SetState(AIWorldState.CanBuildCitadel, CanBuildBuilding("Citadel"));
     }
 
     private bool FreeBuildingSpot()
@@ -71,7 +39,38 @@ public class BuildingSensory : ISensory
         return AIManager.Instance.GetFreeBuildingSpot() != null;
     }
 
+
+    //--------------------------------------- Public sensory getters
+
+    public bool CanBuildBuilding(string buildingType)
+    {
+        BuildingData building;
+        try
+        {
+            building = Array.Find(_buildingData, data => data.code == buildingType);
+        }
+        catch (ArgumentNullException)
+        {
+            return false;
+        }
+
+        // Check for available building spot
+        if (!FreeBuildingSpot()) return false;
+
+        // Check resource constraints
+        foreach (var cost in building.costs)
+        {
+            if (_resourceData[cost.code].CanConsumeResource(cost.value)) return false;
+        }
+
+        return true;
+    }
+
+
+    //--------------------------------------- Private Fields
+
     private readonly AIContext _context;
     private readonly BuildingData[] _buildingData;
+    private readonly IDictionary<string, GameResourceData> _resourceData;
 }
 

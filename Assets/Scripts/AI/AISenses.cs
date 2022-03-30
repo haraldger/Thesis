@@ -7,19 +7,32 @@ public class AISenses
     public AISenses(AIContext context)
     {
         this._context = context;
-        this._senses = new List<ISensory>();
-        _senses.Add(new BuildingSensory(_context));
+        this._senses = new Dictionary<string, ISensory>();
+        _senses["Building"] = new BuildingSensory(_context);
+        _senses["Recruiting"] = new RecruitingSensory(_context);
     }
 
     public void Tick()
     {
-        foreach (ISensory sensory in _senses)
+        foreach (ISensory sensory in _senses.Values)
         {
             sensory.Tick();
         }
     }
 
+    public bool CanBuildBuilding(string buildingType)
+    {
+        BuildingSensory sensory = (BuildingSensory)_senses["Building"];
+        return sensory.CanBuildBuilding(buildingType);
+    }
+
+    public bool CanRecruitTroop(string troopType)
+    {
+        RecruitingSensory sensory = (RecruitingSensory)_senses["Recruiting"];
+        return sensory.CanRecruitTroop(troopType);
+    }
+
     private readonly AIContext _context;
-    private readonly IList<ISensory> _senses;
+    private readonly IDictionary<string, ISensory> _senses;
 }
 

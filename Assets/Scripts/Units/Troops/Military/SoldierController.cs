@@ -6,6 +6,8 @@ public class SoldierController : TroopController
 {
     public SoldierData data;
 
+    public override GameUnitData Data { get => data; protected set => base.Data = value; }
+
     private UnitController _attackTarget;
 
     public override void Awake()

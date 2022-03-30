@@ -6,6 +6,7 @@ using UnityEngine.AI;
 
 public class UnitController: MonoBehaviour
 {
+    public virtual GameUnitData Data { get; protected set; }
 
     public bool Selected { get; set; }
 

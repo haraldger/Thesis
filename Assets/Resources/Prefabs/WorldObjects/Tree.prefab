@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 597980668811497877}
   - component: {fileID: 6315111636129449090}
   - component: {fileID: 671173741729474402}
-  - component: {fileID: 5944165145802558863}
+  - component: {fileID: -6140380641505965817}
   m_Layer: 0
   m_Name: Tree
   m_TagString: GameResource
@@ -83,7 +83,7 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!114 &5944165145802558863
+--- !u!114 &-6140380641505965817
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -92,7 +92,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 229960945891342147}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e811ffd033a6d4d4fa45aa714fbfaa8a, type: 3}
+  m_Script: {fileID: 11500000, guid: 665d49207dd844b2d91c25ec83bb79fd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   code: Wood

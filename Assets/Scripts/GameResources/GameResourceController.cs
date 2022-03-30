@@ -10,17 +10,17 @@ public class GameResourceController : MonoBehaviour
 
     public Animator animator;
 
-    void Awake()
+    public virtual void Awake()
     {
 
     }
 
-    void Start()
+    public virtual void Start()
     {
         
     }
 
-    void Update()
+    public virtual void Update()
     {
         if (this.amount <= 0)
         {
@@ -28,6 +28,12 @@ public class GameResourceController : MonoBehaviour
             enabled = false;
         }
     }
+
+    public virtual void OnDestroy()
+    {
+
+    }
+
 
     public void Collect(int amount)
     {

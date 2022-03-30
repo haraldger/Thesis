@@ -5,6 +5,8 @@ public class BuildingController : UnitController
 {
     public BuildingData data;
 
+    public override GameUnitData Data { get => data; protected set => base.Data = value; }
+
     public Vector3 RallyPoint
     {
         get
@@ -58,12 +60,16 @@ public class BuildingController : UnitController
     // TODO: Refactor game actions to return bool or TaskStatus
     // Do in all classes
     // Add unit tests and integration tests
-    public void RecruitTroop(TroopData troopData)
+    public bool RecruitTroop(TroopData troopData, out TroopController newTroop)
     {
         if (data.recruitingOptions.Contains(troopData))
         {
-            TroopController newUnit;
-            RecruitingManager.Instance.RecruitTroop(troopData, SpawnPoint, RallyPoint, out newUnit);
+            return RecruitingManager.Instance.RecruitTroop(troopData, SpawnPoint, RallyPoint, out newTroop);
+        }
+        else
+        {
+            newTroop = null;
+            return false;
         }
     }
 }

@@ -28,6 +28,12 @@ public class GameUnit
 		Data = data;
     }
 
+	public GameUnit(UnitController controller)
+    {
+		Instance = controller.gameObject;
+		Data = controller.Data;
+    }
+
 	public void InstantiatePrefab(Vector3 worldPosition)
     {
         if (Instance != null)

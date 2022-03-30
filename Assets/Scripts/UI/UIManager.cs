@@ -202,7 +202,7 @@ public class UIManager : MonoBehaviour
         b.onClick.AddListener( () =>
         {
             BuildingController selectedUnit = (BuildingController)GameManager.Instance.SelectedUnit;
-            selectedUnit.RecruitTroop(troopData);
+            selectedUnit.RecruitTroop(troopData, out TroopController newTroop);
         });
     }
 

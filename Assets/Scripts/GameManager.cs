@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
@@ -18,7 +19,17 @@ public class GameManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        // Player init on game startup
+        GameObject[] initialObjects = GameObject.FindObjectsOfType(typeof(GameObject)) as GameObject[];
+        foreach (GameObject gameObject in initialObjects)
+        {
+            UnitController unitController = gameObject.GetComponent<UnitController>();
+            if (unitController != null)
+            {
+                GameUnit unit = new GameUnit(unitController);
+                Globals.EXISTING_UNITS.Add(unitController, unit);
+            }
+        }
     }
 
     // Update is called once per frame

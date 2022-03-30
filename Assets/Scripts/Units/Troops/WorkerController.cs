@@ -6,7 +6,9 @@ public class WorkerController : TroopController
 {
     public WorkerData data;
 
-    private GameResourceController _collectingTarget;
+    public override GameUnitData Data { get => data; protected set => base.Data = value; }
+
+    public GameResourceController CollectingTarget { get; private set; }
 
     public override void Awake()
     {
@@ -26,7 +28,7 @@ public class WorkerController : TroopController
     public override void StopCommand()
     {
         base.StopCommand();
-        _collectingTarget = null;
+        CollectingTarget = null;
     }
 
     public void CollectResourceCommand(Transform target)
@@ -36,29 +38,29 @@ public class WorkerController : TroopController
         GameResourceController targetController = target.gameObject.GetComponentInChildren<GameResourceController>();
         if (targetController == null) return;
 
-        if (_collectingTarget == targetController) return; // Already collecting
+        if (CollectingTarget == targetController) return; // Already collecting
 
         StopCommand();
-        _collectingTarget = targetController;
+        CollectingTarget = targetController;
         _currentCoroutine = StartCoroutine(CollectResourceCoroutine());
     }
 
     private IEnumerator CollectResourceCoroutine()
     {
-        while (_collectingTarget != null && _collectingTarget.amount > 0)
+        while (CollectingTarget != null && CollectingTarget.amount > 0)
         {
             // Move within range of resource
-            Move(_collectingTarget.transform);
+            Move(CollectingTarget.transform);
             yield return new WaitUntil(() =>
             {
-                float distance = Vector3.Distance(gameObject.transform.position, _collectingTarget.transform.position);
+                float distance = Vector3.Distance(gameObject.transform.position, CollectingTarget.transform.position);
                 return !IsMoving();
             });
             Stop();
 
             // Collect (with cooldown)
-            _collectingTarget.Collect(data.collectionAmount);
-            Globals.RESOURCE_DATA[_collectingTarget.code].AddResource(data.collectionAmount);
+            CollectingTarget.Collect(data.collectionAmount);
+            Globals.RESOURCE_DATA[CollectingTarget.code].AddResource(data.collectionAmount);
             yield return new WaitForSecondsRealtime(data.collectionSpeed);
         }
     }
