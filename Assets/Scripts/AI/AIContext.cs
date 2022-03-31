@@ -31,9 +31,9 @@ public class AIContext : BaseContext
 {
     public override List<string> MTRDebug { get; set; } = null;
     public override List<string> LastMTRDebug { get; set; } = null;
-    public override bool DebugMTR { get; } = true;
+    public override bool DebugMTR { get; } = false;
     public override Queue<IBaseDecompositionLogEntry> DecompositionLog { get; set; } = null;
-    public override bool LogDecomposition { get; } = true;
+    public override bool LogDecomposition { get; } = false;
 
     public override IFactory Factory { get; set; } = new DefaultFactory();
 
@@ -140,7 +140,7 @@ public class AIContext : BaseContext
     // Returns an idle worker
     public WorkerController GetIdleWorker()
     {
-        return _workers.DefaultIfEmpty(null).FirstOrDefault(worker => worker.CollectingTarget != null);
+        return _workers.FirstOrDefault(worker => worker.CollectingTarget == null);
     }
 
 }

@@ -45,8 +45,17 @@ public class AIManager : MonoBehaviour
         GameObject[] initialObjects = GameObject.FindObjectsOfType(typeof(GameObject)) as GameObject[];
         foreach (GameObject gameObject in initialObjects)
         {
-            BuildingController building = gameObject.GetComponent<BuildingController>();
-            if (building != null) _context.AddBuilding(building);
+            UnitController unit = gameObject.GetComponent<UnitController>();
+            if (unit == null) continue;
+
+            if (unit is BuildingController building)
+            {
+                _context.AddBuilding(building);
+            }
+            else if (unit is TroopController troop)
+            {
+                _context.AddTroop(troop);
+            }
         }
     }
 
@@ -127,10 +136,16 @@ public class AIManager : MonoBehaviour
         {
             var requiredType = _buildingData.First(building => building.recruitingOptions.Where(availableTroop => availableTroop.code == troopType).Any()).code;
 
-            requiredBuilding = _context.GetBuilding(requiredType);            
+            requiredBuilding = _context.GetBuilding(requiredType);
+            if (requiredBuilding == null)
+            {
+                return TaskStatus.Failure;
+            }
         }
-        catch (Exception)
+        catch (Exception ex)
         {
+            Debug.Log($"Get recruiting building failure, no type {troopType} available as a recruiting option from any building");
+            Debug.Log(ex.StackTrace);
             return TaskStatus.Failure;
         }
 
@@ -141,9 +156,10 @@ public class AIManager : MonoBehaviour
         {
             troopData = Array.Find(_troopData, data => data.code == troopType);
         }
-        catch (ArgumentNullException)
+        catch (ArgumentNullException ex)
         {
             Debug.Log($"Get data failure, no type {troopType} in _troopData");
+            Debug.Log(ex.StackTrace);
             return TaskStatus.Failure;
         }
 
@@ -152,13 +168,11 @@ public class AIManager : MonoBehaviour
         TroopController newTroop;
         if (requiredBuilding.RecruitTroop(troopData, out newTroop))
         {
-            Debug.Log("Success on last check");
             _context.AddTroop(newTroop);
             return TaskStatus.Success;
         }
         else
         {
-            Debug.Log("Failure on last check");
             return TaskStatus.Failure;
         }
 

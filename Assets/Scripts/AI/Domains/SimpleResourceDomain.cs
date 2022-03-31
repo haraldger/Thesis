@@ -15,7 +15,7 @@ public class SimpleResourceDomain : AbstractDomain
         return new DomainBuilder<AIContext>("Simple Resource Domain")
             .Sequence("Recruit worker and harvest wood")
                 .Splice(PrimitiveActions.RecruitWorkerAction)
-                //.Splice(PrimitiveActions.CollectWoodAction)
+                .Splice(PrimitiveActions.CollectWoodAction)
             .End()
             .Build();
     }

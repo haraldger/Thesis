@@ -8,7 +8,7 @@ public class WorkerController : TroopController
 
     public override GameUnitData Data { get => data; protected set => base.Data = value; }
 
-    public GameResourceController CollectingTarget { get; private set; }
+    public GameResourceController CollectingTarget { get; private set; } = null;
 
     public override void Awake()
     {
