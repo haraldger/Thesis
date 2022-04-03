@@ -31,9 +31,9 @@ public class AIContext : BaseContext
 {
     public override List<string> MTRDebug { get; set; } = null;
     public override List<string> LastMTRDebug { get; set; } = null;
-    public override bool DebugMTR { get; } = false;
+    public override bool DebugMTR { get; } = true;
     public override Queue<IBaseDecompositionLogEntry> DecompositionLog { get; set; } = null;
-    public override bool LogDecomposition { get; } = false;
+    public override bool LogDecomposition { get; } = true;
 
     public override IFactory Factory { get; set; } = new DefaultFactory();
 

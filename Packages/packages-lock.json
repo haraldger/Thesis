@@ -92,7 +92,7 @@
       }
     },
     "fluid.htn": {
-      "version": "file:/Users/harald/Desktop/Programming/Packages/Unity/fluid-hierarchical-task-network-master/Fluid-HTN",
+      "version": "file:/Users/harald/Desktop/Programming/Packages/Unity/fluid-hierarchical-task-network-GenericWorldState/Fluid-HTN",
       "depth": 0,
       "source": "local",
       "dependencies": {}

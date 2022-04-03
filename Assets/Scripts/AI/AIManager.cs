@@ -80,7 +80,11 @@ public class AIManager : MonoBehaviour
     }
 
 
-
+    // Updates the world state for planning
+    public void UpdateWorldState()
+    {
+        _senses.UpdateWorldState();
+    }
 
     // Build in random free building spot
     public TaskStatus BuildBuilding(string buildingType)
