@@ -27,7 +27,7 @@ public enum GoalState
     BuildBarracks
 }
 
-public class AIContext : BaseContext
+public class AIContext : BaseContex<int>
 {
     public override List<string> MTRDebug { get; set; } = null;
     public override List<string> LastMTRDebug { get; set; } = null;
@@ -37,8 +37,8 @@ public class AIContext : BaseContext
 
     public override IFactory Factory { get; set; } = new DefaultFactory();
 
-    private byte[] _worldState = new byte[Enum.GetValues(typeof(AIWorldState)).Length];
-    public override byte[] WorldState => _worldState;
+    private int[] _worldState = new int[Enum.GetValues(typeof(AIWorldState)).Length];
+    public override int[] WorldState => _worldState;
 
     private IList<BuildingController> _buildings = new List<BuildingController>();
     private IList<SoldierController> _soldiers = new List<SoldierController>();
