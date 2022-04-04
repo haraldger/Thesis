@@ -17,6 +17,7 @@ public class SimpleBuildDomain : AbstractDomain
                 .CanBuild("Barracks")
                 .Do(AIActions.BuildBarracks)
                 .BuyBuilding("Barracks")
+                .MakeBuildingSpotOccupied()
             .End()
             .Build();
 
@@ -25,6 +26,7 @@ public class SimpleBuildDomain : AbstractDomain
                 .CanBuild("Farm")
                 .Do(AIActions.BuildFarm)
                 .BuyBuilding("Farm")
+                .MakeBuildingSpotOccupied()
             .End()
             .Build();
 

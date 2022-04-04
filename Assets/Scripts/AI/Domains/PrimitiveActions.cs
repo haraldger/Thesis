@@ -8,6 +8,7 @@ public static class PrimitiveActions
             .CanBuild("Barracks")
             .Do(AIActions.BuildBarracks)
             .BuyBuilding("Barracks")
+            .MakeBuildingSpotOccupied()
         .End()
         .Build();
 
@@ -16,6 +17,7 @@ public static class PrimitiveActions
             .CanBuild("Farm")
             .Do(AIActions.BuildFarm)
             .BuyBuilding("Farm")
+            .MakeBuildingSpotOccupied()
         .End()
         .Build();
 
@@ -24,6 +26,7 @@ public static class PrimitiveActions
             .CanBuild("Citadel")
             .Do(AIActions.BuildCitadel)
             .BuyBuilding("Citadel")
+            .MakeBuildingSpotOccupied()
         .End()
         .Build();
 
@@ -55,6 +58,7 @@ public static class PrimitiveActions
         .Action("Collect Gold")
             .CanCollect("Gold")
             .Do(AIActions.CollectGold)
+            .MakeWorkerBusy()
         .End()
         .Build();
 
@@ -62,6 +66,7 @@ public static class PrimitiveActions
         .Action("Collect Wood")
             .CanCollect("Wood")
             .Do(AIActions.CollectWood)
+            .MakeWorkerBusy()
         .End()
         .Build();
 
@@ -69,6 +74,7 @@ public static class PrimitiveActions
         .Action("Collect Food")
             .CanCollect("Food")
             .Do(AIActions.CollectFood)
+            .MakeWorkerBusy()
         .End()
         .Build();
 
