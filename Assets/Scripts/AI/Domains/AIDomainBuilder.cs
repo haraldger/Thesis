@@ -9,13 +9,6 @@ public class AIDomainBuilder : BaseDomainBuilder<AIDomainBuilder, AIContext, int
     {
     }
 
-    public AIDomainBuilder CanBuild(string buildingType)
-    {
-        var condition = new CanBuildCondition(buildingType);
-        Pointer.AddCondition(condition);
-        return this;
-    }
-
     public AIDomainBuilder CanRecruit(string troopType)
     {
         var condition = new CanRecruitCondition(troopType);
@@ -26,6 +19,34 @@ public class AIDomainBuilder : BaseDomainBuilder<AIDomainBuilder, AIContext, int
     public AIDomainBuilder CanCollect(string resourceType)
     {
         var condition = new CanCollectCondition(resourceType);
+        Pointer.AddCondition(condition);
+        return this;
+    }
+
+    public AIDomainBuilder CanAffordBuilding(string buildingType)
+    {
+        var condition = new CanAffordBuildingCondition(buildingType);
+        Pointer.AddCondition(condition);
+        return this;
+    }
+
+    public AIDomainBuilder CanAffordTroop(string troopType)
+    {
+        var condition = new CanAffordTroopCondition(troopType);
+        Pointer.AddCondition(condition);
+        return this;
+    }
+
+    public AIDomainBuilder HasFreeBuildingSpot()
+    {
+        var condition = new HasFreeBuildingSpotCondition();
+        Pointer.AddCondition(condition);
+        return this;
+    }
+
+    public AIDomainBuilder HasIdleWorker()
+    {
+        var condition = new HasIdleWorkerCondition();
         Pointer.AddCondition(condition);
         return this;
     }

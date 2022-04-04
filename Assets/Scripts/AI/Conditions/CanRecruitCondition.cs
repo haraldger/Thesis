@@ -20,17 +20,6 @@ public class CanRecruitCondition : ICondition<int>
     {
         if (ctx is AIContext context)
         {
-            // Check resource constraints
-            var costs = Array.Find(Globals.TROOP_DATA, data => data.code == TroopType).costs;
-            foreach (var cost in costs)
-            {
-                if (!context.HasResources(cost.code, cost.value))
-                {
-                    if (context.LogDecomposition) context.Log(Name, $"Not enough resource {cost.code}", context.CurrentDecompositionDepth+1, this);
-                    return false;
-                }
-            }
-
             // Check building constraints
             var recruitingBuilding = Array.Find(Globals.BUILDING_DATA, data => data.recruitingOptions.Select(option => option.code).Contains(TroopType));
             var buildingType = recruitingBuilding.code;

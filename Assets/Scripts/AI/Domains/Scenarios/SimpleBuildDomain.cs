@@ -14,7 +14,8 @@ public class SimpleBuildDomain : AbstractDomain
     {
         var buildBarracksActionDomain = new AIDomainBuilder("Build Barracks Domain")
             .Action("Build Barracks")
-                .CanBuild("Barracks")
+                .CanAffordBuilding("Barracks")
+                .HasFreeBuildingSpot()
                 .Do(AIActions.BuildBarracks)
                 .BuyBuilding("Barracks")
                 .MakeBuildingSpotOccupied()
@@ -23,7 +24,8 @@ public class SimpleBuildDomain : AbstractDomain
 
         var buildFarmActionDomain = new AIDomainBuilder("Build Farm Domain")
             .Action("Build Farm")
-                .CanBuild("Farm")
+                .CanAffordBuilding("Farm")
+                .HasFreeBuildingSpot()
                 .Do(AIActions.BuildFarm)
                 .BuyBuilding("Farm")
                 .MakeBuildingSpotOccupied()

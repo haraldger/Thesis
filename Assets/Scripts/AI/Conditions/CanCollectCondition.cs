@@ -18,13 +18,6 @@ public class CanCollectCondition : ICondition<int>
     {
         if (ctx is AIContext context)
         {
-            // Check idle workers
-            if (context.GetState(AIWorldState.IdleWorkers) <= 0)
-            {
-                if (context.LogDecomposition) context.Log(Name, $"No idle workers to collect {ResourceType}", context.CurrentDecompositionDepth + 1, this);
-                return false;
-            }
-
             // Check existing resource collection spot
             if (AIManager.Instance.GetResourceSpotType(ResourceType) == null)
             {
