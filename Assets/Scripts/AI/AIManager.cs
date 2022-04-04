@@ -235,7 +235,7 @@ public class AIManager : MonoBehaviour
 
     public List<BuildingSpot> GetFreeBuildingSpots()
     {
-        return (List<BuildingSpot>)_buildingSpots.Where(buildingSpot => buildingSpot.Occupied == false);
+        return _buildingSpots.Where(buildingSpot => buildingSpot.Occupied == false).ToList();
     }
 
 }

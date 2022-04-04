@@ -9,26 +9,34 @@ public class CanBuildCondition : ICondition<int>
 
     public string BuildingType { get; }
 
-    public IList<CostValue> Costs { get; }
-
     public CanBuildCondition(string buildingType)
     {
         Name = $"Can build {buildingType}";
         BuildingType = buildingType;
-        Costs = Array.Find(Globals.BUILDING_DATA, data => data.code == buildingType).costs;
     }
 
     public bool IsValid(IContext<int> ctx)
     {
         if (ctx is AIContext context)
         {
+            // Check free building spot
             if (!context.HasFreeBuildingSpot())
             {
                 if (context.LogDecomposition) context.Log(Name, $"No free building spot", context.CurrentDecompositionDepth+1, this);
                 return false;
             }
 
-            foreach (var cost in Costs)
+            // Resource constraints
+            var costs = Array.Find(Globals.BUILDING_DATA, data => data.code == BuildingType).costs;
+
+            if (costs == null)
+            {
+                if (context.LogDecomposition) context.Log(Name, $"Costs uninitialised", context.CurrentDecompositionDepth + 1, this);
+                return false;
+
+            }
+
+            foreach (var cost in costs)
             {
                 if (!context.HasResources(cost.code, cost.value))
                 {

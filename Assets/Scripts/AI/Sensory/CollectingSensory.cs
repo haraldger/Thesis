@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Linq;
-using UnityEngine;
+using FluidHTN;
 
 public class CollectingSensory : ISensory
 {
@@ -20,7 +20,7 @@ public class CollectingSensory : ISensory
     public void SenseIdleWorkers()
     {
         int idleWorkers = IdleWorkers();
-        _context.SetState(AIWorldState.IdleWorkers, idleWorkers);
+        _context.SenseState(AIWorldState.IdleWorkers, idleWorkers);
     }
 
     private int IdleWorkers()

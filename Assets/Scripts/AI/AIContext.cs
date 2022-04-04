@@ -27,9 +27,9 @@ public class AIContext : BaseContext<int>
 {
     public override List<string> MTRDebug { get; set; } = null;
     public override List<string> LastMTRDebug { get; set; } = null;
-    public override bool DebugMTR { get; } = false;
+    public override bool DebugMTR { get; } = true;
     public override Queue<IBaseDecompositionLogEntry> DecompositionLog { get; set; } = null;
-    public override bool LogDecomposition { get; } = false;
+    public override bool LogDecomposition { get; } = true;
 
     public override IFactory Factory { get; set; } = new DefaultFactory();
 
@@ -60,6 +60,12 @@ public class AIContext : BaseContext<int>
         SetState((int)AIWorldState.Goal, (byte)goal, setAsDirty, effectType);
     }
 
+    public void SenseState(AIWorldState state, int value)
+    {
+        WorldState[(int)state] = value;
+        IsDirty = true;
+    }
+
     public void SetState(AIWorldState state, int value, EffectType type = EffectType.PlanAndExecute)
     {
         SetState((int)state, value, true, type);
@@ -67,10 +73,35 @@ public class AIContext : BaseContext<int>
 
     public int GetState(AIWorldState state)
     {
-        return GetState(state);
+        return GetState((int)state);
     }
 
-    public void AddResource(string resourceType, int amount)
+
+
+    // Resources
+
+    public void SenseResource(string resourceType, int amount)
+    {
+        switch (resourceType)
+        {
+            case "Gold":
+                SenseState(AIWorldState.AvailableGold, amount);
+                break;
+
+            case "Wood":
+                SenseState(AIWorldState.AvailableWood, amount);
+                break;
+
+            case "Food":
+                SenseState(AIWorldState.AvailableFood, amount);
+                break;
+
+            default:
+                throw new Exception($"Unexpected resource type {resourceType}");
+        }
+    }
+
+    public void AddResource(string resourceType, int amount, EffectType type = EffectType.PlanAndExecute)
     {
         int currentAmount;
         int newAmount;
@@ -80,24 +111,29 @@ public class AIContext : BaseContext<int>
             case "Gold":
                 currentAmount = GetState(AIWorldState.AvailableGold);
                 newAmount = currentAmount + amount;
-                SetState(AIWorldState.AvailableGold, newAmount);
+                SetState(AIWorldState.AvailableGold, newAmount, type);
                 break;
 
             case "Wood":
                 currentAmount = GetState(AIWorldState.AvailableWood);
                 newAmount = currentAmount + amount;
-                SetState(AIWorldState.AvailableWood, newAmount);
+                SetState(AIWorldState.AvailableWood, newAmount, type);
                 break;
 
             case "Food":
                 currentAmount = GetState(AIWorldState.AvailableFood);
                 newAmount = currentAmount + amount;
-                SetState(AIWorldState.AvailableFood, newAmount);
+                SetState(AIWorldState.AvailableFood, newAmount, type);
                 break;
 
             default:
                 throw new Exception($"Unexpected resource type {resourceType}");
         }
+    }
+
+    public void RemoveResource(string resourceType, int amount, EffectType type = EffectType.PlanAndExecute)
+    {
+        AddResource(resourceType, -amount, type);
     }
 
     public bool HasResources(string resourceType, int amount)
@@ -118,21 +154,20 @@ public class AIContext : BaseContext<int>
         }
     }
 
-    public void RemoveResource(string resourceType, int amount)
-    {
-        AddResource(resourceType, -amount);
-    }
 
-    public void MakeBuildingSpotFree()
+
+    // Building Spots
+
+    public void MakeBuildingSpotFree(EffectType type = EffectType.PlanAndExecute)
     {
         int currentFreeBuildingSpots = GetState(AIWorldState.FreeBuildingSpots);
-        SetState(AIWorldState.FreeBuildingSpots, currentFreeBuildingSpots+1);
+        SetState(AIWorldState.FreeBuildingSpots, currentFreeBuildingSpots+1, type);
     }
 
-    public void MakeBuildingSpotOccupied()
+    public void MakeBuildingSpotOccupied(EffectType type = EffectType.PlanAndExecute)
     {
         int currentFreeBuildingSpots = GetState(AIWorldState.FreeBuildingSpots);
-        SetState(AIWorldState.FreeBuildingSpots, currentFreeBuildingSpots-1);
+        SetState(AIWorldState.FreeBuildingSpots, currentFreeBuildingSpots-1, type);
     }
 
     public bool HasFreeBuildingSpot()
@@ -140,16 +175,20 @@ public class AIContext : BaseContext<int>
         return GetState(AIWorldState.FreeBuildingSpots) > 0;
     }
 
-    public void MakeWorkerIdle()
+
+
+    // Workers
+
+    public void MakeWorkerIdle(EffectType type = EffectType.PlanAndExecute)
     {
         int currentIdleWorkers = GetState(AIWorldState.IdleWorkers);
-        SetState(AIWorldState.IdleWorkers, currentIdleWorkers+1);
+        SetState(AIWorldState.IdleWorkers, currentIdleWorkers+1, type);
     }
 
-    public void MakeWorkerBusy()
+    public void MakeWorkerBusy(EffectType type = EffectType.PlanAndExecute)
     {
         int currentIdleWorkers = GetState(AIWorldState.IdleWorkers);
-        SetState(AIWorldState.IdleWorkers, currentIdleWorkers-1);
+        SetState(AIWorldState.IdleWorkers, currentIdleWorkers-1, type);
     }
 
     public bool HasIdleWorker()

@@ -11,6 +11,7 @@ public class AISenses
         _senses["Building"] = new BuildingSensory(_context);
         _senses["Recruiting"] = new RecruitingSensory(_context);
         _senses["Collecting"] = new CollectingSensory(_context);
+        _senses["Resources"] = new ResourceSensory(_context);
     }
 
     public void Tick()

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using FluidHTN;
 
 public class BuildingSensory : ISensory
 {
@@ -20,7 +21,7 @@ public class BuildingSensory : ISensory
     private void SenseFreeBuildingSpots()
     {
         int freeBuildingSpots = AIManager.Instance.GetFreeBuildingSpots().Count;
-        _context.SetState(AIWorldState.FreeBuildingSpots, freeBuildingSpots);
+        _context.SenseState(AIWorldState.FreeBuildingSpots, freeBuildingSpots);
     }
 
     private bool FreeBuildingSpot()

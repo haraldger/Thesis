@@ -7,6 +7,7 @@ public static class PrimitiveActions
         .Action("Build Barracks")
             .CanBuild("Barracks")
             .Do(AIActions.BuildBarracks)
+            .BuyBuilding("Barracks")
         .End()
         .Build();
 
@@ -14,6 +15,7 @@ public static class PrimitiveActions
         .Action("Build Farm")
             .CanBuild("Farm")
             .Do(AIActions.BuildFarm)
+            .BuyBuilding("Farm")
         .End()
         .Build();
 
@@ -21,47 +23,51 @@ public static class PrimitiveActions
         .Action("Build Citadel")
             .CanBuild("Citadel")
             .Do(AIActions.BuildCitadel)
+            .BuyBuilding("Citadel")
         .End()
         .Build();
 
     public static Domain<AIContext, int> RecruitSwordsmanAction = new AIDomainBuilder("Recruit Swordsman Primitive Action")
         .Action("Recruit Swordsman")
-            .Condition("Can recruit swordsman", ctx => ctx.HasState(AIWorldState.CanRecruitSwordsman))
+            .CanRecruit("Swordsman")
             .Do(AIActions.RecruitSwordsman)
+            .BuyTroop("Swordsman")
         .End()
         .Build();
 
     public static Domain<AIContext, int> RecruitRangerAction = new AIDomainBuilder("Recruit Ranger Primitive Action")
         .Action("Recruit Ranger")
-            .Condition("Can recruit ranger", ctx => ctx.HasState(AIWorldState.CanRecruitRanger))
+            .CanRecruit("Ranger")
             .Do(AIActions.RecruitRanger)
+            .BuyTroop("Ranger")
         .End()
         .Build();
 
     public static Domain<AIContext, int> RecruitWorkerAction = new AIDomainBuilder("Recruit Worker Primitive Action")
         .Action("Recruit Worker")
-            .Condition("Can recruit worker", ctx => ctx.HasState(AIWorldState.CanRecruitWorker))
+            .CanRecruit("Worker")
             .Do(AIActions.RecruitWorker)
+            .BuyTroop("Worker")
         .End()
         .Build();
 
     public static Domain<AIContext, int> CollectGoldAction = new AIDomainBuilder("Collect Gold Primitive Action")
         .Action("Collect Gold")
-            .Condition("Can collect gold", ctx => ctx.HasState(AIWorldState.CanCollectGold))
+            .CanCollect("Gold")
             .Do(AIActions.CollectGold)
         .End()
         .Build();
 
     public static Domain<AIContext, int> CollectWoodAction = new AIDomainBuilder("Collect Wood Primitive Action")
         .Action("Collect Wood")
-            .Condition("Can collect wood", ctx => ctx.HasState(AIWorldState.CanCollectWood))
+            .CanCollect("Wood")
             .Do(AIActions.CollectWood)
         .End()
         .Build();
 
     public static Domain<AIContext, int> CollectFoodAction = new AIDomainBuilder("Collect Food Primitive Action")
         .Action("Collect Food")
-            .Condition("Can collect food", ctx => ctx.HasState(AIWorldState.CanCollectFood))
+            .CanCollect("Food")
             .Do(AIActions.CollectFood)
         .End()
         .Build();
