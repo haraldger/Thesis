@@ -50,7 +50,7 @@ public class BuildingSensory : ISensory
         // Check resource constraints
         foreach (var cost in building.costs)
         {
-            if (_resourceData[cost.code].CanConsumeResource(cost.value)) return false;
+            if (!_resourceData[cost.code].CanConsumeResource(cost.value)) return false;
         }
 
         return true;
