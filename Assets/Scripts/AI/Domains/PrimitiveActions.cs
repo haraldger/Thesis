@@ -51,6 +51,7 @@ public static class PrimitiveActions
             .CanRecruit("Worker")
             .Do(AIActions.RecruitWorker)
             .BuyTroop("Worker")
+            .MakeWorkerIdle()
         .End()
         .Build();
 
