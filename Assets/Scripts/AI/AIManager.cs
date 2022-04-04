@@ -13,8 +13,8 @@ public class AIManager : MonoBehaviour
     public static AIManager Instance { get; private set; } // this
 
     public GameObject Domain;
-    private Domain<AIContext> _domain;
-    private Planner<AIContext> _planner;
+    private Domain<AIContext, int> _domain;
+    private Planner<AIContext, int> _planner;
     private AIContext _context;
     private AISenses _senses;
 
@@ -36,7 +36,7 @@ public class AIManager : MonoBehaviour
     void Start()
     {
         _domain = Domain.GetComponent<AbstractDomain>().Domain;
-        _planner = new Planner<AIContext>();
+        _planner = new Planner<AIContext, int>();
         _context = new AIContext();
         _context.Init();
         _senses = new AISenses(_context);
@@ -181,14 +181,13 @@ public class AIManager : MonoBehaviour
     // Collect resources of the given type
     public TaskStatus CollectResource(string resourceType)
     {
+        // Initial condition checking
+        if (!_senses.CanCollectResource(resourceType)) return TaskStatus.Failure;
+
         // Get Data
 
         WorkerController worker = _context.GetIdleWorker();
-        if (worker == null) return TaskStatus.Failure;
-
         ResourceSpot resourceSpot = GetResourceSpotType(resourceType);
-        if (resourceSpot == null) return TaskStatus.Failure;
-
 
         // Issue collection command
 
@@ -232,6 +231,11 @@ public class AIManager : MonoBehaviour
             if (!buildingSpot.Occupied) return buildingSpot;
         }
         return null;
+    }
+
+    public List<BuildingSpot> GetFreeBuildingSpots()
+    {
+        return (List<BuildingSpot>)_buildingSpots.Where(buildingSpot => buildingSpot.Occupied == false);
     }
 
 }

@@ -10,15 +10,11 @@ using FluidHTN.Factory;
 public enum AIWorldState
 {
     Goal,
-    CanBuildBarracks,
-    CanBuildFarm,
-    CanBuildCitadel,
-    CanRecruitSwordsman,
-    CanRecruitRanger,
-    CanRecruitWorker,
-    CanCollectGold,
-    CanCollectFood,
-    CanCollectWood
+    AvailableWood,
+    AvailableGold,
+    AvailableFood,
+    IdleWorkers,
+    FreeBuildingSpots
 }
 
 public enum GoalState
@@ -27,7 +23,7 @@ public enum GoalState
     BuildBarracks
 }
 
-public class AIContext : BaseContex<int>
+public class AIContext : BaseContext<int>
 {
     public override List<string> MTRDebug { get; set; } = null;
     public override List<string> LastMTRDebug { get; set; } = null;
@@ -64,29 +60,101 @@ public class AIContext : BaseContex<int>
         SetState((int)AIWorldState.Goal, (byte)goal, setAsDirty, effectType);
     }
 
-    public bool HasState(AIWorldState state, bool value)
+    public void SetState(AIWorldState state, int value, EffectType type = EffectType.PlanAndExecute)
     {
-        return HasState((int)state, (byte)(value ? 1 : 0));
+        SetState((int)state, value, true, type);
     }
 
-    public bool HasState(AIWorldState state)
+    public int GetState(AIWorldState state)
     {
-        return HasState((int)state, 1);
+        return GetState(state);
     }
 
-    public void SetState(AIWorldState state)
+    public void AddResource(string resourceType, int amount)
     {
-        SetState(state, true);
+        int currentAmount;
+        int newAmount;
+
+        switch (resourceType)
+        {
+            case "Gold":
+                currentAmount = GetState(AIWorldState.AvailableGold);
+                newAmount = currentAmount + amount;
+                SetState(AIWorldState.AvailableGold, newAmount);
+                break;
+
+            case "Wood":
+                currentAmount = GetState(AIWorldState.AvailableWood);
+                newAmount = currentAmount + amount;
+                SetState(AIWorldState.AvailableWood, newAmount);
+                break;
+
+            case "Food":
+                currentAmount = GetState(AIWorldState.AvailableFood);
+                newAmount = currentAmount + amount;
+                SetState(AIWorldState.AvailableFood, newAmount);
+                break;
+
+            default:
+                throw new Exception($"Unexpected resource type {resourceType}");
+        }
     }
 
-    public void SetState(AIWorldState state, bool value, EffectType type = EffectType.PlanAndExecute)
+    public bool HasResources(string resourceType, int amount)
     {
-        SetState((int)state, (byte)(value ? 1 : 0), true, type);
+        switch (resourceType)
+        {
+            case "Gold":
+                return GetState(AIWorldState.AvailableGold) >= amount;
+
+            case "Wood":
+                return GetState(AIWorldState.AvailableWood) >= amount;
+
+            case "Food":
+                return GetState(AIWorldState.AvailableFood) >= amount;
+
+            default:
+                throw new Exception($"Unexpected resource type {resourceType}");
+        }
     }
 
-    public byte GetState(AIWorldState state)
+    public void RemoveResource(string resourceType, int amount)
     {
-        return GetState((int)state);
+        AddResource(resourceType, -amount);
+    }
+
+    public void MakeBuildingSpotFree()
+    {
+        int currentFreeBuildingSpots = GetState(AIWorldState.FreeBuildingSpots);
+        SetState(AIWorldState.FreeBuildingSpots, currentFreeBuildingSpots+1);
+    }
+
+    public void MakeBuildingSpotOccupied()
+    {
+        int currentFreeBuildingSpots = GetState(AIWorldState.FreeBuildingSpots);
+        SetState(AIWorldState.FreeBuildingSpots, currentFreeBuildingSpots-1);
+    }
+
+    public bool HasFreeBuildingSpot()
+    {
+        return GetState(AIWorldState.FreeBuildingSpots) > 0;
+    }
+
+    public void MakeWorkerIdle()
+    {
+        int currentIdleWorkers = GetState(AIWorldState.IdleWorkers);
+        SetState(AIWorldState.IdleWorkers, currentIdleWorkers+1);
+    }
+
+    public void MakeWorkerBusy()
+    {
+        int currentIdleWorkers = GetState(AIWorldState.IdleWorkers);
+        SetState(AIWorldState.IdleWorkers, currentIdleWorkers-1);
+    }
+
+    public bool HasIdleWorker()
+    {
+        return GetState(AIWorldState.IdleWorkers) > 0;
     }
 
 

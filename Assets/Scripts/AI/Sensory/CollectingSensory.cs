@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using UnityEngine;
 
 public class CollectingSensory : ISensory
@@ -11,44 +12,30 @@ public class CollectingSensory : ISensory
 
     public void Tick()
     {
-        SetCanCollectGold();
-        SetCanCollectWood();
-        SetCanCollectFood();
+        SenseIdleWorkers();
     }
 
     //--------------------------------------- Internal Routines
 
-    private void SetCanCollectGold()
+    public void SenseIdleWorkers()
     {
-        _context.SetState(AIWorldState.CanCollectGold, CanCollectResource("Gold"));
+        int idleWorkers = IdleWorkers();
+        _context.SetState(AIWorldState.IdleWorkers, idleWorkers);
     }
 
-    private void SetCanCollectWood()
+    private int IdleWorkers()
     {
-        _context.SetState(AIWorldState.CanCollectWood, CanCollectResource("Wood"));
+        var workers = Globals.EXISTING_UNITS.Keys.Where(unit => unit.Data.code == "Worker").Cast<WorkerController>();
+        int idleWorkers = workers.Where(worker => worker.CollectingTarget == null).Count();
+        return idleWorkers;
     }
-
-    private void SetCanCollectFood()
-    {
-        _context.SetState(AIWorldState.CanCollectFood, CanCollectResource("Food"));
-    }
-
 
     //--------------------------------------- Public Sensory Getters
 
     public bool CanCollectResource(string resourceType)
     {
-        // Check for available worker
-        if (_context.GetIdleWorker() == null)
-        {
-            return false;
-        }
-
-        // Check for available resource spot
-        if (AIManager.Instance.GetResourceSpotType(resourceType) == null)
-        {
-            return false;
-        }
+        if (AIManager.Instance.GetResourceSpotType(resourceType) == null) return false;
+        if (IdleWorkers() <= 0) return false;
 
         return true;
     }

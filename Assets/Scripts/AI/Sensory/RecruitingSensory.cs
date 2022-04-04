@@ -16,27 +16,12 @@ public class RecruitingSensory : ISensory
 
     public void Tick()
     {
-        SetCanRecruitSwordsman();
-        SetCanRecruitRanger();
-        SetCanRecruitWorker();
+        
     }
 
     //--------------------------------------- Internal routines
 
-    private void SetCanRecruitSwordsman()
-    {
-        _context.SetState(AIWorldState.CanRecruitSwordsman, CanRecruitTroop("Swordsman"));
-    }
-
-    private void SetCanRecruitRanger()
-    {
-        _context.SetState(AIWorldState.CanRecruitRanger, CanRecruitTroop("Ranger"));
-    }
-
-    private void SetCanRecruitWorker()
-    {
-        _context.SetState(AIWorldState.CanRecruitWorker, CanRecruitTroop("Worker"));
-    }
+    
 
 
     //--------------------------------------- Public sensory getters
@@ -49,8 +34,10 @@ public class RecruitingSensory : ISensory
         {
             troop = Array.Find(_troopData, data => data.code == troopType);
         }
-        catch (ArgumentNullException)    // Troop type doesn't exist
+        catch (ArgumentNullException ex)    // Troop type doesn't exist
         {
+            Debug.Log($"No troop type {troopType} found in global storage.");
+            Debug.Log(ex.StackTrace);
             return false;
         }
 
@@ -69,15 +56,15 @@ public class RecruitingSensory : ISensory
         {
             requiredBuilding = _buildingData.First(building => building.recruitingOptions.Where(availableTroop => availableTroop == troop).Any()).code;
         }
-        catch (InvalidOperationException)
+        catch (InvalidOperationException ex)
         {
+            Debug.Log($"Couldn't find required building for given troop type in global storage.");
+            Debug.Log(ex.StackTrace);
             return false;
         }
 
-        if (!_context.HasBuildingType(requiredBuilding))
-        {
-            return false;
-        }
+        var existingUnits = Globals.EXISTING_UNITS.Keys;
+        if (!existingUnits.Where(unit => unit.Data.code == requiredBuilding).Any()) return false;
 
 
         return true;

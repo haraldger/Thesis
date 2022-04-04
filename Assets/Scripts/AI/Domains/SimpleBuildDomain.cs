@@ -3,30 +3,30 @@ using FluidHTN;
 
 public class SimpleBuildDomain : AbstractDomain
 {
-    public override Domain<AIContext> Domain { get; set; } 
+    public override Domain<AIContext, int> Domain { get; set; } 
 
     void Awake()
     {
         Domain = DefineDomain();
     }
 
-    private Domain<AIContext> DefineDomain()
+    private Domain<AIContext, int> DefineDomain()
     {
-        var buildBarracksActionDomain = new DomainBuilder<AIContext>("Build Barracks Domain")
+        var buildBarracksActionDomain = new AIDomainBuilder("Build Barracks Domain")
             .Action("Build Barracks")
-                .Condition("Can build barracks", ctx => ctx.HasState(AIWorldState.CanBuildBarracks))
+                .CanBuild("Barracks")
                 .Do(AIActions.BuildBarracks)
             .End()
             .Build();
 
-        var buildFarmActionDomain = new DomainBuilder<AIContext>("Build Farm Domain")
+        var buildFarmActionDomain = new AIDomainBuilder("Build Farm Domain")
             .Action("Build Farm")
-                .Condition("Can build farm", ctx => ctx.HasState(AIWorldState.CanBuildFarm))
+                .CanBuild("Farm")
                 .Do(AIActions.BuildFarm)
             .End()
             .Build();
 
-        return new DomainBuilder<AIContext>("Simple Build Domain")
+        return new AIDomainBuilder("Simple Build Domain")
             .Sequence("Build 2 barracks and 2 farms")
                 .Splice(buildBarracksActionDomain)
                 .Splice(buildBarracksActionDomain)

@@ -12,26 +12,15 @@ public class BuildingSensory : ISensory
 
     public void Tick()
     {
-        SetCanBuildBarracks();
-        SetCanBuildFarm();
-        SetCanBuildCitadel();
+        SenseFreeBuildingSpots();
     }
 
     //--------------------------------------- Internal routines
 
-    private void SetCanBuildBarracks()
+    private void SenseFreeBuildingSpots()
     {
-        _context.SetState(AIWorldState.CanBuildBarracks, CanBuildBuilding("Barracks"));
-    }
-
-    private void SetCanBuildFarm()
-    {
-        _context.SetState(AIWorldState.CanBuildFarm, CanBuildBuilding("Farm"));
-    }
-
-    private void SetCanBuildCitadel()
-    {
-        _context.SetState(AIWorldState.CanBuildCitadel, CanBuildBuilding("Citadel"));
+        int freeBuildingSpots = AIManager.Instance.GetFreeBuildingSpots().Count;
+        _context.SetState(AIWorldState.FreeBuildingSpots, freeBuildingSpots);
     }
 
     private bool FreeBuildingSpot()

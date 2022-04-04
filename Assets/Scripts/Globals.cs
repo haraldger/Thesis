@@ -13,7 +13,5 @@ public class Globals
 
     public static TroopData[] TROOP_DATA;
 
-    public static WorkerData[] WORKER_DATA;
-
     public static IDictionary<UnitController, GameUnit> EXISTING_UNITS = new Dictionary<UnitController, GameUnit>();
 }
