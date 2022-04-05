@@ -15,15 +15,16 @@ public class HasFreeBuildingSpotCondition : ICondition<int>
     {
         if (ctx is AIContext context)
         {
+            bool result = true;
+
             // Check free building spot
             if (!context.HasFreeBuildingSpot())
             {
-                if (context.LogDecomposition) context.Log(Name, $"No free building spot", context.CurrentDecompositionDepth + 1, this);
-                return false;
+                result = false;
             }
 
-            if (context.LogDecomposition) context.Log(Name, $"HasFreeBuildingSpotCondition.IsValid:true", context.CurrentDecompositionDepth + 1, this);
-            return true;
+            if (context.LogDecomposition) context.Log(Name, $"HasFreeBuildingSpotCondition.IsValid:{result}", context.CurrentDecompositionDepth + 1, this);
+            return result;
         }
 
         throw new Exception($"Unexpected context type {ctx}");

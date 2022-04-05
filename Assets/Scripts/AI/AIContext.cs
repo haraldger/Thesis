@@ -13,8 +13,13 @@ public enum AIWorldState
     AvailableWood,
     AvailableGold,
     AvailableFood,
+    GoldCollectionRate,
+    WoodCollectionRate,
+    FoodCollectionRate,
     IdleWorkers,
-    FreeBuildingSpots
+    BusyWorkers,
+    FreeBuildingSpots,
+    OccupiedBuildingSpots
 }
 
 public enum GoalState
@@ -148,6 +153,85 @@ public class AIContext : BaseContext<int>
 
             case "Food":
                 return GetState(AIWorldState.AvailableFood) >= amount;
+
+            default:
+                throw new Exception($"Unexpected resource type {resourceType}");
+        }
+    }
+
+
+    // Collection rates
+    // This keeps tracks of the expected incoming rate of resources, based
+    // on number of workers assigned to a collection task
+
+    public void AddCollector(string resourceType)
+    {
+        WorkerData data = (WorkerData)Array.Find(Globals.TROOP_DATA, data => data.code == "Worker");
+        int collectionRate = data.collectionAmount / data.collectionSpeed;
+
+        int currentTotalRate;
+        switch (resourceType)
+        {
+            case "Gold":
+                currentTotalRate = GetState(AIWorldState.GoldCollectionRate);
+                SetState(AIWorldState.GoldCollectionRate, currentTotalRate + collectionRate);
+                break;
+
+            case "Wood":
+                currentTotalRate = GetState(AIWorldState.WoodCollectionRate);
+                SetState(AIWorldState.WoodCollectionRate, currentTotalRate + collectionRate);
+                break;
+
+            case "Food":
+                currentTotalRate = GetState(AIWorldState.FoodCollectionRate);
+                SetState(AIWorldState.FoodCollectionRate, currentTotalRate + collectionRate);
+                break;
+
+            default:
+                throw new Exception($"Unexpected resource type {resourceType}");
+        }
+    }
+
+    public void RemoveCollector(string resourceType)
+    {
+        WorkerData data = (WorkerData)Array.Find(Globals.TROOP_DATA, data => data.code == "Worker");
+        int collectionRate = data.collectionAmount / data.collectionSpeed;
+
+        int currentTotalRate;
+        switch (resourceType)
+        {
+            case "Gold":
+                currentTotalRate = GetState(AIWorldState.GoldCollectionRate);
+                SetState(AIWorldState.GoldCollectionRate, currentTotalRate + collectionRate);
+                break;
+
+            case "Wood":
+                currentTotalRate = GetState(AIWorldState.WoodCollectionRate);
+                SetState(AIWorldState.WoodCollectionRate, currentTotalRate + collectionRate);
+                break;
+
+            case "Food":
+                currentTotalRate = GetState(AIWorldState.FoodCollectionRate);
+                SetState(AIWorldState.FoodCollectionRate, currentTotalRate + collectionRate);
+                break;
+
+            default:
+                throw new Exception($"Unexpected resource type {resourceType}");
+        }
+    }
+
+    public int GetCollectionRate(string resourceType)
+    {
+        switch (resourceType)
+        {
+            case "Gold":
+                return GetState(AIWorldState.GoldCollectionRate);
+
+            case "Wood":
+                return GetState(AIWorldState.WoodCollectionRate);
+
+            case "Food":
+                return GetState(AIWorldState.FoodCollectionRate);
 
             default:
                 throw new Exception($"Unexpected resource type {resourceType}");

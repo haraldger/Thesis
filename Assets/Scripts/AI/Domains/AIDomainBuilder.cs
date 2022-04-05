@@ -9,6 +9,9 @@ public class AIDomainBuilder : BaseDomainBuilder<AIDomainBuilder, AIContext, int
     {
     }
 
+
+    //============================================================== CONDITIONS
+
     public AIDomainBuilder CanRecruit(string troopType)
     {
         var condition = new CanRecruitCondition(troopType);
@@ -50,6 +53,16 @@ public class AIDomainBuilder : BaseDomainBuilder<AIDomainBuilder, AIContext, int
         Pointer.AddCondition(condition);
         return this;
     }
+
+    public AIDomainBuilder IsCollecting(string resourceType)
+    {
+        var condition = new IsCollectingCondition(resourceType);
+        Pointer.AddCondition(condition);
+        return this;
+    }
+
+
+    //============================================================== EFFECTS
 
     public AIDomainBuilder BuyTroop(string troopType, EffectType type = EffectType.PlanAndExecute)
     {
@@ -108,6 +121,22 @@ public class AIDomainBuilder : BaseDomainBuilder<AIDomainBuilder, AIContext, int
             var effect = new MakeBuildingSpotOccupiedEffect(type);
             task.AddEffect(effect);
         }
+        return this;
+    }
+
+
+    //============================================================== ACTIONS
+
+    public AIDomainBuilder WaitForResources(string unitType)
+    {
+        var costs = Array.Find(Globals.UNIT_DATA, data => data.code == unitType).costs;
+        foreach (var cost in costs)
+        {
+            Action($"Wait for {cost.code}");
+            IsCollecting(cost.code);
+
+        }
+
         return this;
     }
 
