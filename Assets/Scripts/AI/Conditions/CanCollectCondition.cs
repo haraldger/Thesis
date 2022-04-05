@@ -18,15 +18,16 @@ public class CanCollectCondition : ICondition<int>
     {
         if (ctx is AIContext context)
         {
+            bool result = true;
+
             // Check existing resource collection spot
             if (AIManager.Instance.GetResourceSpotType(ResourceType) == null)
             {
-                if (context.LogDecomposition) context.Log(Name, $"No {ResourceType} to collect", context.CurrentDecompositionDepth + 1, this);
-                return false;
+                result = false;
             }
 
-            if (context.LogDecomposition) context.Log(Name, $"CanCollectCondition.IsValid:true", context.CurrentDecompositionDepth + 1, this);
-            return true;
+            if (context.LogDecomposition) context.Log(Name, $"CanCollectCondition.IsValid({ResourceType}):{result}", context.CurrentDecompositionDepth + 1, this);
+            return result;
         }
 
         throw new Exception($"Unexpected context type {ctx}");

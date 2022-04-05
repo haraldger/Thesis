@@ -285,12 +285,24 @@ public class AIContext : BaseContext<int>
     {
         int currentIdleWorkers = GetState(AIWorldState.IdleWorkers);
         SetState(AIWorldState.IdleWorkers, currentIdleWorkers+1, type);
+
+        int currentBusyWorkers = GetState(AIWorldState.BusyWorkers);
+        SetState(AIWorldState.BusyWorkers, currentBusyWorkers-1);
+    }
+
+    public void AddNewWorker(EffectType type = EffectType.PlanAndExecute)
+    {
+        int currentIdleWorkers = GetState(AIWorldState.IdleWorkers);
+        SetState(AIWorldState.IdleWorkers, currentIdleWorkers + 1, type);
     }
 
     public void MakeWorkerBusy(EffectType type = EffectType.PlanAndExecute)
     {
         int currentIdleWorkers = GetState(AIWorldState.IdleWorkers);
         SetState(AIWorldState.IdleWorkers, currentIdleWorkers-1, type);
+
+        int currentBusyWorkers = GetState(AIWorldState.BusyWorkers);
+        SetState(AIWorldState.BusyWorkers, currentBusyWorkers+1);
     }
 
     public bool HasIdleWorker()
@@ -350,6 +362,12 @@ public class AIContext : BaseContext<int>
     public WorkerController GetIdleWorker()
     {
         return _workers.FirstOrDefault(worker => worker.CollectingTarget == null);
+    }
+
+    // Returns a busy worker
+    public WorkerController GetBusyWorker()
+    {
+        return _workers.FirstOrDefault(worker => worker.CollectingTarget != null);
     }
 
 }

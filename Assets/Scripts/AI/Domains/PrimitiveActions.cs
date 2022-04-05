@@ -64,6 +64,7 @@ public static class PrimitiveActions
     public static Domain<AIContext, int> CollectGoldAction = new AIDomainBuilder("Collect Gold Primitive Action")
         .Action("Collect Gold")
             .CanCollect("Gold")
+            .HasIdleWorker()
             .Do(AIActions.CollectGold)
             .MakeWorkerBusy()
         .End()
