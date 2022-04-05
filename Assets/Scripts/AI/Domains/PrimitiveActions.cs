@@ -67,6 +67,7 @@ public static class PrimitiveActions
             .HasIdleWorker()
             .Do(AIActions.CollectGold)
             .MakeWorkerBusy()
+            .AddCollector("Gold")
         .End()
         .Build();
 
@@ -76,6 +77,7 @@ public static class PrimitiveActions
             .HasIdleWorker()
             .Do(AIActions.CollectWood)
             .MakeWorkerBusy()
+            .AddCollector("Wood")
         .End()
         .Build();
 
@@ -85,6 +87,7 @@ public static class PrimitiveActions
             .HasIdleWorker()
             .Do(AIActions.CollectFood)
             .MakeWorkerBusy()
+            .AddCollector("Food")
         .End()
         .Build();
 

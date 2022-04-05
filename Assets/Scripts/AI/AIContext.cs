@@ -182,7 +182,7 @@ public class AIContext : BaseContext<int>
     // This keeps tracks of the expected incoming rate of resources, based
     // on number of workers assigned to a collection task
 
-    public void AddCollector(string resourceType)
+    public void AddCollector(string resourceType, EffectType type = EffectType.PlanAndExecute)
     {
         WorkerData data = (WorkerData)Array.Find(Globals.TROOP_DATA, data => data.code == "Worker");
         int collectionRate = data.collectionAmount / data.collectionSpeed;
@@ -192,17 +192,17 @@ public class AIContext : BaseContext<int>
         {
             case "Gold":
                 currentTotalRate = GetState(AIWorldState.GoldCollectionRate);
-                SetState(AIWorldState.GoldCollectionRate, currentTotalRate + collectionRate);
+                SetState(AIWorldState.GoldCollectionRate, currentTotalRate + collectionRate, type);
                 break;
 
             case "Wood":
                 currentTotalRate = GetState(AIWorldState.WoodCollectionRate);
-                SetState(AIWorldState.WoodCollectionRate, currentTotalRate + collectionRate);
+                SetState(AIWorldState.WoodCollectionRate, currentTotalRate + collectionRate, type);
                 break;
 
             case "Food":
                 currentTotalRate = GetState(AIWorldState.FoodCollectionRate);
-                SetState(AIWorldState.FoodCollectionRate, currentTotalRate + collectionRate);
+                SetState(AIWorldState.FoodCollectionRate, currentTotalRate + collectionRate, type);
                 break;
 
             default:
@@ -210,7 +210,7 @@ public class AIContext : BaseContext<int>
         }
     }
 
-    public void RemoveCollector(string resourceType)
+    public void RemoveCollector(string resourceType, EffectType type = EffectType.PlanAndExecute)
     {
         WorkerData data = (WorkerData)Array.Find(Globals.TROOP_DATA, data => data.code == "Worker");
         int collectionRate = data.collectionAmount / data.collectionSpeed;
@@ -220,17 +220,17 @@ public class AIContext : BaseContext<int>
         {
             case "Gold":
                 currentTotalRate = GetState(AIWorldState.GoldCollectionRate);
-                SetState(AIWorldState.GoldCollectionRate, currentTotalRate + collectionRate);
+                SetState(AIWorldState.GoldCollectionRate, currentTotalRate + collectionRate, type);
                 break;
 
             case "Wood":
                 currentTotalRate = GetState(AIWorldState.WoodCollectionRate);
-                SetState(AIWorldState.WoodCollectionRate, currentTotalRate + collectionRate);
+                SetState(AIWorldState.WoodCollectionRate, currentTotalRate + collectionRate, type);
                 break;
 
             case "Food":
                 currentTotalRate = GetState(AIWorldState.FoodCollectionRate);
-                SetState(AIWorldState.FoodCollectionRate, currentTotalRate + collectionRate);
+                SetState(AIWorldState.FoodCollectionRate, currentTotalRate + collectionRate, type);
                 break;
 
             default:

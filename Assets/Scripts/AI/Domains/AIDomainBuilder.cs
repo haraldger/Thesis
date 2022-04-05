@@ -103,6 +103,26 @@ public class AIDomainBuilder : BaseDomainBuilder<AIDomainBuilder, AIContext, int
         return this;
     }
 
+    public AIDomainBuilder AddCollector(string resourceType, EffectType type = EffectType.PlanAndExecute)
+    {
+        if (Pointer is IPrimitiveTask<int> task)
+        {
+            var effect = new AddCollectorEffect(resourceType, type);
+            task.AddEffect(effect);
+        }
+        return this;
+    }
+
+    public AIDomainBuilder RemoveCollector(string resourceType, EffectType type = EffectType.PlanAndExecute)
+    {
+        if (Pointer is IPrimitiveTask<int> task)
+        {
+            var effect = new RemoveCollectorEffect(resourceType, type);
+            task.AddEffect(effect);
+        }
+        return this;
+    }
+
 
     // Workers
 
@@ -187,7 +207,7 @@ public class AIDomainBuilder : BaseDomainBuilder<AIDomainBuilder, AIContext, int
         HasBusyWorker();
         if (Pointer is IPrimitiveTask<int> task)
         {
-
+            task.SetOperator(new UnassignWorkerOperator());
         }
         MakeWorkerIdle();
         End();

@@ -195,6 +195,16 @@ public class AIManager : MonoBehaviour
         return TaskStatus.Success;
     }
 
+    // Unassign a worker from collecting, making it idle
+    public TaskStatus UnassignWorker()
+    {
+        var busyWorker = _context.GetBusyWorker();
+        if (busyWorker == null) return TaskStatus.Failure;
+
+        busyWorker.StopCommand();
+        return TaskStatus.Success;
+    }
+
 
 
     //-------------------------------------- Utility methods

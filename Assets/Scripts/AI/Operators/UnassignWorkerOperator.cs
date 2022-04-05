@@ -10,12 +10,16 @@ public class UnassignWorkerOperator : IOperator<int>
 
     public void Stop(IContext<int> ctx)
     {
-        throw new NotImplementedException();
     }
 
     public TaskStatus Update(IContext<int> ctx)
     {
-        throw new NotImplementedException();
+        if (ctx is AIContext)
+        {
+            return AIManager.Instance.UnassignWorker();
+        }
+
+        throw new Exception($"Unexpected context type {ctx}");
     }
 }
 
