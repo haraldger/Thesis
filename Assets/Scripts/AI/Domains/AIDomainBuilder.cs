@@ -124,19 +124,33 @@ public class AIDomainBuilder : BaseDomainBuilder<AIDomainBuilder, AIContext, int
         return this;
     }
 
+    public AIDomainBuilder ReceiveResources(string resourceType, int amount, EffectType type = EffectType.PlanAndExecute)
+    {
+        if (Pointer is IPrimitiveTask<int> task)
+        {
+            var effect = new ReceiveResourcesEffect(resourceType, amount, type);
+            task.AddEffect(effect);
+        }
+        return this;
+    }
+
 
     //============================================================== ACTIONS
 
-    public AIDomainBuilder WaitForResources(string unitType)
+    public AIDomainBuilder WaitForResources(string unitType, EffectType type = EffectType.PlanAndExecute)
     {
         var costs = Array.Find(Globals.UNIT_DATA, data => data.code == unitType).costs;
         foreach (var cost in costs)
         {
             Action($"Wait for {cost.code}");
             IsCollecting(cost.code);
-
+            if (Pointer is IPrimitiveTask<int> task)
+            {
+                task.SetOperator(new WaitForResourcesOperator(cost.code, cost.value));
+            }
+            ReceiveResources(cost.code, cost.value, type);
+            End();
         }
-
         return this;
     }
 

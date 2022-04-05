@@ -141,6 +141,24 @@ public class AIContext : BaseContext<int>
         AddResource(resourceType, -amount, type);
     }
 
+    public int GetResource(string resourceType)
+    {
+        switch (resourceType)
+        {
+            case "Gold":
+                return GetState(AIWorldState.AvailableGold);
+
+            case "Wood":
+                return GetState(AIWorldState.AvailableWood);
+
+            case "Food":
+                return GetState(AIWorldState.AvailableFood);
+
+            default:
+                throw new Exception($"Unexpected resource type {resourceType}");
+        }
+    }
+
     public bool HasResources(string resourceType, int amount)
     {
         switch (resourceType)
