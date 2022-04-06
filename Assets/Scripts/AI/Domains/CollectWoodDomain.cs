@@ -5,16 +5,20 @@ public static class CollectWoodDomain
 {
     public static Domain<AIContext, int> Create()
     {
+        /// DO NOT USE SPLICING OF COMPLEX DOMAINS
+        /// Only splice primitive actions, in order to avoid infinite loops
         return new AIDomainBuilder("Collect Wood Domain")
             .Select("Collect Wood")
+                .CanCollect("Wood")
+
                 .Splice(PrimitiveActions.CollectWoodAction)
-                .Sequence("Buy worker and collect wood")
-                    .CanCollect("Gold")
-                    .Splice(RecruitWorkerDomain.Create())
-                    .Splice(PrimitiveActions.CollectWoodAction)
+
+                .Sequence("Recruit worker and collect wood")
+                    .Splice(RecruitWorkerDomain.Create())   
+                    .Splice(PrimitiveActions.CollectWoodAction)     
                 .End()
+
                 .Sequence("Re-assign worker to collect wood")
-                    .CanCollect("Wood")
                     .UnassignWorker()
                     .Splice(PrimitiveActions.CollectWoodAction)
                 .End()

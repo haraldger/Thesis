@@ -65,6 +65,7 @@ public class AIManager : MonoBehaviour
 
     void FixedUpdate()
     {
+
         _senses.Tick();
         _planner.Tick(_domain, _context, false);
 
