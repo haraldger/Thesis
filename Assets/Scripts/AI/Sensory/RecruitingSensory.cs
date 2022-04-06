@@ -51,7 +51,6 @@ public class RecruitingSensory : ISensory
         }
         catch (ArgumentNullException)    // Troop type doesn't exist
         {
-            if (_context.LogDecomposition) Debug.Log($"No troop of type {troopType} found");
             return false;
         }
 
@@ -60,7 +59,6 @@ public class RecruitingSensory : ISensory
         {
             if (!_resourceData[cost.code].CanConsumeResource(cost.value))
             {
-                if (_context.LogDecomposition) Debug.Log($"Not enough {cost.code} to recruit {troopType}.");
                 return false;
             }
         }
@@ -73,13 +71,11 @@ public class RecruitingSensory : ISensory
         }
         catch (InvalidOperationException)
         {
-            if (_context.LogDecomposition) Debug.Log($"Cannot find building type to recruit {troopType}");
             return false;
         }
 
         if (!_context.HasBuildingType(requiredBuilding))
         {
-            if (_context.LogDecomposition) Debug.Log($"Required building {requiredBuilding} missing");
             return false;
         }
 

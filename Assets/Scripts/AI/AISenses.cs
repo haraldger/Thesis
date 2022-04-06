@@ -10,6 +10,7 @@ public class AISenses
         this._senses = new Dictionary<string, ISensory>();
         _senses["Building"] = new BuildingSensory(_context);
         _senses["Recruiting"] = new RecruitingSensory(_context);
+        _senses["Collecting"] = new CollectingSensory(_context);
     }
 
     public void Tick()

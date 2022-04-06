@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 public class BuildingSensory : ISensory
 {
@@ -51,16 +52,25 @@ public class BuildingSensory : ISensory
         }
         catch (ArgumentNullException)
         {
+            Debug.Log($"Couldn't find _buildingData");
             return false;
         }
 
         // Check for available building spot
-        if (!FreeBuildingSpot()) return false;
+        if (!FreeBuildingSpot())
+        {
+            Debug.Log("No free building spot");
+            return false;
+        }
 
         // Check resource constraints
         foreach (var cost in building.costs)
         {
-            if (_resourceData[cost.code].CanConsumeResource(cost.value)) return false;
+            if (!_resourceData[cost.code].CanConsumeResource(cost.value))
+            {
+                return false;
+            } 
+
         }
 
         return true;
