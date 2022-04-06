@@ -9,7 +9,6 @@ using FluidHTN.Factory;
 
 public enum AIWorldState
 {
-    Goal,
     CanBuildBarracks,
     CanBuildFarm,
     CanBuildCitadel,
@@ -19,12 +18,6 @@ public enum AIWorldState
     CanCollectGold,
     CanCollectFood,
     CanCollectWood
-}
-
-public enum GoalState
-{
-    None,
-    BuildBarracks
 }
 
 public class AIContext : BaseContext
@@ -47,21 +40,6 @@ public class AIContext : BaseContext
     public override void Init()
     {
         base.Init();
-    }
-
-    public bool HasGoal(GoalState goal)
-    {
-        return GetGoal() == goal;
-    }
-
-    public GoalState GetGoal()
-    {
-        return (GoalState)GetState(AIWorldState.Goal);
-    }
-
-    public void SetGoal(GoalState goal, bool setAsDirty = true, EffectType effectType = EffectType.PlanAndExecute)
-    {
-        SetState((int)AIWorldState.Goal, (byte)goal, setAsDirty, effectType);
     }
 
     public bool HasState(AIWorldState state, bool value)
