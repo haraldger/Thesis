@@ -4,9 +4,9 @@ public class Globals
 {
     public static IDictionary<string, GameResourceData> RESOURCE_DATA = new Dictionary<string, GameResourceData>()
     {
-        {"Wood", new GameResourceData("Wood", 2000, 2000)},
-        {"Gold", new GameResourceData("Gold", 2000, 2000)},
-        {"Food", new GameResourceData("Food", 2000, 2000)}
+        {"Wood", new GameResourceData("Wood", 2000, 200)},
+        {"Gold", new GameResourceData("Gold", 2000, 100)},
+        {"Food", new GameResourceData("Food", 2000, 0)}
     };
 
     public static BuildingData[] BUILDING_DATA;

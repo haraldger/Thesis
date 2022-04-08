@@ -28,13 +28,14 @@ public class AIManager : MonoBehaviour
     void Awake()
     {
         Instance = this;
-        _buildingData = Globals.BUILDING_DATA;
-        _troopData = Globals.TROOP_DATA;
     }
 
 
     void Start()
     {
+        _buildingData = Globals.BUILDING_DATA;
+        _troopData = Globals.TROOP_DATA;
+
         _domain = Domain.GetComponent<AbstractDomain>().Domain;
         _planner = new Planner<AIContext>();
         _context = new AIContext();
@@ -189,7 +190,7 @@ public class AIManager : MonoBehaviour
     // Gets a resource spot of the given type
     public ResourceSpot GetResourceSpotType(string resourceType)
     {
-        return _resourceSpots.DefaultIfEmpty(null).Where(gameResource => gameResource.code == resourceType).OrderBy(gameResource => gameResource.Workers).FirstOrDefault();
+        return _resourceSpots.Where(gameResource => gameResource.code == resourceType).OrderBy(gameResource => gameResource.Workers).FirstOrDefault();
     }
 
     // Invoked on building spot init
