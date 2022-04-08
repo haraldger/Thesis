@@ -14,6 +14,9 @@ public class BuildingSensory : ISensory
     public void Tick()
     {
         SenseFreeBuildingSpots();
+        SenseFarms();
+        SenseCitadels();
+        SenseBarracks();
     }
 
     //--------------------------------------- Internal routines
@@ -22,6 +25,24 @@ public class BuildingSensory : ISensory
     {
         int freeBuildingSpots = AIManager.Instance.GetFreeBuildingSpots().Count;
         _context.SenseState(AIWorldState.FreeBuildingSpots, freeBuildingSpots);
+    }
+
+    public void SenseFarms()
+    {
+        int farms = AIManager.Instance.GetBuildings("Farm").Count;
+        _context.SenseState(AIWorldState.Farms, farms);
+    }
+
+    public void SenseBarracks()
+    {
+        int barracks = AIManager.Instance.GetBuildings("Barracks").Count;
+        _context.SenseState(AIWorldState.Barracks, barracks);
+    }
+
+    public void SenseCitadels()
+    {
+        int citadels = AIManager.Instance.GetBuildings("Citadel").Count;
+        _context.SenseState(AIWorldState.Citadels, citadels);
     }
 
     private bool FreeBuildingSpot()

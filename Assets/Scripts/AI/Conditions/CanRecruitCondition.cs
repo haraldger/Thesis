@@ -23,16 +23,11 @@ public class CanRecruitCondition : ICondition<int>
             // Check building constraints
             var recruitingBuilding = Array.Find(Globals.BUILDING_DATA, data => data.recruitingOptions.Select(option => option.code).Contains(TroopType));
             var buildingType = recruitingBuilding.code;
-            bool hasBuilding = context.HasBuildingType(buildingType);
-            if (!hasBuilding)
-            {
-                if (context.LogDecomposition) context.Log(Name, $"No available building {buildingType} to recruit {TroopType}", context.CurrentDecompositionDepth + 1, this);
-                return false;
-            }
+            bool result = context.HasBuildingType(buildingType);
 
 
-            if (context.LogDecomposition) context.Log(Name, $"CanRecruitCondition.IsValid:True", context.CurrentDecompositionDepth + 1, this);
-            return true;
+            if (context.LogDecomposition) context.Log(Name, $"CanRecruitCondition.IsValid({TroopType}):{result}", context.CurrentDecompositionDepth + 1, this);
+            return result;
         }
 
         throw new Exception($"Unexpected context type {ctx}");

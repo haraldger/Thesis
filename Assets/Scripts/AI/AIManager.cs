@@ -228,6 +228,12 @@ public class AIManager : MonoBehaviour
         return _resourceSpots.DefaultIfEmpty(null).Where(gameResource => gameResource.code == resourceType).OrderBy(gameResource => gameResource.Workers).FirstOrDefault();
     }
 
+    // Gets all resource spots of a given type
+    public List<ResourceSpot> GetResourceSpots(string resourceType)
+    {
+        return _resourceSpots.Where(gameResource => gameResource.code == resourceType).ToList();
+    }
+
     // Invoked on building spot init
     public void RegisterBuildingSpot(BuildingSpot buildingSpot)
     {
@@ -247,6 +253,12 @@ public class AIManager : MonoBehaviour
     public List<BuildingSpot> GetFreeBuildingSpots()
     {
         return _buildingSpots.Where(buildingSpot => buildingSpot.Occupied == false).ToList();
+    }
+
+    // Get all buildings of a given type
+    public List<UnitController> GetBuildings(string buildingType)
+    {
+        return Globals.EXISTING_UNITS.Keys.Where(building => building.Data.code == buildingType).ToList();
     }
 
 }

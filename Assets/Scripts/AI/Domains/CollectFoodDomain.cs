@@ -5,14 +5,13 @@ public static class CollectFoodDomain
 {
     public static Domain<AIContext, int> Create()
     {
-        return new AIDomainBuilder("Collect Food Domain")
+        var collectFoodDomain = new AIDomainBuilder("Collect Food Sub-Domain")
             .Select("Collect Food")
+                .CanCollect("Food")
 
                 .Splice(PrimitiveActions.CollectFoodAction)
 
-                // Has available food source
                 .Sequence("Recruit worker and collect food")
-                    .CanCollect("Food")
                     .Splice(RecruitWorkerDomain.Create())
                     .Splice(PrimitiveActions.CollectFoodAction)
                 .End()
@@ -21,29 +20,14 @@ public static class CollectFoodDomain
                     .UnassignWorker()
                     .Splice(PrimitiveActions.CollectFoodAction)
                 .End()
+            .End()
+            .Build();
 
-                // No available food source (farm)
-                /// Splicing of farm domain here is okay, as it will not lead to infinite loop
-                .Sequence("Build farm and collect food")
-
-                    .Splice(BuildFarmDomain.Create())
-
-                    .Select("Collect food")
-
-                        .Splice(PrimitiveActions.CollectFoodAction)
-
-                        .Sequence("Recruit worker and collect food")
-                            .Splice(RecruitWorkerDomain.Create())
-                            .Splice(PrimitiveActions.CollectFoodAction)
-                        .End()
-
-                        .Sequence("Re-assign worker to collect food")
-                            .UnassignWorker()
-                            .Splice(PrimitiveActions.CollectFoodAction)
-                        .End()
-
-                    .End()
-                .End()
+        return new AIDomainBuilder("Collect Food Domain")
+            .Splice(collectFoodDomain)
+            .Sequence("Build farm and collect")
+                .Splice(BuildFarmDomain.Create())
+                .Splice(collectFoodDomain)
             .End()
             .Build();
     }

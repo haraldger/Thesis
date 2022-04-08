@@ -21,7 +21,7 @@ public class CollectingSensory : ISensory
     {
         int idleWorkers = IdleWorkers();
         _context.SenseState(AIWorldState.IdleWorkers, idleWorkers);
-    }
+    }    
 
     private int IdleWorkers()
     {

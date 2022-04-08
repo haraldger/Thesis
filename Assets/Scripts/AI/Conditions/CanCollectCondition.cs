@@ -21,7 +21,11 @@ public class CanCollectCondition : ICondition<int>
             bool result = true;
 
             // Check existing resource collection spot
-            if (AIManager.Instance.GetResourceSpotType(ResourceType) == null)
+            if (ResourceType == "Food")     // Since farms are built by players, custom check to the world state is required
+            {
+                result = context.GetState(AIWorldState.Farms) > 0;
+            }
+            else if (AIManager.Instance.GetResourceSpotType(ResourceType) == null)
             {
                 result = false;
             }

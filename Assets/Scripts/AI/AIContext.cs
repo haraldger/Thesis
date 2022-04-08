@@ -9,7 +9,6 @@ using FluidHTN.Factory;
 
 public enum AIWorldState
 {
-    Goal,
     AvailableWood,
     AvailableGold,
     AvailableFood,
@@ -19,13 +18,10 @@ public enum AIWorldState
     IdleWorkers,
     BusyWorkers,
     FreeBuildingSpots,
-    OccupiedBuildingSpots
-}
-
-public enum GoalState
-{
-    None,
-    BuildBarracks
+    OccupiedBuildingSpots,
+    Farms,
+    Barracks,
+    Citadels
 }
 
 public class AIContext : BaseContext<int>
@@ -48,21 +44,6 @@ public class AIContext : BaseContext<int>
     public override void Init()
     {
         base.Init();
-    }
-
-    public bool HasGoal(GoalState goal)
-    {
-        return GetGoal() == goal;
-    }
-
-    public GoalState GetGoal()
-    {
-        return (GoalState)GetState(AIWorldState.Goal);
-    }
-
-    public void SetGoal(GoalState goal, bool setAsDirty = true, EffectType effectType = EffectType.PlanAndExecute)
-    {
-        SetState((int)AIWorldState.Goal, (byte)goal, setAsDirty, effectType);
     }
 
     public void SenseState(AIWorldState state, int value)
@@ -277,6 +258,12 @@ public class AIContext : BaseContext<int>
         return GetState(AIWorldState.FreeBuildingSpots) > 0;
     }
 
+    public void AddFarm(EffectType type = EffectType.PlanAndExecute)
+    {
+        int currentFarms = GetState(AIWorldState.Farms);
+        SetState(AIWorldState.Farms, currentFarms+1, type);
+    }
+
 
 
     // Workers
@@ -311,6 +298,50 @@ public class AIContext : BaseContext<int>
     }
 
 
+    // Buildings
+
+    public bool HasBuildingType(string buildingType)
+    {
+        switch (buildingType)
+        {
+            case "Barracks":
+                return GetState(AIWorldState.Barracks) > 0;
+
+            case "Farm":
+                return GetState(AIWorldState.Farms) > 0;
+
+            case "Citadel":
+                return GetState(AIWorldState.Citadels) > 0;
+
+            default:
+                throw new Exception($"Unknown building type {buildingType}");
+        }
+    }
+
+    public void AddBuilding(string buildingType, EffectType type = EffectType.PlanAndExecute)
+    {
+        switch (buildingType)
+        {
+            case "Barracks":
+                int currentBarracks = GetState(AIWorldState.Barracks);
+                SetState(AIWorldState.Barracks, currentBarracks+1, type);
+                return;
+
+            case "Farm":
+                int currentFarms = GetState(AIWorldState.Farms);
+                SetState(AIWorldState.Farms, currentFarms + 1, type);
+                return;
+
+            case "Citadel":
+                int currentCitadels = GetState(AIWorldState.Citadels);
+                SetState(AIWorldState.Citadels, currentCitadels + 1, type);
+                return;
+
+            default:
+                throw new Exception($"Unknown building type {buildingType}");
+        }
+    }
+
     //---------------------------------------- Custom context extensions
 
     public void AddBuilding(BuildingController building)
@@ -323,10 +354,6 @@ public class AIContext : BaseContext<int>
         _buildings.Remove(building);
     }
 
-    public bool HasBuildingType(string buildingType)
-    {
-        return _buildings.Where(building => building.data.code == buildingType).Any();
-    }
 
     // Returns any building of the specified type
     public BuildingController GetBuilding(string buildingType)

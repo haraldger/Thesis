@@ -5,8 +5,6 @@ public static class CollectWoodDomain
 {
     public static Domain<AIContext, int> Create()
     {
-        /// DO NOT USE SPLICING OF COMPLEX DOMAINS
-        /// Only splice primitive actions, in order to avoid infinite loops
         return new AIDomainBuilder("Collect Wood Domain")
             .Select("Collect Wood")
                 .CanCollect("Wood")

@@ -14,7 +14,7 @@ public class ComplexDomain : AbstractDomain
     {
         return new AIDomainBuilder("Complex Domain")
             .Sequence("Domain Sequence")
-                .Splice(CollectFoodDomain.Create())
+                .Splice(RecruitSwordsmanDomain.Create())
             .End()
             .Build();
     }

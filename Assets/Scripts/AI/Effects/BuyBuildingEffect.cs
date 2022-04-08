@@ -28,6 +28,8 @@ public class BuyBuildingEffect : IEffect<int>
                 context.RemoveResource(cost.code, cost.value, Type);
             }
 
+            context.AddBuilding(BuildingType, Type);
+
             if (context.LogDecomposition) context.Log(Name, $"BuyBuildingEffect.Apply({BuildingType})", context.CurrentDecompositionDepth + 1, this);
             return;
          }
