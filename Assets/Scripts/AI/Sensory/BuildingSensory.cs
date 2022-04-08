@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using FluidHTN;
 
 public class BuildingSensory : ISensory
 {
@@ -12,26 +13,36 @@ public class BuildingSensory : ISensory
 
     public void Tick()
     {
-        SetCanBuildBarracks();
-        SetCanBuildFarm();
-        SetCanBuildCitadel();
+        SenseFreeBuildingSpots();
+        SenseFarms();
+        SenseCitadels();
+        SenseBarracks();
     }
 
     //--------------------------------------- Internal routines
 
-    private void SetCanBuildBarracks()
+    private void SenseFreeBuildingSpots()
     {
-        _context.SetState(AIWorldState.CanBuildBarracks, CanBuildBuilding("Barracks"));
+        int freeBuildingSpots = AIManager.Instance.GetFreeBuildingSpots().Count;
+        _context.SenseState(AIWorldState.FreeBuildingSpots, freeBuildingSpots);
     }
 
-    private void SetCanBuildFarm()
+    public void SenseFarms()
     {
-        _context.SetState(AIWorldState.CanBuildFarm, CanBuildBuilding("Farm"));
+        int farms = AIManager.Instance.GetBuildings("Farm").Count;
+        _context.SenseState(AIWorldState.Farms, farms);
     }
 
-    private void SetCanBuildCitadel()
+    public void SenseBarracks()
     {
-        _context.SetState(AIWorldState.CanBuildCitadel, CanBuildBuilding("Citadel"));
+        int barracks = AIManager.Instance.GetBuildings("Barracks").Count;
+        _context.SenseState(AIWorldState.Barracks, barracks);
+    }
+
+    public void SenseCitadels()
+    {
+        int citadels = AIManager.Instance.GetBuildings("Citadel").Count;
+        _context.SenseState(AIWorldState.Citadels, citadels);
     }
 
     private bool FreeBuildingSpot()
@@ -60,7 +71,7 @@ public class BuildingSensory : ISensory
         // Check resource constraints
         foreach (var cost in building.costs)
         {
-            if (_resourceData[cost.code].CanConsumeResource(cost.value)) return false;
+            if (!_resourceData[cost.code].CanConsumeResource(cost.value)) return false;
         }
 
         return true;

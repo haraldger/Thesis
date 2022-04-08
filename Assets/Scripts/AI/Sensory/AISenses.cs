@@ -10,6 +10,8 @@ public class AISenses
         this._senses = new Dictionary<string, ISensory>();
         _senses["Building"] = new BuildingSensory(_context);
         _senses["Recruiting"] = new RecruitingSensory(_context);
+        _senses["Collecting"] = new CollectingSensory(_context);
+        _senses["Resources"] = new ResourceSensory(_context);
     }
 
     public void Tick()
@@ -30,6 +32,12 @@ public class AISenses
     {
         RecruitingSensory sensory = (RecruitingSensory)_senses["Recruiting"];
         return sensory.CanRecruitTroop(troopType);
+    }
+
+    public bool CanCollectResource(string resourceType)
+    {
+        CollectingSensory sensory = (CollectingSensory)_senses["Collecting"];
+        return sensory.CanCollectResource(resourceType);
     }
 
     private readonly AIContext _context;

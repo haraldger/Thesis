@@ -13,8 +13,8 @@ public class AIManager : MonoBehaviour
     public static AIManager Instance { get; private set; } // this
 
     public GameObject Domain;
-    private Domain<AIContext> _domain;
-    private Planner<AIContext> _planner;
+    private Domain<AIContext, int> _domain;
+    private Planner<AIContext, int> _planner;
     private AIContext _context;
     private AISenses _senses;
 
@@ -36,7 +36,7 @@ public class AIManager : MonoBehaviour
     void Start()
     {
         _domain = Domain.GetComponent<AbstractDomain>().Domain;
-        _planner = new Planner<AIContext>();
+        _planner = new Planner<AIContext, int>();
         _context = new AIContext();
         _context.Init();
         _senses = new AISenses(_context);
@@ -45,8 +45,17 @@ public class AIManager : MonoBehaviour
         GameObject[] initialObjects = GameObject.FindObjectsOfType(typeof(GameObject)) as GameObject[];
         foreach (GameObject gameObject in initialObjects)
         {
-            BuildingController building = gameObject.GetComponent<BuildingController>();
-            if (building != null) _context.AddBuilding(building);
+            UnitController unit = gameObject.GetComponent<UnitController>();
+            if (unit == null) continue;
+
+            if (unit is BuildingController building)
+            {
+                _context.AddBuilding(building);
+            }
+            else if (unit is TroopController troop)
+            {
+                _context.AddTroop(troop);
+            }
         }
     }
 
@@ -56,6 +65,7 @@ public class AIManager : MonoBehaviour
 
     void FixedUpdate()
     {
+
         _senses.Tick();
         _planner.Tick(_domain, _context, false);
 
@@ -116,31 +126,48 @@ public class AIManager : MonoBehaviour
     }
 
     // Recruit troop from an available barracks
-    public TaskStatus RecruitTroop(string unitType)
+    public TaskStatus RecruitTroop(string troopType)
     {
         // Check recruiting constraints
-        if (!_senses.CanRecruitTroop(unitType)) return TaskStatus.Failure;
+        if (!_senses.CanRecruitTroop(troopType)) return TaskStatus.Failure;
 
-        // Get recruiting barracks
-        BuildingController barracks = _context.GetBuilding("Barracks");
-        if (barracks == null) return TaskStatus.Failure;
+        // Get recruiting building
+        BuildingController requiredBuilding;
+        try
+        {
+            var requiredType = _buildingData.First(building => building.recruitingOptions.Where(availableTroop => availableTroop.code == troopType).Any()).code;
+
+            requiredBuilding = _context.GetBuilding(requiredType);
+            if (requiredBuilding == null)
+            {
+                return TaskStatus.Failure;
+            }
+        }
+        catch (Exception ex)
+        {
+            Debug.Log($"Get recruiting building failure, no type {troopType} available as a recruiting option from any building");
+            Debug.Log(ex.StackTrace);
+            return TaskStatus.Failure;
+        }
 
 
         // Get Data
         TroopData troopData;
         try
         {
-            troopData = Array.Find(_troopData, data => data.code == unitType);
+            troopData = Array.Find(_troopData, data => data.code == troopType);
         }
-        catch (ArgumentNullException)
+        catch (ArgumentNullException ex)
         {
+            Debug.Log($"Get data failure, no type {troopType} in _troopData");
+            Debug.Log(ex.StackTrace);
             return TaskStatus.Failure;
         }
 
 
         // Recruit
         TroopController newTroop;
-        if (barracks.RecruitTroop(troopData, out newTroop))
+        if (requiredBuilding.RecruitTroop(troopData, out newTroop))
         {
             _context.AddTroop(newTroop);
             return TaskStatus.Success;
@@ -155,18 +182,27 @@ public class AIManager : MonoBehaviour
     // Collect resources of the given type
     public TaskStatus CollectResource(string resourceType)
     {
+        // Initial condition checking
+        if (!_senses.CanCollectResource(resourceType)) return TaskStatus.Failure;
+
         // Get Data
-        Debug.Log("Collect resource called in AIManager");
 
         WorkerController worker = _context.GetIdleWorker();
-        if (worker == null) return TaskStatus.Failure;
-
         ResourceSpot resourceSpot = GetResourceSpotType(resourceType);
-        if (resourceSpot == null) return TaskStatus.Failure;
 
         // Issue collection command
 
         worker.CollectResourceCommand(resourceSpot.transform);
+        return TaskStatus.Success;
+    }
+
+    // Unassign a worker from collecting, making it idle
+    public TaskStatus UnassignWorker()
+    {
+        var busyWorker = _context.GetBusyWorker();
+        if (busyWorker == null) return TaskStatus.Failure;
+
+        busyWorker.StopCommand();
         return TaskStatus.Success;
     }
 
@@ -192,6 +228,12 @@ public class AIManager : MonoBehaviour
         return _resourceSpots.DefaultIfEmpty(null).Where(gameResource => gameResource.code == resourceType).OrderBy(gameResource => gameResource.Workers).FirstOrDefault();
     }
 
+    // Gets all resource spots of a given type
+    public List<ResourceSpot> GetResourceSpots(string resourceType)
+    {
+        return _resourceSpots.Where(gameResource => gameResource.code == resourceType).ToList();
+    }
+
     // Invoked on building spot init
     public void RegisterBuildingSpot(BuildingSpot buildingSpot)
     {
@@ -206,6 +248,17 @@ public class AIManager : MonoBehaviour
             if (!buildingSpot.Occupied) return buildingSpot;
         }
         return null;
+    }
+
+    public List<BuildingSpot> GetFreeBuildingSpots()
+    {
+        return _buildingSpots.Where(buildingSpot => buildingSpot.Occupied == false).ToList();
+    }
+
+    // Get all buildings of a given type
+    public List<UnitController> GetBuildings(string buildingType)
+    {
+        return Globals.EXISTING_UNITS.Keys.Where(building => building.Data.code == buildingType).ToList();
     }
 
 }
